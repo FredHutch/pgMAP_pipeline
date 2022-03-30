@@ -63,31 +63,24 @@ print("sample_list = ", sample_list)
 # trim_in = config["fastq_dir"] + "PP_pgRNA_HeLa_S1_R3_001.fastq.gz"
 # trim_out = config["fastq_trimmed_dir"] + "PP_pgRNA_HeLa_S1_R3_001_trimmed.fastq"
 
-## this is related to the wildcard thing - output file names
+## this is related to the wildcard thing - output file names for each rule
 rule all:
     input:
         expand(fastq_trimmed_dir + base_filename + "_{read}_trimmed.fastq",
             read = read_to_fastq.keys()),
-        demultiplexed_dir,
+        # demultiplexed_dir,
         expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq",
+            dmx_read = ["R1", "R2"],
+            sample = sample_list),
+        expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
         expand(bowtie_idx_dir + "pgPEN_{dmx_read}",
             dmx_read = ["R1", "R2"]),
-        expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq",
-            dmx_read = ["R1", "R2"],
-            sample = sample_list),
         expand(aligned_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam",
             dmx_read = ["R1", "R2"],
             sample = sample_list)
-        # expand(demultiplexed_dir + base_filename + "_R1_trimmed_{sample}.fastq",
-        #     sample = R1_sample_to_fastq.keys()),
-        # expand(demultiplexed_dir + base_filename + "_R2_trimmed_{sample}.fastq",
-        #     sample = R2_sample_to_fastq.keys())
 
-## KEEP WORKING ON THIS
-# def rename_demuxed_fastqs(wildcards):
-#
 
 ## add wildcards!
 rule trim_reads:
@@ -114,28 +107,38 @@ rule demux_fastqs:
         R2 = fastq_trimmed_dir + base_filename + "_R2_trimmed.fastq",
         ref = demultiplexed_dir + "ref/" + config["barcode_ref_file"]
     output:
-        demultiplexed_dir
+        ## put the expand statement here so this is only run once
+        ## (instead of once per output file)
+        expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq",
+            dmx_read = ["R1", "R2"],
+            sample = sample_list)
     params:
         idemp = config["idemp"],
-        n_mismatch = 1
+        n_mismatch = 1,
+        ## this is a param not output because having a folder as the output messes everything up
+        out_dir = demultiplexed_dir
     log:
         "logs/demux_fastqs/idemp.log"
     shell:
         """
         {params.idemp} -b {input.ref} -n {params.n_mismatch} \
-        -I1 {input.idx} -R1 {input.R1} -R2 {input.R2} -o {output}
+        -I1 {input.idx} -R1 {input.R1} -R2 {input.R2} -o {params.out_dir}
         """
+
 
 ## TO DO: resolve conflict b/w R1/R2 and gRNA1/gRNA2 naming schemes...have to fix this
 ##    somehow so I can rename the idemp output fastqs
+
+
+## remove the extra ".fastq" that idemp puts in for some reason
 rule rename_fastqs:
     input:
         demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq"
     output:
-        # demultiplexed_dir + "rename_out/" + base_filename + "_{dmx_read}_trimmed_{sample}.fastq"
         demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq"
     shell:
         "mv {input} {output}"
+
     # run: # python script
     #     for filename in os.scandir(input):
     #         if filename.is_file():
