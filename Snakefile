@@ -12,6 +12,7 @@ import pandas as pd
 configfile: "config.yaml"
 
 ## set up paths for output files
+## do this automatically for any line containing "dir"?
 fastq_dir = os.path.abspath(config["fastq_dir"]) + "/"
 fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
 demultiplexed_dir = os.path.abspath(config["demultiplexed_dir"]) + "/"
@@ -19,6 +20,8 @@ base_filename = config["base_filename"]
 bowtie_idx_dir = os.path.abspath(config["bowtie_idx_dir"]) + "/"
 bowtie_idx_ref_dir = os.path.abspath(config["bowtie_idx_ref_dir"]) + "/"
 aligned_dir = os.path.abspath(config["aligned_dir"]) + "/"
+pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
+counter_script_dir = os.path.abspath(config["counter_script_dir"]) + "/"
 
 
 read_to_fastq = {}
@@ -77,7 +80,13 @@ rule all:
             sample = sample_list),
         expand(bowtie_idx_dir + "pgPEN_{dmx_read}",
             dmx_read = ["R1", "R2"]),
-        expand(aligned_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam",
+        expand(aligned_dir + "sam/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam",
+            dmx_read = ["R1", "R2"],
+            sample = sample_list),
+        expand(aligned_dir + "bam_sorted/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam",
+            dmx_read = ["R1", "R2"],
+            sample = sample_list),
+        expand(aligned_dir + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt",
             dmx_read = ["R1", "R2"],
             sample = sample_list)
 
@@ -161,6 +170,8 @@ rule build_bowtie_index:
         bowtie_idx_ref_dir + "pgPEN_{dmx_read}.fa"
     output:
         bowtie_idx_dir + "pgPEN_{dmx_read}"
+    log:
+        "logs/align_reads/{dmx_read}"
     shell:
         "bowtie-build -f {input} {output}"
 
@@ -169,7 +180,7 @@ rule align_reads:
         fastq = demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq",
         idx = bowtie_idx_dir + "pgPEN_{dmx_read}"
     output:
-        aligned_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
+        aligned_dir + "sam/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
     resources:
         mem = 8,
         time = 24
@@ -177,3 +188,51 @@ rule align_reads:
         "logs/align_reads/{dmx_read}_{sample}.log"
     shell:
         "bowtie -q -v 1 --best --strata --all --sam -p 4 {input.idx} {input.fastq} {output}"
+
+rule make_sorted_bam:
+    input:
+        aligned_dir + "sam/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
+    output:
+        aligned_dir + "bam_sorted/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
+    params:
+        unsorted_bam = aligned_dir + "bam/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.bam",
+        tmp = aligned_dir + "bam_sorted/tmp_{dmx_read}_{sample}"
+    resources:
+        mem = 16,
+        time = 24
+    log:
+        "logs/make_sorted_bam/{dmx_read}_{sample}.log"
+    shell:
+        """
+        samtools view -bS -o {params.unsorted_bam} {input}
+
+        samtools sort -O bam -n {params.unsorted_bam} -T {params.tmp} -o {output}
+        """
+
+rule get_stats:
+    input:
+        aligned_dir + "bam_sorted/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
+    output:
+        aligned_dir + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt"
+    shell:
+        "samtools flagstat {input} > {output}"
+
+## note: make a new rule c to combine all sample counts => 1 file
+## update snakemake envt to include R (& other) dependencies
+# run count_pgRNAs:
+#     input:
+#         ## fix this bc the filename needs to be diff for counter_efficient.R ... or fix that script?
+#         expand(aligned_dir + "bam_sorted/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam",
+#             dmx_read = ["R1"],
+#             sample = sample_list[0])
+#     output:
+#         pgRNA_counts_dir +
+#     params:
+#         n_chunks =
+#         script = counter_script_dir +
+#     resources:
+#         mem = 98
+#         time = 8
+#         cpus-per-task = 16
+#     log:
+#     shell:

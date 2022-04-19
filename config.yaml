@@ -9,4 +9,6 @@ idemp: /home/pparrish/installs/idemp
 ## add read trim coords
 bowtie_idx_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/bowtie1_indices/
 bowtie_idx_ref_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgRNA_fastas/
-aligned_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/bowtie1_aligned/200722_HeLa_screen/test_snakemake/sam
+aligned_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/bowtie1_aligned/200722_HeLa_screen/test_snakemake/
+pgRNA_counts_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgRNA_counts/200722_HeLa_screen/test_snakemake
+counter_script_dir: /home/pparrish/paralog_pgRNA_screen/scripts
