@@ -1,0 +1,9 @@
+**/logs
+old_scripts/
+.snakemake/
+Robin_notes.txt
+April_snakemake_submit.sh
+*.pdf
+*.svg
+.*
+!/.gitignore
