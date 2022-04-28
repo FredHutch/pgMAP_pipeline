@@ -1,3 +1,0 @@
-TypeError in line 25 of /home/pparrish/pgPEN_pipeline/Snakefile:
-object of type '_io.TextIOWrapper' has no len()
-  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 25, in <module>

@@ -1,3 +1,0 @@
-FileNotFoundError in line 40 of /home/pparrish/pgPEN_pipeline/Snakefile:
-[Errno 2] No such file or directory: '/fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/trimmed_fastqs/200722_HeLa_screen/test_snakemake/barcode_ref_file.txt'
-  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 40, in <module>

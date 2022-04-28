@@ -1,3 +1,0 @@
-NameError in line 19 of /home/pparrish/pgPEN_pipeline/Snakefile:
-name 'fastq_dir' is not defined
-  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 19, in <module>

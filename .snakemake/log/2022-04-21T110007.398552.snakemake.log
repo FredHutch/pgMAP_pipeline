@@ -1,3 +1,0 @@
-KeyError in line 232 of /home/pparrish/pgPEN_pipeline/Snakefile:
-'pgRNA_counts_ref'
-  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 232, in <module>

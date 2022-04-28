@@ -1,3 +1,0 @@
-KeyError in line 61 of /home/pparrish/pgPEN_pipeline/Snakefile:
-'{sample}_trim_coords'
-  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 61, in <module>

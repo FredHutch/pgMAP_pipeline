@@ -1,3 +1,0 @@
-IndexError in line 20 of /home/pparrish/pgPEN_pipeline/Snakefile:
-list index out of range
-  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 20, in <module>

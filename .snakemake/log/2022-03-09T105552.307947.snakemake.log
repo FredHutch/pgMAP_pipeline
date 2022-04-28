@@ -1,3 +1,0 @@
-TypeError in line 27 of /home/pparrish/pgPEN_pipeline/Snakefile:
-can only concatenate str (not "int") to str
-  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 27, in <module>

@@ -1,6 +1,0 @@
-Building DAG of jobs...
-MissingInputException in line 68 of /home/pparrish/pgPEN_pipeline/Snakefile:
-Missing input files for rule all:
-    affected files:
-        /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/bowtie1_indices/gRNA2
-        /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/bowtie1_indices/gRNA1

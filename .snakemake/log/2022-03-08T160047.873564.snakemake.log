@@ -1,3 +1,0 @@
-AttributeError in line 29 of /home/pparrish/pgPEN_pipeline/Snakefile:
-'dict' object has no attribute 'append'
-  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 29, in <module>

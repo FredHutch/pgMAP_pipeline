@@ -6,4 +6,4 @@ April_snakemake_submit.sh
 *.pdf
 *.svg
 .*
-!/.gitignore
+!.gitignore

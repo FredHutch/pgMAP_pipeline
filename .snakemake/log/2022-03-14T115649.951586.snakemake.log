@@ -1,7 +1,0 @@
-Building DAG of jobs...
-MissingInputException in line 128 of /home/pparrish/pgPEN_pipeline/Snakefile:
-Missing input files for rule rename_fastqs:
-    output: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/demultiplex/200722_HeLa_screen/test_snakemake/PP_pgPEN_HeLa_gRNA1_trimmed_Day05_pooled.fastq
-    wildcards: gRNA=gRNA1, sample=Day05_pooled
-    affected files:
-        /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/demultiplex/200722_HeLa_screen/test_snakemake/PP_pgPEN_HeLa_gRNA1_trimmed.fastq_Day05_pooled.fastq
