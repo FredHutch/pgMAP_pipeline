@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in line 156 of /home/pparrish/pgPEN_pipeline/Snakefile:
+Wildcards in input files cannot be determined from output files:
+'gRNA'

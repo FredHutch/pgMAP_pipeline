@@ -1,5 +1,15 @@
+## TO DO
+## - make reference file an input as well
+## - make sure file name format can change easily
+## - make sure file name format matches snakemake pipeline
+
+
+############################################################
+## Load packages                                          ##
+############################################################
+
 ## rhino module: R-3.6.2-foss-2019b-fh1
-## if running code in Rstudio on gizmo via launch_rstudio_server: 
+## if running code in Rstudio on gizmo via launch_rstudio_server:
 ##   run this line before Rsamtools will load: .libPaths(c("/app/software/R/3.6.2-foss-2018b-fh1", .libPaths()))
 
 ## packages to load: Rsamtools, tidyverse
@@ -11,19 +21,45 @@ import_library("tidyverse") # new version = 1.2.1 # now 1.3.0
 
 
 ############################################################
-## Build annotations                                      ##
+## Read arguments and initialize counts tibble            ##
 ############################################################
 
-## Goals:
-## - Parse annotation file and initialize d.counts, which holds raw counts of reads
-##   supporting each pgRNA.
+## read in command line argument(s); we expect:
+##   args[1] to be the BAM file path and name
+##   args[2] to be the number of chunks you want to split the BAM files into
+##   args[3] to be the reference file path and name
+##   args[4] to be the output file path
+args <- commandArgs(trailingOnly=TRUE)
 
-basedir = file.path ("/fh", "fast", "berger_a", "grp", "bergerlab_shared", "Projects",
-                     "paralog_pgRNA")
-file = file.path (basedir, "annotations", "paralog_pgRNA_annotations.txt")
+## make sure that a file name has been supplied as an argument
+if(length(args) < 4){
+  stop("Please supply all required arguments!",
+       call.=FALSE)
+}
 
-stopifnot (file.exists (file))
-d.counts <- read_tsv (file, col_names=TRUE, col_types=cols())
+## assign args[1] to filename variable:
+files.1 <- args[1]
+message(paste0("gRNA1 BAM file read in as:", files.1))
+
+## replace gRNA_1 with gRNA_2 in files.2 variable
+files.2 <- gsub ("R1", "R2", files.1)
+
+if (!all (file.exists (files.2)))
+  stop ("Failed to find properly matched BAM files for reads 1 and 2.")
+
+## assign args[2] to n.chunks variable
+n.chunks <- as.numeric(args[2])
+
+## assign args[3] to ref.file variable, which will be used to build d.counts
+ref.file <- args[3]
+stopifnot (file.exists (ref.file))
+
+## Parse annotation file and initialize d.counts, which holds raw counts of reads
+## supporting each pgRNA.
+d.counts <- read_tsv (ref.file, col_names=TRUE, col_types=cols())
+
+## assign args[4] to counts.dir variable
+counts.dir <- args[4]
 
 
 ############################################################
@@ -34,33 +70,13 @@ d.counts <- read_tsv (file, col_names=TRUE, col_types=cols())
 ## - Compute read counts supporting each pgRNA and store in columns named
 ##   counts_sample in d.counts.
 
-## filenames follow the convention cell_line.samplen.bam, 
-##   where max(n) is your number of samples
 
-## read in command line argument(s); we expect: 
-##   args[1] to be the BAM file path and name, and 
-##   args[2] to be the number of chunks you want to split the BAM files into
-args <- commandArgs(trailingOnly=TRUE)
+## parse sample information from BAM filename
+# sample <- gsub ("\\_R1.bam", "", basename (files.1))
+sample_tmp <- str_split_fixed(files.1, "_aligned", n = Inf)[1]
+sample <- str_split_fixed(sample_tmp, "trimmed_", n = Inf)[2]
 
-## make sure that a file name has been supplied as an argument
-if(length(args)==0){
-  stop("gRNA1.bam filename and number of chunks must be supplied as arguments!",
-       call.=FALSE)
-}
-
-## assign args[1] to filename variable:
-files.1 <- args[1]
-message(paste0("gRNA1 BAM file read in as:", files.1))
-
-files.2 <- gsub ("gRNA_1", "gRNA_2", files.1) # replace gRNA_1 with gRNA_2 in files.2 variable
-
-if (!all (file.exists (files.2)))
-  stop ("Failed to find properly matched BAM files for reads 1 and 2.")
-
-## parse sample information from filename
-sample <- gsub ("\\.gRNA_1.bam", "", basename (files.1))
-
-## start timer: 
+## start timer:
 timing <- Sys.time()
 message(paste0("Parsing reads for sample ", sample, "\n"))
 
@@ -87,12 +103,11 @@ message("Qnames extracted\n")
 
 ## split BAMs into chunks:
 ##   this step use rank() and the modulo operator to get a list of numbers from 1-50 that is the
-##   length of the qnames vector, then sorts that list so that each group (#1-50) is together, 
+##   length of the qnames vector, then sorts that list so that each group (#1-50) is together,
 ##   then splits those into separate sub-lists, and then assigns each qname to a sublist (group).
 chunk <- function(x,n) split(x, factor(sort(rank(x)%%n)))
 
-## assign args[2] to n.chunks variable and run chunk() function
-n.chunks <- as.numeric(args[2])
+## run chunk() function on n.chunks
 qnames_chunks <- chunk(qnames, n.chunks)
 
 ## lapply statement that loops through qname chunks
@@ -106,13 +121,13 @@ results <- lapply(n, function(i){
   # convert DataFrame to tibble:
   d.bam.1.sub <- sub1 %>% as_tibble() %>% mutate_at("rname", as.character)
   d.bam.2.sub <- sub2 %>% as_tibble() %>% mutate_at("rname", as.character)
-  
+
   ## perform inner join between alignments of read 1 and 2 in order to obtain
   ##    all possible pairings implied by each read alignment
   d.bam.sub <- inner_join(d.bam.1.sub %>% select (qname, "rname.1" = rname),
                          d.bam.2.sub %>% select (qname, "rname.2" = rname),
                          by = "qname")
-  
+
   ## check whether each pairing is correct
   d.bam.sub <- d.bam.sub %>% mutate("paired" = rname.1 == rname.2)
 
@@ -124,7 +139,7 @@ results <- lapply(n, function(i){
                                        by = "qname") %>%
     filter (paired | !any_paired) %>%
     select (-any_paired)
-  
+
   ## compute weights for each set of reads
   qname2n <- table (d.bam.sub$qname)
   d.bam.sub <- d.bam.sub %>% left_join (tibble ("qname" = names (qname2n),
@@ -132,7 +147,7 @@ results <- lapply(n, function(i){
                                        by = "qname") %>%
     mutate ("weight" = 1 / n) %>%
     select (-n)
-  
+
   ## store statistics on the numbers of correctly paired reads in a tibble
   n.paired <- d.bam.sub %>% filter (paired) %>% summarize (sum (weight)) %>% collect() %>% .[[1]]
   n <- d.bam.sub %>% summarize (sum (weight)) %>% collect() %>% .[[1]]
@@ -140,20 +155,20 @@ results <- lapply(n, function(i){
 
   ## compute counts for correctly paired reads
   d.bam.sub <- d.bam.sub %>% filter (paired)
-  
+
   ## return a list of the d.bam and d.paired for this subset of the BAM file
   return(list(bam=d.bam.sub, paired=d.paired.sub))
 
-}) 
+})
 
-## loop through results variable to extract the sub-tibbles containing gRNA weights 
+## loop through results variable to extract the sub-tibbles containing gRNA weights
 ##   and bind them together
 d.bam <- lapply(n, function(i){
   results[[i]]$bam
 }) %>% bind_rows()
 
-## loop through results variable to extract sub-tibbles containing pairing statistics 
-##   and bind them together 
+## loop through results variable to extract sub-tibbles containing pairing statistics
+##   and bind them together
 d.paired <- lapply(n, function(i){
   results[[i]]$paired
 }) %>% bind_rows()
@@ -162,7 +177,7 @@ d.paired <- lapply(n, function(i){
 d.paired.all <- d.paired %>% summarize(n.paired=sum(n.correctly.paired), n.total=sum(n.total))
 d.paired.all <- d.paired.all %>% mutate("pct.paired"=round(100*n.paired/n.total,3))
 
-message (paste0 ("   ", d.paired.all$n.paired, " / ", d.paired.all$n.total, 
+message (paste0 ("   ", d.paired.all$n.paired, " / ", d.paired.all$n.total,
                  " (", d.paired.all$pct.paired, "%) correctly paired reads\n"))
 
 ## check that all rnames are correctly paired
@@ -188,7 +203,7 @@ message("Counts file made\n")
 
 ## write per-sample output to tab-delimited counts file
 counts.filename <- paste0("counts_", sample, ".txt")
-counts.filepath <- file.path(basedir, "pgRNA_counts", "200722_HeLa_screen", counts.filename)
+counts.filepath <- file.path(counts.dir, counts.filename)
 write_tsv(d.counts, counts.filepath)
 message(paste0("Counts file written to: ", counts.filepath))
 
@@ -215,7 +230,7 @@ message (paste0 ("Done (", signif (as.numeric (difftime (Sys.time(), timing, uni
 ##   d.bam.1 = tibble ("qname" = bam.1[[1]]$qname,
 ##                     "rname" = factor2character (bam.1[[1]]$rname))
 
-## For filtering out incorrectly paired reads: 
+## For filtering out incorrectly paired reads:
 ## The simplest way to achieve this is by grouping over reads as follows:
 ##   d.bam = d.bam %>% group_by (qname) %>%
 ##     mutate ("any_paired" = any (paired)) %>% ungroup() %>%

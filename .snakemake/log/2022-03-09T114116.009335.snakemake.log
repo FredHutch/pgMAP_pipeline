@@ -1,0 +1,3 @@
+KeyError in line 61 of /home/pparrish/pgPEN_pipeline/Snakefile:
+'{'
+  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 61, in <module>

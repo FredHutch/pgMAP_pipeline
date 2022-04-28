@@ -1,0 +1,3 @@
+NameError in line 25 of /home/pparrish/pgPEN_pipeline/Snakefile:
+name 'length' is not defined
+  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 25, in <module>

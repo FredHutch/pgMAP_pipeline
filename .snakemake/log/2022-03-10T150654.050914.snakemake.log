@@ -1,0 +1,3 @@
+NameError in line 62 of /home/pparrish/pgPEN_pipeline/Snakefile:
+name 'sample_to_fastq' is not defined
+  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 62, in <module>

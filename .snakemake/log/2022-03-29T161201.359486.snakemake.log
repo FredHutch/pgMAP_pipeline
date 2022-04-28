@@ -1,0 +1,6 @@
+The flag 'directory' used in rule all is only valid for outputs, not inputs.
+Building DAG of jobs...
+ChildIOException:
+File/directory is a child to another output:
+('/fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/demultiplex/200722_HeLa_screen/test_snakemake', demux_fastqs)
+('/fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/demultiplex/200722_HeLa_screen/test_snakemake/PP_pgPEN_HeLa_R1_trimmed_Day00_pooled.fastq', rename_fastqs)

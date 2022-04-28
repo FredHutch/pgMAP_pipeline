@@ -1,0 +1,53 @@
+### From Robin
+
+### running snakemake pipeline on the cluster:
+# configure file paths
+CONFIG_FILE='config.yml'
+SNAKE_FILE='../../../workflow/main/repeat_ID/Snakefile'
+CONDA_ENVS='../../../shared_conda_envs'
+
+# activate conda environment
+source activate tigerfish
+
+# run the pipeline
+snakemake --configfile $CONFIG_FILE --snakefile $SNAKE_FILE \
+    --use-conda --conda-prefix $CONDA_ENVS --cores \
+    --restart-times 3
+
+# export PDF and svg visualizations of the DAG structure of pipeline steps
+echo -e "Exporting pipeline DAG to svg and pdf..."
+snakemake --configfile $CONFIG_FILE --snakefile $SNAKE_FILE --dag > dag.dot
+dot -Tpdf dag.dot > pipeline_output/pipeline.pdf
+dot -Tsvg dag.dot > pipeline_output/pipeline.svg
+rm dag.dot
+
+echo -e "Generating pipeline HTML report..."
+snakemake --snakefile $SNAKE_FILE --configfile $CONFIG_FILE --report pipeline_output/report.html
+
+# success
+echo -e "\nDONE!\n"
+
+## note: the comment for #run the pipeline is probably the most important bc that’s
+##   where you specify that you want the snakemake pipeline run to be managed by
+##   conda using --use-conda as a flag and specifying the conda env
+
+
+
+### setting cluster params in snakefile:
+rule generate_jf_count:
+    input:
+        fasta_file = config["fasta_file"]
+    conda:
+        "../envs/tigerfish.yml"
+    params:
+        mer = config["mer_val"],
+        mfree="60G",
+        h_rt = "20:0:0"
+    benchmark:
+        'pipeline_output/benchmarks/01_reference_files/01_jf_query_file/jf_count_log.log'
+    output:
+        'pipeline_output/01_reference_files/01_jf_query_file/genome_query.jf'
+    shell:
+        "jellyfish count -s 3300M -m {params.mer} -o {output} {input.fasta_file}"
+
+## in params I have the memory (mfree) and runtime (h_rt) specified for that specific rule

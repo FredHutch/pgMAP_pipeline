@@ -1,0 +1,7 @@
+Building DAG of jobs...
+MissingInputException in line 152 of /home/pparrish/pgPEN_pipeline/Snakefile:
+Missing input files for rule build_bowtie_index:
+    output: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/bowtie1_indices/pgPEN_R1
+    wildcards: dmx_read=R1
+    affected files:
+        /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgRNA_fastas/pgPEN_R1.fa

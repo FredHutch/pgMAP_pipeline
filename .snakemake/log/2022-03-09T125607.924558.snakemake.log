@@ -1,0 +1,3 @@
+FileNotFoundError in line 40 of /home/pparrish/pgPEN_pipeline/Snakefile:
+[Errno 2] No such file or directory: 'barcode_ref_file.txt'
+  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 40, in <module>

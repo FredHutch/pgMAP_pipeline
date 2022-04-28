@@ -1,0 +1,2 @@
+SyntaxError in line 116 of /home/pparrish/pgPEN_pipeline/Snakefile:
+unterminated string literal (detected at line 151)

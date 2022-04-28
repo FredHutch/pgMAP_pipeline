@@ -1,0 +1,3 @@
+AttributeError in line 21 of /home/pparrish/pgPEN_pipeline/Snakefile:
+'_io.TextIOWrapper' object has no attribute 'split'
+  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 21, in <module>

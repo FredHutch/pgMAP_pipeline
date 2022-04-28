@@ -1,0 +1,3 @@
+NameError in line 150 of /home/pparrish/pgPEN_pipeline/Snakefile:
+name 'demultiplex_dir' is not defined
+  File "/home/pparrish/pgPEN_pipeline/Snakefile", line 150, in <module>

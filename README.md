@@ -3,6 +3,8 @@
 Install the latest Snakemake version (7.1?) using mambaforge as described here:
 https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
 
+Use ctrl + shift + M to see rendered version in Atom
+
 # To Do
 * Decide on a consistent file naming strategy
   * name based on pgRNA/full sample name or just numbers?
@@ -15,3 +17,5 @@ https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
   * might have to make log folder first
 
   * change pooled => pool in filenames
+
+  * add fastQC step?
