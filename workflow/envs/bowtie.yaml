@@ -1,0 +1,9 @@
+name: bowtie
+
+channels:
+  - bioconda
+
+dependencies:
+  - bowtie=1.2.2
+
+  ## update: $ conda env update --name snakemake_env --file environment.yaml

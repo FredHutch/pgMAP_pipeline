@@ -10,10 +10,14 @@ Use ctrl + shift + M to see rendered version in Atom
 
 # To Do
 
+* add new folders/file locations to git and commit
+
 * figure out how to fix moving demuxed fastqs => new name causing it to rerun the whole pipeline because the output from demux_fastqs rule is not there
 
 * fix whatever is going on with counter_efficient.R to produce incorrect output
   * confirm I'm not going to have the same issue as above
+
+* read Vince Buffalo's snakemake guide
 
 * remove weird conda files from Snakemake dir
 

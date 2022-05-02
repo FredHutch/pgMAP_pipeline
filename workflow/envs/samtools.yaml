@@ -1,0 +1,10 @@
+name: samtools
+
+channels:
+  - bioconda
+
+dependencies:
+  - samtools=1.9
+
+
+  ## update: $ conda env update --name snakemake_env --file environment.yaml

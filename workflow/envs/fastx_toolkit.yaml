@@ -1,0 +1,9 @@
+name: fastx_toolkit
+
+channels:
+  - BioBuilds
+
+dependencies:
+  - fastx-toolkit=0.0.14
+
+  ## update: $ conda env update --name snakemake_env --file environment.yaml

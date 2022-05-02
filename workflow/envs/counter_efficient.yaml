@@ -1,0 +1,15 @@
+name: counter_efficient
+
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+- conda-forge::r-essentials=3.6 # they didn't have 3.6.2; tried 3.6.0
+- conda-forge::r-tidyverse=1.2 # 1.2.1
+- bioconda::bioconductor-rsamtools # they didn't have 1.34.1, tried 1.34.0
+
+## update: $ conda env update --name snakemake_env --file environment.yaml
+## notes: don't use r and conda-forge/bioconda together
+## see: https://community.rstudio.com/t/why-not-r-via-conda/9438/4

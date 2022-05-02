@@ -1,9 +1,11 @@
 **/logs
 old_scripts/
 .snakemake/
-Robin_notes.txt
-April_snakemake_submit.sh
+refs/
+images/
 *.pdf
 *.svg
 .*
 !.gitignore
+*version*
+*build*
