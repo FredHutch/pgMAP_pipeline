@@ -1,3 +1,0 @@
-CTTGTA	sample2
-GGCTAC	sample3
-ACTTGA	sample1

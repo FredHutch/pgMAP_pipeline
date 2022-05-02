@@ -1,6 +1,0 @@
-CTTGTA	Day05_pool
-GGCTAC	Day22_RepA
-TAGCTT	Day22_RepB
-GATCAG	Day22_RepC
-ACTTGA	Day00_pool
-GCCAAT	PC9_spikein

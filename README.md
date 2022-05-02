@@ -3,19 +3,23 @@
 Install the latest Snakemake version (7.1?) using mambaforge as described here:
 https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
 
+Folder setup/running info as described here:
+https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
+
 Use ctrl + shift + M to see rendered version in Atom
 
 # To Do
+
+* figure out how to fix moving demuxed fastqs => new name causing it to rerun the whole pipeline because the output from demux_fastqs rule is not there
+
+* fix whatever is going on with counter_efficient.R to produce incorrect output
+  * confirm I'm not going to have the same issue as above
+
+* remove weird conda files from Snakemake dir
+
 * Decide on a consistent file naming strategy
   * name based on pgRNA/full sample name or just numbers?
 
-* get rid of R1 and R2 dicts, convert to list of just sample names
-  * expand list and use ad hoc list of R1, R2 to get new file names
-* use read_to_fastq to get fastq filenames (lambda function again)
+* might have to make log folder first
 
-  * function sample_to_wildcard if file name doesn't match sample name
-  * might have to make log folder first
-
-  * change pooled => pool in filenames
-
-  * add fastQC step?
+* add fastQC step?
