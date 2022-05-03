@@ -13,7 +13,7 @@ source activate snakemake_env
 ##   if one fails
 snakemake --snakefile $SNAKE_FILE \
   --configfile $CONFIG_FILE \
-  --use-conda -k -p --jobs 50 --reason
+  --use-conda -k -p --jobs 50 --reason -R trim_reads
   # --cluster "sbatch -o {log}" --jobs 50 \
   # --use-conda \ # --conda-prefix $CONDA_ENV
   # -k -p --restart-times 3 --latency-wait 180

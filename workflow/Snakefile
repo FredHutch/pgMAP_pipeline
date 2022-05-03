@@ -74,14 +74,9 @@ rule all:
         expand(fastq_trimmed_dir + base_filename + "_{read}_trimmed.fastq",
             read = read_to_fastq.keys()),
         ## rule: demux_fastqs
-        expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
-            dmx_read = ["R1", "R2"],
-            sample = sample_list),
-        ## rule: rename_fastqs
         expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
-        ## rule: build_bowtie_index
         expand(bowtie_idx_dir + "pgPEN_{dmx_read}.{bt_idx}.ebwt",
             dmx_read = ["R1", "R2"],
             bt_idx = ["1", "2", "3", "4", "rev.1", "rev.2"]),
@@ -129,34 +124,32 @@ rule demux_fastqs:
         R1 = fastq_trimmed_dir + base_filename + "_R1_trimmed.fastq",
         R2 = fastq_trimmed_dir + base_filename + "_R2_trimmed.fastq",
         # ref = demultiplexed_dir + "ref/" + config["barcode_ref_file"]
-        ref = config["barcode_ref_file"]
+
     output:
         ## put the expand statement here so this is only run once
         ## (instead of once per output file)
-        expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
+        expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list)
     params:
         idemp = config["idemp"],
         n_mismatch = 1,
+        ref = config["barcode_ref_file"],
         ## this is a param not output because having a folder as the output messes everything up
-        out_dir = demultiplexed_dir
+        out_dir = demultiplexed_dir,
+        ## this gets rid of the dumb default idemp output names
+        bad_names = expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
+            dmx_read = ["R1", "R2"],
+            sample = sample_list)
     log:
         "workflow/logs/demux_fastqs/idemp.log"
     shell:
         """
-        {params.idemp} -b {input.ref} -n {params.n_mismatch} \
+        {params.idemp} -b {params.ref} -n {params.n_mismatch} \
         -I1 {input.idx} -R1 {input.R1} -R2 {input.R2} -o {params.out_dir}
-        """
 
-## remove the extra ".fastq" that idemp puts in for some reason
-rule rename_fastqs:
-    input:
-        demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz"
-    output:
-        demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz"
-    shell:
-        "mv {input} {output}"
+        mv {params.bad_names} {output}
+        """
 
 rule build_bowtie_index:
     input:
@@ -258,16 +251,21 @@ rule combine_counts:
         pgRNA_counts_dir + base_filename + "_pgRNA_counts.txt"
     run:
         ## read in pgRNA annotations to get IDs
-        annot_file = pd.read_csv(params.annot_file) ## will this work??
-
-        ## initialize output df with pgRNA annotations
-        out_df = annot_file[["id"]]
+        annot_df = pd.read_csv(params.annot_file, sep = "\t") ## will this work??
+        print("annot_file =", annot_df)
 
         ## loop through files in pgRNA_counts_dir
+        dfs = [annot_df]
         for file in os.scandir(params.in_dir): ## will this work??
-            df = pd.read_csv(file)
-            counts = df.iloc[:, 2] ## extract 2nd column
-            out_df = out_df.append(df)
+            df = pd.read_csv(file, sep = "\t")
+            print("df =", df)
+            counts = df.loc[:, df.columns.str.contains("counts")] ## extract counts col
+            print("counts = ", counts)
+            dfs.append(counts)
+            # out_df = out_df.append(df)
+        out_df = pd.concat(dfs, axis = 1)
+        print("out_df =", out_df)
+
 
         ## write to output file
         out_df.to_csv(output[0], sep = "\t", index = False, header = True)

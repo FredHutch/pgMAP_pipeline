@@ -61,6 +61,11 @@ d.counts <- read_tsv (ref.file, col_names=TRUE, col_types=cols())
 ## assign args[4] to counts.dir variable
 counts.dir <- args[4]
 
+## if this ends in a "/", remove it...not sure if this is necessary though
+# message(paste0("counts.dir = ", counts.dir))
+if(str_sub(counts.dir, -1) == "/"){
+  str_sub(counts.dir, -1, -1) <- ""
+}
 
 ############################################################
 ## Parse screen data                                      ##
@@ -72,9 +77,14 @@ counts.dir <- args[4]
 
 
 ## parse sample information from BAM filename
-# sample <- gsub ("\\_R1.bam", "", basename (files.1))
-sample_tmp <- str_split_fixed(files.1, "_aligned", n = Inf)[1]
+## 1. extract input file name from full path
+file_name <- str_split_fixed(files.1, "\\/", n = Inf)
+file_name <- file_name[length(file_name)]
+
+## 2. extract sample name from input file
+sample_tmp <- str_split_fixed(file_name, "_aligned", n = Inf)[1]
 sample <- str_split_fixed(sample_tmp, "trimmed_", n = Inf)[2]
+
 
 ## start timer:
 timing <- Sys.time()
