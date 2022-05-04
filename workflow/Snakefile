@@ -21,35 +21,26 @@ bowtie_idx_dir = os.path.abspath(config["bowtie_idx_dir"]) + "/"
 bowtie_idx_ref_dir = os.path.abspath(config["bowtie_idx_ref_dir"]) + "/"
 aligned_dir = os.path.abspath(config["aligned_dir"]) + "/"
 pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
-pgRNA_counts_out_dir = os.path.abspath(config["pgRNA_counts_out_dir"]) + "/"
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
 
 read_to_fastq = {}
 fastq_trim_coords = {}
 
-## note: find a way to not hard-code this (in case seq strategy changes)
 ## convert to a dictionary too (so position isn't key)
-trim_coords = [[1, 20], [2, 21], [1, 6]]
+trim_coords = [config["R1_coords"], config["R2_coords"], config["R3_coords"]]
 
 fastq_fofn = open(config["fastq_fofn"], "r")
 i = 0
 for fastq in fastq_fofn:
     fastq = fastq.strip()
-    # print(fastq)
-    # print(trim_coords[i])
     key = "R" + str(i+1)
-    # print("key =", key)
     read_to_fastq[key] = fastq
     fastq_trim_coords[key] = trim_coords[i]
 
     i += 1
 fastq_fofn.close()
 
-# print("read_to_fastq=", read_to_fastq)
-# print("fastq_trim_coords=", fastq_trim_coords)
-
 sample_list = []
-# barcode_ref_file = open(demultiplexed_dir + "ref/" + config["barcode_ref_file"], "r")
 barcode_ref_file = open(config["barcode_ref_file"], "r")
 for line in barcode_ref_file:
     ## get sample names from idemp ref file
@@ -57,15 +48,6 @@ for line in barcode_ref_file:
     # print("sample =", sample)
     sample_list.append(sample)
 barcode_ref_file.close()
-# print("sample_list = ", sample_list)
-
-# print(sample_to_fastq)
-
-
-# sample_wildcard_to_fastq
-
-# trim_in = config["fastq_dir"] + "PP_pgRNA_HeLa_S1_R3_001.fastq.gz"
-# trim_out = config["fastq_trimmed_dir"] + "PP_pgRNA_HeLa_S1_R3_001_trimmed.fastq"
 
 ## this is related to the wildcard thing - output file names for each rule
 rule all:
@@ -122,9 +104,7 @@ rule demux_fastqs:
     input:
         idx = fastq_trimmed_dir + base_filename + "_R3_trimmed.fastq",
         R1 = fastq_trimmed_dir + base_filename + "_R1_trimmed.fastq",
-        R2 = fastq_trimmed_dir + base_filename + "_R2_trimmed.fastq",
-        # ref = demultiplexed_dir + "ref/" + config["barcode_ref_file"]
-
+        R2 = fastq_trimmed_dir + base_filename + "_R2_trimmed.fastq"
     output:
         ## put the expand statement here so this is only run once
         ## (instead of once per output file)
@@ -135,12 +115,10 @@ rule demux_fastqs:
         idemp = config["idemp"],
         n_mismatch = 1,
         ref = config["barcode_ref_file"],
-        ## this is a param not output because having a folder as the output messes everything up
-        out_dir = demultiplexed_dir,
-        ## this gets rid of the dumb default idemp output names
+        out_dir = demultiplexed_dir, ## can't have folder as output => make param
         bad_names = expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
-            sample = sample_list)
+            sample = sample_list) ## to get rid of dumb default idemp output names
     log:
         "workflow/logs/demux_fastqs/idemp.log"
     shell:
@@ -148,7 +126,16 @@ rule demux_fastqs:
         {params.idemp} -b {params.ref} -n {params.n_mismatch} \
         -I1 {input.idx} -R1 {input.R1} -R2 {input.R2} -o {params.out_dir}
 
-        mv {params.bad_names} {output}
+        ## convert wildcards to bash arrays
+        declare -a arr1=({params.bad_names})
+        declare -a arr2=({output})
+        len=${{#arr1[@]}} ## get length of arrays
+        ## loop through wildcard arrays and move to correctly-named file
+        for ((i=0; i<$len; i++));
+        do
+            # echo "${{arr1[$i]}}"
+            mv ${{arr1[$i]}} ${{arr2[$i]}}
+        done
         """
 
 rule build_bowtie_index:
@@ -217,8 +204,6 @@ rule get_stats:
     shell:
         "samtools flagstat {input} > {output}"
 
-## note: make a new rule to combine all sample counts => 1 file
-## update snakemake envt to include R (& other) dependencies
 rule count_pgRNAs:
     input:
         aligned_dir + "bam_sorted/" + base_filename + "_R1_trimmed_{sample}_aligned_sorted.bam"
@@ -252,20 +237,16 @@ rule combine_counts:
     run:
         ## read in pgRNA annotations to get IDs
         annot_df = pd.read_csv(params.annot_file, sep = "\t") ## will this work??
-        print("annot_file =", annot_df)
 
         ## loop through files in pgRNA_counts_dir
         dfs = [annot_df]
-        for file in os.scandir(params.in_dir): ## will this work??
+        ## sorted/lambda stuff is to order files alphabetically
+        for file in sorted(os.scandir(params.in_dir), key=lambda e: e.name):
             df = pd.read_csv(file, sep = "\t")
-            print("df =", df)
             counts = df.loc[:, df.columns.str.contains("counts")] ## extract counts col
-            print("counts = ", counts)
             dfs.append(counts)
-            # out_df = out_df.append(df)
-        out_df = pd.concat(dfs, axis = 1)
-        print("out_df =", out_df)
 
+        out_df = pd.concat(dfs, axis = 1)
 
         ## write to output file
         out_df.to_csv(output[0], sep = "\t", index = False, header = True)

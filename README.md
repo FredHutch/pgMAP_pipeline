@@ -10,10 +10,11 @@ Use ctrl + shift + M to see rendered version in Atom
 
 # To Do
 
-* fix whatever is going on with counter_efficient.R to produce incorrect output
-  * confirm I'm not going to have the same issue as above
+* run test analysis on the cluster instead of on an interactive node
 
-* read Vince Buffalo's snakemake guide
+* run on Arnab's data - write to a shared folder that he can also access?
+
+* reorganize folders on my fast drive - by screen and then sub-directory
 
 * figure out rule all - what do I actually need to include here? where should I define wildcards if not here?
 
@@ -22,8 +23,10 @@ Use ctrl + shift + M to see rendered version in Atom
 * Decide on a consistent file naming strategy
   * name based on pgRNA/full sample name or just numbers?
 
-* might have to make log folder first
+* replace "." with "_" in variable names for counter_efficient.R
 
 * add fastQC step?
 
-* replace "." with "_" in variable names for counter_efficient.R
+* read Vince Buffalo's snakemake guide
+
+* might have to make log folder first

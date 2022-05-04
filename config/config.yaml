@@ -1,5 +1,11 @@
 ## format = initials_library_cellLine
 base_filename: PP_pgPEN_HeLa
+
+## read coordinates; format = [start, end]
+R1_coords: [1, 20]
+R2_coords: [2, 21]
+R3_coords: [1, 6]
+
 fastq_dir: /fh/fast/berger_a/SR/ngs/illumina/pparrish/200722_D00300_1006_AHFFK7BCX3/Unaligned/Project_pparrish/test_array/subsample
 fastq_trimmed_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/trimmed_fastqs/200722_HeLa_screen/test_snakemake
 fastq_fofn: /home/pparrish/pgPEN_pipeline/config/test_fastqs.fofn
