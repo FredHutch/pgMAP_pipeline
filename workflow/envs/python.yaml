@@ -1,0 +1,15 @@
+name: python
+
+## add Python and other versions???
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+
+dependencies:
+  ## format = channel::dependency
+  - python=3
+  - pandas
+  # - bioconda::mageck=0.5.9.2 # do this in the next pipeline
+
+  ## update: $ conda env update --name snakemake_env --file environment.yaml
