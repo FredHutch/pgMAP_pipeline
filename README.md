@@ -10,7 +10,7 @@ Use ctrl + shift + M to see rendered version in Atom
 
 # To Do
 
-* increase memory/cores for demux_fastqs rule 
+* increase memory/cores for demux_fastqs rule
 
 * figure out how to copy stuff in tmux!!!
 
