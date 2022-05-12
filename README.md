@@ -10,11 +10,21 @@ Use ctrl + shift + M to see rendered version in Atom
 
 # To Do
 
-* run test analysis on the cluster instead of on an interactive node
+* increase memory/cores for demux_fastqs rule 
 
-* run on Arnab's data - write to a shared folder that he can also access?
+* figure out how to copy stuff in tmux!!!
 
 * reorganize folders on my fast drive - by screen and then sub-directory
+
+* figure out how to make the fastq.fofn within the pipeline
+
+* add step to make directories (for log files and output files) if they don't already exist
+
+* figure out how to access snakemake variables from inside python scripts
+
+* add fastQC step
+
+* add a rule to gzip all files at the end of the pgPEN pipeline
 
 * figure out rule all - what do I actually need to include here? where should I define wildcards if not here?
 
@@ -24,9 +34,5 @@ Use ctrl + shift + M to see rendered version in Atom
   * name based on pgRNA/full sample name or just numbers?
 
 * replace "." with "_" in variable names for counter_efficient.R
-
-* add fastQC step?
-
-* read Vince Buffalo's snakemake guide
 
 * might have to make log folder first

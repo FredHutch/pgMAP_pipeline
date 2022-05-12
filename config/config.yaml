@@ -6,16 +6,23 @@ R1_coords: [1, 20]
 R2_coords: [2, 21]
 R3_coords: [1, 6]
 
-fastq_dir: /fh/fast/berger_a/SR/ngs/illumina/pparrish/200722_D00300_1006_AHFFK7BCX3/Unaligned/Project_pparrish/test_array/subsample
-fastq_trimmed_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/trimmed_fastqs/200722_HeLa_screen/test_snakemake
+n_chunks: 50
+
+## reference/config files
+bowtie_idx_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/ref/bowtie1_indices
+bowtie_idx_ref_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/ref/pgRNA_fastas
 fastq_fofn: /home/pparrish/pgPEN_pipeline/config/test_fastqs.fofn
-demultiplexed_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/demultiplex/200722_HeLa_screen/test_snakemake
 barcode_ref_file: /home/pparrish/pgPEN_pipeline/config/test_barcode_ref_file.txt
+pgRNA_counts_ref: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/ref/paralog_pgRNA_annotations.txt
+
+## tools not available from conda
 idemp: /home/pparrish/installs/idemp/idemp
-## add read trim coords
-bowtie_idx_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/bowtie1_indices
-bowtie_idx_ref_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgRNA_fastas
-aligned_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/bowtie1_aligned/200722_HeLa_screen/test_snakemake
-pgRNA_counts_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgRNA_counts/200722_HeLa_screen/test_snakemake
-pgRNA_counts_ref: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/annotations/paralog_pgRNA_annotations.txt
-pgRNA_counts_out_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgRNA_counts/200722_HeLa_screen/test_snakemake
+
+## directory paths
+fastq_dir: /fh/fast/berger_a/SR/ngs/illumina/pparrish/200722_D00300_1006_AHFFK7BCX3/Unaligned/Project_pparrish/test_array/subsample
+fastq_trimmed_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/test_snakemake/fastq_trimmed
+fastq_demuxed_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/test_snakemake/fastq_demuxed
+sam_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/test_snakemake/sam
+bam_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/test_snakemake/bam
+bam_sorted_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/test_snakemake/bam_sorted
+pgRNA_counts_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_screens/test_snakemake/pgRNA_counts

@@ -9,17 +9,19 @@ import sys
 import re
 import pandas as pd
 
-configfile: "/home/pparrish/pgPEN_pipeline/config/config.yaml"
+# configfile: "/home/pparrish/pgPEN_pipeline/config/AB_config.yaml"
 
 ## set up paths for output files
 ## do this automatically for any line containing "dir"?
 fastq_dir = os.path.abspath(config["fastq_dir"]) + "/"
 fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
-demultiplexed_dir = os.path.abspath(config["demultiplexed_dir"]) + "/"
+fastq_demuxed_dir = os.path.abspath(config["fastq_demuxed_dir"]) + "/"
 base_filename = config["base_filename"]
 bowtie_idx_dir = os.path.abspath(config["bowtie_idx_dir"]) + "/"
 bowtie_idx_ref_dir = os.path.abspath(config["bowtie_idx_ref_dir"]) + "/"
-aligned_dir = os.path.abspath(config["aligned_dir"]) + "/"
+sam_dir = os.path.abspath(config["sam_dir"]) + "/"
+bam_dir = os.path.abspath(config["bam_dir"]) + "/"
+bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
 pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
 
@@ -56,22 +58,22 @@ rule all:
         expand(fastq_trimmed_dir + base_filename + "_{read}_trimmed.fastq",
             read = read_to_fastq.keys()),
         ## rule: demux_fastqs
-        expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
+        expand(fastq_demuxed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
         expand(bowtie_idx_dir + "pgPEN_{dmx_read}.{bt_idx}.ebwt",
             dmx_read = ["R1", "R2"],
             bt_idx = ["1", "2", "3", "4", "rev.1", "rev.2"]),
         ## rule: align_reads
-        expand(aligned_dir + "sam/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam",
+        expand(sam_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
         ## rule: make_sorted_bams
-        expand(aligned_dir + "bam_sorted/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam",
+        expand(bam_sorted_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
         ## rule: get_stats
-        expand(aligned_dir + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt",
+        expand(bam_sorted_dir + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
         ## rule: count_pgRNAs
@@ -96,7 +98,7 @@ rule trim_reads:
     log:
         "workflow/logs/trim_fastqs/{read}.log"
     shell:
-        "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output}"
+        "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 
 
 ## note to self: is this the best way to install/run idemp? (reproducible?)
@@ -108,23 +110,27 @@ rule demux_fastqs:
     output:
         ## put the expand statement here so this is only run once
         ## (instead of once per output file)
-        expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
+        expand(fastq_demuxed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list)
     params:
         idemp = config["idemp"],
         n_mismatch = 1,
         ref = config["barcode_ref_file"],
-        out_dir = demultiplexed_dir, ## can't have folder as output => make param
-        bad_names = expand(demultiplexed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
+        out_dir = fastq_demuxed_dir, ## can't have folder as output => make param
+        bad_names = expand(fastq_demuxed_dir + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list) ## to get rid of dumb default idemp output names
     log:
         "workflow/logs/demux_fastqs/idemp.log"
+    resources:
+        mem = 98,
+        time = 8,
+        cpus_per_task = 16
     shell:
         """
         {params.idemp} -b {params.ref} -n {params.n_mismatch} \
-        -I1 {input.idx} -R1 {input.R1} -R2 {input.R2} -o {params.out_dir}
+        -I1 {input.idx} -R1 {input.R1} -R2 {input.R2} -o {params.out_dir} &> {log}
 
         ## convert wildcards to bash arrays
         declare -a arr1=({params.bad_names})
@@ -150,13 +156,13 @@ rule build_bowtie_index:
     log:
         "workflow/logs/align_reads/{dmx_read}_{bt_idx}"
     shell:
-        "bowtie-build -f {input} {params.out_dir}"
+        "bowtie-build -f {input} {params.out_dir} 2>{log}"
 
 rule align_reads:
     input:
-        fastq = demultiplexed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz"
+        fastq = fastq_demuxed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz"
     output:
-        aligned_dir + "sam/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
+        sam_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
     conda:
         "envs/bowtie.yaml"
     params:
@@ -167,19 +173,19 @@ rule align_reads:
     log:
         "workflow/logs/align_reads/{dmx_read}_{sample}.log"
     shell:
-        "bowtie -q -v 1 --best --strata --all --sam -p 4 {params.idx} {input.fastq} {output}"
+        "bowtie -q -v 1 --best --strata --all --sam -p 4 {params.idx} {input.fastq} {output} &> {log}"
 
 rule make_sorted_bams:
     input:
-        aligned_dir + "sam/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
+        sam_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
     output:
-        aligned_dir + "bam_sorted/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
+        bam_sorted_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
     conda:
         "envs/samtools.yaml"
     params:
-        unsorted_bam_dir = aligned_dir + "bam/",
+        unsorted_bam_dir = bam_dir,
         unsorted_bam = base_filename + "_{dmx_read}_trimmed_{sample}_aligned.bam",
-        tmp = aligned_dir + "bam_sorted/tmp_{dmx_read}_{sample}"
+        tmp = bam_sorted_dir + "tmp_{dmx_read}_{sample}"
     resources:
         mem = 16,
         time = 24
@@ -191,29 +197,31 @@ rule make_sorted_bams:
 
         samtools view -bS -o {params.unsorted_bam_dir}/{params.unsorted_bam} {input}
 
-        samtools sort -O bam -n {params.unsorted_bam_dir}/{params.unsorted_bam} -T {params.tmp} -o {output}
+        samtools sort -O bam -n {params.unsorted_bam_dir}/{params.unsorted_bam} -T {params.tmp} -o {output} &>{log}
         """
 
 rule get_stats:
     input:
-        aligned_dir + "bam_sorted/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
+        bam_sorted_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
     output:
-        aligned_dir + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt"
+        bam_sorted_dir + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt"
     conda:
         "envs/samtools.yaml"
+    log:
+        "workflow/logs/get_stats/{dmx_read}_{sample}.log"
     shell:
-        "samtools flagstat {input} > {output}"
+        "samtools flagstat {input} 2>{log} 1>{output}" ## fix error issue
 
 rule count_pgRNAs:
     input:
-        aligned_dir + "bam_sorted/" + base_filename + "_R1_trimmed_{sample}_aligned_sorted.bam"
+        bam_sorted_dir + base_filename + "_R1_trimmed_{sample}_aligned_sorted.bam"
     output:
         pgRNA_counts_dir + "counts_{sample}.txt"
     conda:
         "envs/counter_efficient.yaml"
     params:
         ref = config["pgRNA_counts_ref"], ## do I need to do os.path.abspath?
-        n_chunks = 50,
+        n_chunks = config["n_chunks"], ## default 50 for HeLa
         out_dir = pgRNA_counts_dir,
         script = "/home/pparrish/pgPEN_pipeline/workflow/scripts/counter_efficient.R"
     resources:
@@ -223,30 +231,38 @@ rule count_pgRNAs:
     log:
         "workflow/logs/count_pgRNAs/{sample}.log"
     shell:
-        "Rscript {params.script} {input} {params.n_chunks} {params.ref} {params.out_dir}"
+        "Rscript {params.script} {input} {params.n_chunks} {params.ref} {params.out_dir} &> {log}"
 
 rule combine_counts:
     input:
         expand(pgRNA_counts_dir + "counts_{sample}.txt",
             sample = sample_list)
-    params:
-        annot_file = config["pgRNA_counts_ref"], ## do I need os.path.abspath?
-        in_dir = pgRNA_counts_dir
     output:
         pgRNA_counts_dir + base_filename + "_pgRNA_counts.txt"
-    run:
-        ## read in pgRNA annotations to get IDs
-        annot_df = pd.read_csv(params.annot_file, sep = "\t") ## will this work??
+    conda:
+        "envs/python.yaml"
+    params:
+        annot_file = config["pgRNA_counts_ref"], ## do I need os.path.abspath?
+        in_dir = pgRNA_counts_dir,
+        script = "/home/pparrish/pgPEN_pipeline/workflow/scripts/combine_counts.py"
+    log:
+        "workflow/logs/combine_counts/combine_counts.log"
+    shell:
+        "python {params.script} {params.annot_file} {params.in_dir} {output} &>{log}"
+        # ## read in pgRNA annotations to get IDs
+        # annot_df = pd.read_csv(params.annot_file, sep = "\t") ## will this work??
+        #
+        # ## loop through files in pgRNA_counts_dir
+        # dfs = [annot_df]
+        # ## sorted/lambda stuff is to order files alphabetically
+        # for file in sorted(os.scandir(params.in_dir), key=lambda e: e.name):
+        #     df = pd.read_csv(file, sep = "\t")
+        #     counts = df.loc[:, df.columns.str.contains("counts")] ## extract counts col
+        #     dfs.append(counts)
+        #
+        # out_df = pd.concat(dfs, axis = 1)
+        #
+        # ## write to output file
+        # out_df.to_csv(output[0], sep = "\t", index = False, header = True)
 
-        ## loop through files in pgRNA_counts_dir
-        dfs = [annot_df]
-        ## sorted/lambda stuff is to order files alphabetically
-        for file in sorted(os.scandir(params.in_dir), key=lambda e: e.name):
-            df = pd.read_csv(file, sep = "\t")
-            counts = df.loc[:, df.columns.str.contains("counts")] ## extract counts col
-            dfs.append(counts)
-
-        out_df = pd.concat(dfs, axis = 1)
-
-        ## write to output file
-        out_df.to_csv(output[0], sep = "\t", index = False, header = True)
+## add a rule to gzip all files
