@@ -12,6 +12,8 @@ Use ctrl + shift + M to see rendered version in Atom
 
 * increase memory/cores for demux_fastqs rule
 
+* get package versions from conda environment => add to envt.yamls
+
 * figure out how to copy stuff in tmux!!!
 
 * reorganize folders on my fast drive - by screen and then sub-directory

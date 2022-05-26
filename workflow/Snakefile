@@ -13,6 +13,7 @@ import pandas as pd
 
 ## set up paths for output files
 ## do this automatically for any line containing "dir"?
+## read in directory names as a list/dict => add os.path.abspath as value
 fastq_dir = os.path.abspath(config["fastq_dir"]) + "/"
 fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
 fastq_demuxed_dir = os.path.abspath(config["fastq_demuxed_dir"]) + "/"
@@ -25,6 +26,8 @@ bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
 pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
 
+
+## should the below steps be functions or not?
 read_to_fastq = {}
 fastq_trim_coords = {}
 
@@ -52,12 +55,16 @@ for line in barcode_ref_file:
 barcode_ref_file.close()
 
 ## this is related to the wildcard thing - output file names for each rule
+## just put the final file, & any other rule output w/ no dependencies
+## make sure wildcards carry through - where can I define them if not here?
 rule all:
     input:
         ## rule: trim_reads
+        ## try removing this from rule all & doing a dry run
         expand(fastq_trimmed_dir + base_filename + "_{read}_trimmed.fastq",
             read = read_to_fastq.keys()),
-        ## rule: demux_fastqs
+        ## rule: demux_fastqs - def reads needed in input?
+        ## should be able to rm this because dmx_read is defined in output of this rule
         expand(fastq_demuxed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
@@ -80,6 +87,7 @@ rule all:
         expand(pgRNA_counts_dir + "counts_{sample}.txt",
             sample = sample_list),
         ## rule: combine_counts - this may be the only one I actually need to include
+        ## can just keep this b/c sample wildcard is defined in this rule 
         pgRNA_counts_dir + base_filename + "_pgRNA_counts.txt"
 
 
@@ -110,6 +118,7 @@ rule demux_fastqs:
     output:
         ## put the expand statement here so this is only run once
         ## (instead of once per output file)
+        ## this is where dmx_reads should be defined?
         expand(fastq_demuxed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list)
