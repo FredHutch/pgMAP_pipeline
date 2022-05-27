@@ -28,3 +28,7 @@ Use ctrl + shift + M to see rendered version in Atom
   * name based on pgRNA/full sample name or just numbers?
 
 * replace "." with "_" in variable names for counter_efficient.R
+
+* move idemp install from my home directory => berger_a fast directory
+
+* figure out how to copy files even if I am gitignoring them (so they can be shared/modified by others)
