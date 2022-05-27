@@ -9,6 +9,6 @@ images/
 !.gitignore
 *version*
 *build*
-counter_efficient.R
+run_snakemake.sh
 config/
 results/
