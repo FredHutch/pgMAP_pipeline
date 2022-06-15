@@ -1,4 +1,4 @@
-name: samtools
+name: samtools_env
 channels:
   - bioconda
   - conda-forge

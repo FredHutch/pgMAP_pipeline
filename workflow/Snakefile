@@ -202,7 +202,7 @@ rule make_sorted_bams:
         mem = 16,
         time = 24
     log:
-        "workflow/logs/make_sorted_bam/{dmx_read}_{sample}.log"
+        "workflow/logs/make_sorted_bams/{dmx_read}_{sample}.log"
     shell:
         """
         mkdir -p {params.unsorted_bam_dir} ## TO DO: write a fxn to make this dir if it doesn't exist

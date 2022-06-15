@@ -1,15 +1,31 @@
 #!/bin/bash
 
 ## configure file paths
-BASE_PATH="/fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen"
+## make BASE_PATH a variable entered by the user so run_snakemake can be used for any
+# BASE_PATH="/fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/test_snakemake"
+BASE_PATH="$1" ## gets user input path
+# echo "base_path=${BASE_PATH}"
 CONFIG_FILE="${BASE_PATH}/config/config.yaml"
 SNAKE_FILE="${BASE_PATH}/workflow/Snakefile"
 SBATCH_OUT="${BASE_PATH}/workflow/logs/sbatch/slurm-"
 CONDA_ENV="${BASE_PATH}/workflow/envs/snakemake.yaml"
 REPORT_DIR="${BASE_PATH}/workflow/report"
 
+# mamba create -f $CONDA_ENV
+
 ## activate conda envt
 source activate snakemake
+
+## make log directories
+mkdir -p "${BASE_PATH}/workflow/logs/trim_fastqs"
+mkdir -p "${BASE_PATH}/workflow/logs/demux_fastqs"
+mkdir -p "${BASE_PATH}/workflow/logs/align_reads"
+mkdir -p "${BASE_PATH}/workflow/logs/make_sorted_bams"
+mkdir -p "${BASE_PATH}/workflow/logs/get_stats"
+mkdir -p "${BASE_PATH}/workflow/logs/count_pgRNAs"
+mkdir -p "${BASE_PATH}/workflow/logs/combine_counts"
+mkdir -p "${BASE_PATH}/workflow/logs/sbatch"
+mkdir -p "${REPORT_DIR}"
 
 ## run the pipeline
 ##   -p prints out shell commands, -k keeps going w/ independent jobs
