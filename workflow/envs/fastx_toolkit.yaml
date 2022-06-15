@@ -1,9 +1,33 @@
-name: fastx_toolkit
-
+name: fastx_toolkit_env
 channels:
   - BioBuilds
-
+  - conda-forge
 dependencies:
-  - fastx-toolkit=0.0.14
-
-  ## update: $ conda env update --name snakemake_env --file environment.yaml
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=2_gnu
+  - db=6.2.32=hf484d3e_0
+  - db-utils=6.2.32=0
+  - fastx-toolkit=0.0.14=pl5.22.0_2
+  - freetype=2.10.4=h0708190_1
+  - gdbm=1.18.1=h14c3975_0
+  - gnuplot=5.0.0=1
+  - jpeg=9e=h166bdaf_1
+  - libdb=6.2.32=0
+  - libgcc=4.8.5=2
+  - libgcc-ng=11.2.0=h1d223b6_16
+  - libgd=2.1.0=1
+  - libgomp=11.2.0=h1d223b6_16
+  - libgtextutils=0.7=1
+  - libpng=1.6.37=h21135ba_2
+  - libstdcxx-ng=11.2.0=he4da1e4_16
+  - libtiff=4.0.9=h648cc4a_1002
+  - ncurses=6.1=hf484d3e_0
+  - perl=5.22.0=2
+  - perl-gd=2.56=pl5.22.0_1
+  - perl-gdgraph=1.49=pl5.22.0_0
+  - perl-gdtextutil=0.86=pl5.22.0_0
+  - perl-perlio-gzip=0.19=pl5.22.0_0
+  - readline=7.0=h4549b8a_2
+  - xz=5.2.4=h3c3a69f_0
+  - zlib=1.2.11=h3c3a69f_1
+prefix: /home/pparrish/installs/mambaforge/envs/fastx_toolkit

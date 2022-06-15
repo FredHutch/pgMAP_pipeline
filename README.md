@@ -12,7 +12,9 @@ Use ctrl + shift + M to see rendered version in Atom
 
 * increase memory/cores for demux_fastqs rule
 
-* get package versions from conda environment => add to envt.yamls
+* figure out what is going on with conda error about placeholder of length '80' - can I just use mamba to fix the problem? Or do I need to use the --conda-prefix option? (Test without --conda-prefix set as home to see)
+
+* get package versions from conda environment => add to envt.yamls - done for all except Python env 
 
 * figure out how to make the fastq.fofn within the pipeline
 
@@ -32,3 +34,13 @@ Use ctrl + shift + M to see rendered version in Atom
 * move idemp install from my home directory => berger_a fast directory
 
 * figure out how to copy files even if I am gitignoring them (so they can be shared/modified by others)
+
+* add new sample files to git tracking
+
+* figure out config thing: https://gist.github.com/canton7/1423106
+
+* add step to create log folders at the beginning of the pipeline? Or track them from git?
+
+* save root dir as yaml variable then concat within python
+
+* copy test_snakemake fastqs to folder and change directory for that command

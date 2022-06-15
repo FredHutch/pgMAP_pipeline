@@ -47,12 +47,15 @@ fastq_fofn.close()
 
 sample_list = []
 barcode_ref_file = open(config["barcode_ref_file"], "r")
+# print("barcode_ref_file=", barcode_ref_file)
 for line in barcode_ref_file:
+    # print("line=", line)
     ## get sample names from idemp ref file
     sample = line.strip().split("\t")[1]
-    # print("sample =", sample)
+    # print("sample=", sample)
     sample_list.append(sample)
 barcode_ref_file.close()
+# print("sample_list=", "sample")
 
 ## this is related to the wildcard thing - output file names for each rule
 ## just put the final file, & any other rule output w/ no dependencies
@@ -87,7 +90,7 @@ rule all:
         expand(pgRNA_counts_dir + "counts_{sample}.txt",
             sample = sample_list),
         ## rule: combine_counts - this may be the only one I actually need to include
-        ## can just keep this b/c sample wildcard is defined in this rule 
+        ## can just keep this b/c sample wildcard is defined in this rule
         pgRNA_counts_dir + base_filename + "_pgRNA_counts.txt"
 
 

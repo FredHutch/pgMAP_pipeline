@@ -9,7 +9,7 @@ def main(annot_file, in_dir, out_file):
 
     ## loop through files in pgRNA_counts_dir
     dfs = [annot_df]
-    
+
     ## sorted/lambda stuff is to order files alphabetically
     for file in sorted(os.scandir(in_dir), key=lambda e: e.name):
         df = pd.read_csv(file, sep = "\t")
@@ -22,3 +22,5 @@ def main(annot_file, in_dir, out_file):
     out_df.to_csv(out_file, sep = "\t", index = False, header = True)
 
 main(sys.argv[1], sys.argv[2], sys.argv[3])
+
+print("Done!")

@@ -1,10 +1,27 @@
 name: samtools
-
 channels:
   - bioconda
-
+  - conda-forge
 dependencies:
-  - samtools=1.9
-
-
-  ## update: $ conda env update --name snakemake_env --file environment.yaml
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=2_gnu
+  - bzip2=1.0.8=h7f98852_4
+  - ca-certificates=2021.10.8=ha878542_0
+  - curl=7.71.1=he644dc0_3
+  - htslib=1.9=h4da6232_3
+  - krb5=1.17.2=h926e7f8_0
+  - libcurl=7.71.1=hcdd3856_3
+  - libdeflate=1.2=h516909a_1
+  - libedit=3.1.20191231=h46ee950_2
+  - libgcc-ng=11.2.0=h1d223b6_16
+  - libgomp=11.2.0=h1d223b6_16
+  - libssh2=1.10.0=ha56f1ee_2
+  - libstdcxx-ng=11.2.0=he4da1e4_16
+  - libzlib=1.2.11=h166bdaf_1014
+  - ncurses=6.1=hf484d3e_1002
+  - openssl=1.1.1n=h166bdaf_0
+  - samtools=1.9=h10a08f8_12
+  - tk=8.6.12=h27826a3_0
+  - xz=5.2.5=h516909a_1
+  - zlib=1.2.11=h166bdaf_1014
+prefix: /home/pparrish/installs/mambaforge/envs/samtools

@@ -1,4 +1,4 @@
-name: python
+name: python_env
 
 ## add Python and other versions???
 channels:
