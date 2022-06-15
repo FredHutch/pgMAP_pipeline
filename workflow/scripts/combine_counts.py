@@ -23,4 +23,4 @@ def main(annot_file, in_dir, out_file):
 
 main(sys.argv[1], sys.argv[2], sys.argv[3])
 
-print("Done!")
+sys.stdout.write("Done!")
