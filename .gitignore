@@ -9,6 +9,5 @@ images/
 !.gitignore
 *version*
 *build*
-run_snakemake.sh
 config/
 results/
