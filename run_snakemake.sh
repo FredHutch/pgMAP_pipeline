@@ -12,6 +12,7 @@ SBATCH_OUT="${BASE_PATH}/workflow/logs/sbatch/slurm-"
 CONDA_ENV="${BASE_PATH}/workflow/envs/snakemake.yaml"
 REPORT_DIR="${BASE_PATH}/workflow/report"
 
+## run this if the Snakemake environment has not been set up yet
 # mamba create -f $CONDA_ENV
 
 ## activate conda envt
