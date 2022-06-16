@@ -62,3 +62,5 @@ Use ctrl + shift + M to see rendered markdown in Atom
 * save root dir as yaml variable then concat within python
 
 * copy test_snakemake fastqs to folder and change directory for that command
+
+* add idemp to conda? 
