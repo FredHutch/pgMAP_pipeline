@@ -17,7 +17,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
     * `fastqs.sample.fofn` => `fastqs.fofn`
 
 3. **First time only:** make a Snakemake conda environment defined by the following YAML file: `workflow/envs/snakemake.yaml`. To do this, you can either:
-    * Run the command `mamba create -f workflow/envs/snakemake.yaml`
+    * Run the command `mamba env create -f workflow/envs/snakemake.yaml`
     * Un-comment line 16 in the file `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
 
 4. Run the script `run_snakemake.sh` using the command: `bash run_snakemake.sh`
