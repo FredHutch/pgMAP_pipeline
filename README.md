@@ -1,7 +1,7 @@
 # pgPEN_pipeline
 
 ## Snakemake installation
-Install the latest Snakemake version (7.1?) using mambaforge as described here:
+Install the latest Snakemake version (7.1.0) using mambaforge as described here:
 https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
 
 Folder setup/running info as described here:
@@ -28,6 +28,8 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 # To Do
 
+* update Snakefile based on discussions with April
+
 * increase memory/cores for demux_fastqs rule
 
 * figure out what is going on with conda error about placeholder of length '80' - can I just use mamba to fix the problem? Or do I need to use the --conda-prefix option? (Test without --conda-prefix set as home to see)
@@ -50,12 +52,11 @@ Use ctrl + shift + M to see rendered markdown in Atom
 * replace "." with "_" in variable names for counter_efficient.R
 
 * move idemp install from my home directory => berger_a fast directory
+  * paralog_pgRNA/pgPEN_library/installs
 
 * figure out how to copy files even if I am gitignoring them (so they can be shared/modified by others)
 
-* add new sample files to git tracking
-
-* figure out config thing: https://gist.github.com/canton7/1423106
+* decide about improving config file setup/tracking based on: https://gist.github.com/canton7/1423106
 
 * add step to create log folders at the beginning of the pipeline? Or track them from git?
 
@@ -63,4 +64,10 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 * copy test_snakemake fastqs to folder and change directory for that command
 
-* add idemp to conda? 
+* add idemp to conda? or find some other way to ensure that users can easily install idemp and add it to their bashrc
+
+* make interpretable error messages for n_chunks, etc.
+
+* link git and Atom
+
+* figure out a clearer way to explain conda/mamba installs - both Saksham & Emma had issues with this
