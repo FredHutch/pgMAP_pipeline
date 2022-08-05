@@ -28,8 +28,6 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 # To Do
 
-* update Snakefile based on discussions with April
-
 * increase memory/cores for demux_fastqs rule
 
 * figure out what is going on with conda error about placeholder of length '80' - can I just use mamba to fix the problem? Or do I need to use the --conda-prefix option? (Test without --conda-prefix set as home to see)
@@ -42,7 +40,7 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 * figure out how to access snakemake variables from inside python scripts
 
-* add fastQC step
+* add fastQC step (once I do this I will have to add the output to rule all)
 
 * add a rule to gzip all files at the end of the pgPEN pipeline
 
@@ -71,3 +69,18 @@ Use ctrl + shift + M to see rendered markdown in Atom
 * link git and Atom
 
 * figure out a clearer way to explain conda/mamba installs - both Saksham & Emma had issues with this
+
+* consider directly calling the R2 sorted BAM from the count_pgRNAs rule (so that it shows up on the DAG and stuff)
+
+* check that log files are actually being made correctly
+  * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
+
+* figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
+
+* figure out how to run Snakemake correctly on the cluster
+  * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
+  * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
+
+* figure out how to run atom remotely:
+  * https://gist.github.com/NTag/9d9be611e03098c282241652894bda7f
+  * https://www.quora.com/What-is-the-best-way-to-use-Atom-io-over-SSH

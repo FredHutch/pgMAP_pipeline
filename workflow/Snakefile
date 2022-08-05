@@ -9,11 +9,9 @@ import sys
 import re
 import pandas as pd
 
-# configfile: "/home/pparrish/pgPEN_pipeline/config/AB_config.yaml"
-
 ## set up paths for output files
-## do this automatically for any line containing "dir"?
-## read in directory names as a list/dict => add os.path.abspath as value
+## - do this automatically for any line containing "dir"?
+## - read in directory names as a list/dict => add os.path.abspath as value
 fastq_dir = os.path.abspath(config["fastq_dir"]) + "/"
 fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
 fastq_demuxed_dir = os.path.abspath(config["fastq_demuxed_dir"]) + "/"
@@ -57,46 +55,26 @@ for line in barcode_ref_file:
 barcode_ref_file.close()
 # print("sample_list=", "sample")
 
-## this is related to the wildcard thing - output file names for each rule
-## just put the final file, & any other rule output w/ no dependencies
-## make sure wildcards carry through - where can I define them if not here?
+## rule all is used to define output file names for the final rule & for other
+##   rules w/ no dependencies
+## also important for defining wildcards
 rule all:
     input:
-        ## rule: trim_reads
-        ## try removing this from rule all & doing a dry run
-        expand(fastq_trimmed_dir + base_filename + "_{read}_trimmed.fastq",
-            read = read_to_fastq.keys()),
-        ## rule: demux_fastqs - def reads needed in input?
-        ## should be able to rm this because dmx_read is defined in output of this rule
-        expand(fastq_demuxed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
-            dmx_read = ["R1", "R2"],
-            sample = sample_list),
+        ## rule: build_bowtie_index
         expand(bowtie_idx_dir + "pgPEN_{dmx_read}.{bt_idx}.ebwt",
             dmx_read = ["R1", "R2"],
             bt_idx = ["1", "2", "3", "4", "rev.1", "rev.2"]),
-        ## rule: align_reads
-        expand(sam_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam",
-            dmx_read = ["R1", "R2"],
-            sample = sample_list),
-        ## rule: make_sorted_bams
-        expand(bam_sorted_dir + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam",
-            dmx_read = ["R1", "R2"],
-            sample = sample_list),
         ## rule: get_stats
         expand(bam_sorted_dir + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
-        ## rule: count_pgRNAs
-        expand(pgRNA_counts_dir + "counts_{sample}.txt",
-            sample = sample_list),
-        ## rule: combine_counts - this may be the only one I actually need to include
-        ## can just keep this b/c sample wildcard is defined in this rule
+        ## rule: combine_counts
         pgRNA_counts_dir + base_filename + "_pgRNA_counts.txt"
 
 
-## add wildcards!
 rule trim_reads:
     input:
+        ## try expand instead of lambda - see if it also works!
         # fastq_dir + "PP_pgRNA_HeLa_S1_{read}_001.fastq.gz"
         lambda wildcards: fastq_dir + read_to_fastq[wildcards.read]
     output:
@@ -112,7 +90,7 @@ rule trim_reads:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 
 
-## note to self: is this the best way to install/run idemp? (reproducible?)
+## is this the best way to install/run idemp? (reproducible?)
 rule demux_fastqs:
     input:
         idx = fastq_trimmed_dir + base_filename + "_R3_trimmed.fastq",
@@ -120,8 +98,8 @@ rule demux_fastqs:
         R2 = fastq_trimmed_dir + base_filename + "_R2_trimmed.fastq"
     output:
         ## put the expand statement here so this is only run once
-        ## (instead of once per output file)
-        ## this is where dmx_reads should be defined?
+        ##   (instead of once per output file) - can't run w/o expand statement
+        ##   because then the input & output don't have matching wildcards
         expand(fastq_demuxed_dir + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list)
@@ -137,8 +115,8 @@ rule demux_fastqs:
         "workflow/logs/demux_fastqs/idemp.log"
     resources:
         mem = 98,
-        time = 8,
-        cpus_per_task = 16
+        time = 24,
+        cpus_per_task = 16 ## must use Python underscores not Bash dashes
     shell:
         """
         {params.idemp} -b {params.ref} -n {params.n_mismatch} \
@@ -180,8 +158,9 @@ rule align_reads:
     params:
         idx = bowtie_idx_dir + "pgPEN_{dmx_read}"
     resources:
-        mem = 8,
-        time = 24
+        mem = 98,
+        time = 24,
+        cpus_per_task = 16 ## must use Python underscores not Bash dashes
     log:
         "workflow/logs/align_reads/{dmx_read}_{sample}.log"
     shell:
@@ -199,7 +178,7 @@ rule make_sorted_bams:
         unsorted_bam = base_filename + "_{dmx_read}_trimmed_{sample}_aligned.bam",
         tmp = bam_sorted_dir + "tmp_{dmx_read}_{sample}"
     resources:
-        mem = 16,
+        mem = 32,
         time = 24
     log:
         "workflow/logs/make_sorted_bams/{dmx_read}_{sample}.log"
@@ -238,8 +217,8 @@ rule count_pgRNAs:
         script = "/home/pparrish/pgPEN_pipeline/workflow/scripts/counter_efficient.R"
     resources:
         mem = 98,
-        time = 8,
-        cpus_per_task = 16 ## had to convert to underscores not dashes bc of Python issue
+        time = 24,
+        cpus_per_task = 16 ## must use Python underscores not Bash dashes
     log:
         "workflow/logs/count_pgRNAs/{sample}.log"
     shell:
@@ -261,20 +240,6 @@ rule combine_counts:
         "workflow/logs/combine_counts/combine_counts.log"
     shell:
         "python {params.script} {params.annot_file} {params.in_dir} {output} &>{log}"
-        # ## read in pgRNA annotations to get IDs
-        # annot_df = pd.read_csv(params.annot_file, sep = "\t") ## will this work??
-        #
-        # ## loop through files in pgRNA_counts_dir
-        # dfs = [annot_df]
-        # ## sorted/lambda stuff is to order files alphabetically
-        # for file in sorted(os.scandir(params.in_dir), key=lambda e: e.name):
-        #     df = pd.read_csv(file, sep = "\t")
-        #     counts = df.loc[:, df.columns.str.contains("counts")] ## extract counts col
-        #     dfs.append(counts)
-        #
-        # out_df = pd.concat(dfs, axis = 1)
-        #
-        # ## write to output file
-        # out_df.to_csv(output[0], sep = "\t", index = False, header = True)
 
 ## add a rule to gzip all files
+## - would this mean I have to unzip files if re-running...?

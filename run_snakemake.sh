@@ -51,6 +51,14 @@ dot -Tpdf "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.pdf"
 dot -Tsvg "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.svg"
 rm "${REPORT_DIR}/dag.dot"
 
+echo -e "Exporting pipeline rulegraph to svg and pdf..."
+snakemake --snakefile $SNAKE_FILE \
+  --configfile $CONFIG_FILE \
+  --rulegraph > "${REPORT_DIR}/rulegraph.dot"
+dot -Tpdf "${REPORT_DIR}/rulegraph.dot" > "${REPORT_DIR}/pipeline_rulegraph.pdf"
+dot -Tsvg "${REPORT_DIR}/rulegraph.dot" > "${REPORT_DIR}/pipeline_rulegraph.svg"
+rm "${REPORT_DIR}/rulegraph.dot"
+
 echo -e "Generating pipeline HTML report..."
 snakemake --configfile $CONFIG_FILE \
   --snakefile $SNAKE_FILE \
