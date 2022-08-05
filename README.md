@@ -1,12 +1,5 @@
 # pgPEN_pipeline
 
-## Snakemake installation
-Install the latest Snakemake version (7.1.0) using mambaforge as described here:
-https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
-
-Folder setup/running info as described here:
-https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
-
 ## Running the pipeline
 
 1. Clone (or fork) the git repo from https://github.com/bergerbio/pgPEN_pipeline. Use the main branch for now.
@@ -16,14 +9,25 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
     * `config.sample.yaml` => `config.yaml`
     * `fastqs.sample.fofn` => `fastqs.fofn`
 
-3. **First time only:** make a Snakemake conda environment defined by the following YAML file: `workflow/envs/snakemake.yaml`. To do this, you can either:
-    * Run the command `mamba env create -f workflow/envs/snakemake.yaml`
-    * Un-comment line 16 in the file `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
+3. **First time only:** make a Snakemake conda environment (defined by `workflow/envs/snakemake.yaml`) using the following steps:
+    1. Install the Mamba package manger as described in the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) by either:
+      * If you do not already have Conda installed, [install Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
+      * If you already have Conda installed, run the following command: `$ conda install -n base -c conda-forge mamba`
+    2. Then create your Snakemake environment using Mamba by either:
+      * Running the command `mamba env create -f workflow/envs/snakemake.yaml`
+      * Un-commenting line 16 in the script `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
 
 4. Run the script `run_snakemake.sh` using the command: `bash run_snakemake.sh`
 
+### Snakemake installation documentation
+Install Snakemake v7.1.0 using mambaforge as described here:
+https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
 
-#### Phoebe note to self:
+Folder setup/running info as described here:
+https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
+
+
+### Phoebe note to self:
 Use ctrl + shift + M to see rendered markdown in Atom
 
 # To Do
