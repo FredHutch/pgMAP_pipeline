@@ -1,0 +1,31 @@
+## format = initials_library_cellLine
+base_filename: PP_pgPEN_HeLa
+
+## read coordinates; format = [start, end]
+R1_coords: [1, 20]
+R2_coords: [2, 21]
+R3_coords: [1, 6]
+
+## number of chunks to split each BAM file into for pgRNA counting step
+n_chunks: 50
+
+## reference files
+bowtie_idx_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/ref/bowtie1_indices
+bowtie_idx_ref_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/ref/pgRNA_fastas
+pgRNA_counts_ref: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/ref/paralog_pgRNA_annotations.txt
+
+## config files
+fastq_fofn: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/config/fastqs.fofn
+barcode_ref_file: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/config/barcode_ref_file.txt
+
+## tools not available from conda
+idemp: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/installs/idemp
+
+## directory paths
+fastq_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/results/fastq
+fastq_trimmed_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/results/fastq_trimmed
+fastq_demuxed_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/results/fastq_demuxed
+sam_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/results/sam
+bam_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/results/bam
+bam_sorted_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/results/bam_sorted
+pgRNA_counts_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/results/pgRNA_counts
