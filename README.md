@@ -11,12 +11,12 @@
 
 
 3. **First time only:** make a Snakemake conda environment (defined by `workflow/envs/snakemake.yaml`) using the following steps:
-  1. Install the Mamba package manger as described in the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) by either:
-    * If you do not already have Conda installed, [install Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
-    * If you already have Conda installed, run the following command: `$ conda install -n base -c conda-forge mamba`
-  2. Then create your Snakemake environment using Mamba by either:
-    * Running the command `mamba env create -f workflow/envs/snakemake.yaml`
-    * Un-commenting line 16 in the script `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
+    1. Install the Mamba package manger as described in the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) by either:
+        * If you do not already have Conda installed, [install Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
+        * If you already have Conda installed, run the following command: `$ conda install -n base -c conda-forge mamba`
+    2. Then create your Snakemake environment using Mamba by either:
+        * Running the command `mamba env create -f workflow/envs/snakemake.yaml`
+        * Un-commenting line 16 in the script `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
 
 
 4. Run the script `run_snakemake.sh` using the command: `bash run_snakemake.sh`
