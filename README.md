@@ -36,8 +36,6 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 * figure out how to get SG's help - new branch?
 
-* copy test_snakemake fastqs to folder and change directory for that command
-
 * add step to make directories (for log files and output files) if they don't already exist - or just add those directories to git tracking but ignore their contents?
 
 * move idemp install from my home directory => berger_a fast directory
