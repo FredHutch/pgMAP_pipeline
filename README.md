@@ -34,55 +34,59 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 # To Do
 
-* figure out how to get SG's help - new branch?
-
+## Saksham
 * add step to make directories (for log files and output files) if they don't already exist - or just add those directories to git tracking but ignore their contents?
-
-* move idemp install from my home directory => berger_a fast directory
-  * paralog_pgRNA/pgPEN_library/installs
-
-* figure out how to run Snakemake correctly on the cluster
-  * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
-  * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
-
-* run dev on PC9 data
 
 * add idemp to conda? or find some other way to ensure that users can easily install idemp and add it to their bashrc
 
-* increase memory/cores for demux_fastqs rule
-
-* figure out what is going on with conda error about placeholder of length '80' - can I just use mamba to fix the problem? Or do I need to use the --conda-prefix option? (Test without --conda-prefix set as home to see)
 
 * get Python env package versions from conda environment => add to envt.yaml
 
 * figure out how to make the fastq.fofn within the pipeline
 
-* figure out how to access snakemake variables from inside python scripts
-
-* add fastQC step (once I do this I will have to add the output to rule all)
+* add fastQC step (once you do this you will have to add the output to rule all)
 
 * add a rule to gzip all files at the end of the pgPEN pipeline
-
-* Decide on a consistent file naming strategy
-  * name based on pgRNA/full sample name or just numbers?
 
 * replace "." with "_" in variable names for counter_efficient.R
 
 * make interpretable error messages for n_chunks, etc.
 
-* decide about improving config file setup/tracking based on: https://gist.github.com/canton7/1423106
-
 * save root dir as yaml variable then concat within python
+
+* check that log files are actually being made correctly
+  * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
+
+### Completed
+
+
+
+## Phoebe
+* figure out how to run Snakemake correctly on the cluster
+  * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
+  * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
+
+* increase memory/cores for demux_fastqs rule
+
+* run dev on PC9 data
+
+* figure out how to access snakemake variables from inside python scripts
+
+* Decide on a consistent file naming strategy
+  * name based on pgRNA/full sample name or just numbers?
+
+* decide about improving config file setup/tracking based on: https://gist.github.com/canton7/1423106
 
 * link git and Atom
 
 * check if updated conda/mamba install instructions make more sense - both Saksham & Emma had issues with this
-
-* check that log files are actually being made correctly
-  * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
 * figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
 
 * figure out how to run atom remotely:
   * https://gist.github.com/NTag/9d9be611e03098c282241652894bda7f
   * https://www.quora.com/What-is-the-best-way-to-use-Atom-io-over-SSH
+
+### Completed
+
+* figure out what is going on with conda error about placeholder of length '80' - can I just use mamba to fix the problem? Or do I need to use the --conda-prefix option? (Test without --conda-prefix set as home to see)
