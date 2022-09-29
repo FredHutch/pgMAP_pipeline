@@ -34,28 +34,29 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 # To Do
 
-## Saksham
-* add step to make directories (for log files and output files) if they don't already exist - or just add those directories to git tracking but ignore their contents?
-
-* add idemp to conda? or find some other way to ensure that users can easily install idemp and add it to their bashrc
-
-
-* get Python env package versions from conda environment => add to envt.yaml
-
+## Daniel
 * figure out how to make the fastq.fofn within the pipeline
 
 * add fastQC step (once you do this you will have to add the output to rule all)
 
-* add a rule to gzip all files at the end of the pgPEN pipeline
+* run dev on PC9 data and check that counts match up (Phoebe can help with this)
 
+* add idemp to conda? or find some other way to ensure that users can easily install idemp and add it to their bashrc
+
+* get Python env package versions from conda environment => add to envt.yaml
+
+* check that log files are actually being made correctly
+  * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
+
+config.yaml:
+* save root dir as yaml variable then concat within python
+
+counter.R: 
 * replace "." with "_" in variable names for counter_efficient.R
 
 * make interpretable error messages for n_chunks, etc.
 
-* save root dir as yaml variable then concat within python
-
-* check that log files are actually being made correctly
-  * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
+* add a rule to gzip all files at the end of the pgPEN pipeline
 
 ### Completed
 
@@ -68,7 +69,7 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 * increase memory/cores for demux_fastqs rule
 
-* run dev on PC9 data
+* add step to make directories (for log files and output files) if they don't already exist - or just add those directories to git tracking but ignore their contents?
 
 * figure out how to access snakemake variables from inside python scripts
 
