@@ -252,4 +252,4 @@ message (paste0 ("Done (", signif (as_numeric (difftime (Sys_time(), timing, uni
 ## As above, the straightforward method is slow:
 ##   d_bam = d_bam %>% group_by (qname) %>%
 ##     mutate ("weight" = 1 / n()) %>% ungroup()
-## Therefore, do it manually for speed_
+## Therefore, do it manually for speed
