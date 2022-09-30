@@ -1,3 +1,5 @@
+# See dev-daniel for latest edits
+
 # pgPEN_pipeline
 
 ## Running the pipeline
@@ -51,15 +53,13 @@ Use ctrl + shift + M to see rendered markdown in Atom
 config.yaml:
 * save root dir as yaml variable then concat within python
 
-counter.R: 
-* replace "." with "_" in variable names for counter_efficient.R
-
 * make interpretable error messages for n_chunks, etc.
 
 * add a rule to gzip all files at the end of the pgPEN pipeline
 
 ### Completed
-
+counter.R: 
+* replace "." with "_" in variable names for counter_efficient.R 
 
 
 ## Phoebe
