@@ -16,8 +16,8 @@
 import_library = function(lib_name){
   suppressWarnings(suppressMessages(require(lib_name, character_only=TRUE)))
 }
-import_library("Rsamtools") # new version = 1_34_1 # now 2_2_3
-import_library("tidyverse") # new version = 1_2_1 # now 1_3_0
+import_library("Rsamtools") # new version = 1.34.1 # now 2.2.3
+import_library("tidyverse") # new version = 1.2.1 # now 1.3.0
 
 
 ############################################################
@@ -114,7 +114,7 @@ message("Qnames extracted\n")
 ## split BAMs into chunks:
 ##   this step use rank() and the modulo operator to get a list of numbers from 1-50 that is the
 ##   length of the qnames vector, then sorts that list so that each group (#1-50) is together,
-##   then splits those into separate sub-lists, and then assigns each qname to a sublist (group)_
+##   then splits those into separate sub-lists, and then assigns each qname to a sublist (group).
 chunk <- function(x,n) split(x, factor(sort(rank(x)%%n)))
 
 ## run chunk() function on n_chunks
@@ -142,7 +142,7 @@ results <- lapply(n, function(i){
   d_bam_sub <- d_bam_sub %>% mutate("paired" = rname_1 == rname_2)
 
   ## if a given set of reads have one or more correct pairings, then keep the
-  ##   correct pairings and discard all incorrect pairings for those reads_
+  ##   correct pairings and discard all incorrect pairings for those reads
   qname2anypaired <- sapply (split (d_bam_sub$paired, f = d_bam_sub$qname), any)
   d_bam_sub <- d_bam_sub %>% left_join (tibble ("qname" = names (qname2anypaired),
                                                "any_paired" = qname2anypaired),
@@ -246,7 +246,7 @@ message (paste0 ("Done (", signif (as_numeric (difftime (Sys_time(), timing, uni
 ##     mutate ("any_paired" = any (paired)) %>% ungroup() %>%
 ##     filter (paired | !any_paired) %>%
 ##     select (-any_paired)
-## However, grouping over millions of reads is very slow_ Therefore, do it manually_
+## However, grouping over millions of reads is very slow. Therefore, do it manually.
 
 ## compute weights for each set of reads
 ## As above, the straightforward method is slow:
