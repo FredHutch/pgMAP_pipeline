@@ -56,10 +56,8 @@ config.yaml:
 * add a rule to gzip all files at the end of the pgPEN pipeline
 
 ### Completed
-counter.R: 
-* replace "." with "_" in variable names for counter_efficient.R 
-
-(not on list, but edited and wanted to see if you preferred these edits): edited run_snakemake.sh - called current working directory in a way that prevents permissions issues
+* counter.R: replace "." with "_" in variable names for counter_efficient.R 
+* (not on list, but edited and wanted to see if you preferred these edits): edited run_snakemake.sh - called current working directory in a way that prevents permissions issues
 
 ## Phoebe
 * figure out how to run Snakemake correctly on the cluster
