@@ -1,5 +1,3 @@
-# See dev-daniel for latest edits
-
 # pgPEN_pipeline
 
 ## Running the pipeline
