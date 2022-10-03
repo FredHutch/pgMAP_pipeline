@@ -1,17 +1,17 @@
 #!/bin/bash
   
 ## configure file paths
-## make cwd a variable entered by the user so run_snakemake can be used for any
-# cwd="/fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/test_snakemake"
+## make BASE_PATH a variable entered by the user so run_snakemake can be used for any
+# BASE_PATH="/fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/test_snakemake"
 
-cwd=$(pwd)
+BASE_PATH=$(pwd)
 
-# echo "base_path=${cwd}"
-CONFIG_FILE="${cwd}/config/config.yaml"
-SNAKE_FILE="${cwd}/workflow/Snakefile"
-SBATCH_OUT="${cwd}/workflow/logs/sbatch/slurm-"
-CONDA_ENV="${cwd}/workflow/envs/snakemake.yaml"
-REPORT_DIR="${cwd}/workflow/report"
+# echo "base_path=${BASE_PATH}"
+CONFIG_FILE="${BASE_PATH}/config/config.yaml"
+SNAKE_FILE="${BASE_PATH}/workflow/Snakefile"
+SBATCH_OUT="${BASE_PATH}/workflow/logs/sbatch/slurm-"
+CONDA_ENV="${BASE_PATH}/workflow/envs/snakemake.yaml"
+REPORT_DIR="${BASE_PATH}/workflow/report"
 
 # mamba create -f $CONDA_ENV
 
@@ -19,14 +19,14 @@ REPORT_DIR="${cwd}/workflow/report"
 source activate snakemake
 
 ## make log directories
-mkdir -p "${cwd}/workflow/logs/trim_fastqs"
-mkdir -p "${cwd}/workflow/logs/demux_fastqs"
-mkdir -p "${cwd}/workflow/logs/align_reads"
-mkdir -p "${cwd}/workflow/logs/make_sorted_bams"
-mkdir -p "${cwd}/workflow/logs/get_stats"
-mkdir -p "${cwd}/workflow/logs/count_pgRNAs"
-mkdir -p "${cwd}/workflow/logs/combine_counts"
-mkdir -p "${cwd}/workflow/logs/sbatch"
+mkdir -p "${BASE_PATH}/workflow/logs/trim_fastqs"
+mkdir -p "${BASE_PATH}/workflow/logs/demux_fastqs"
+mkdir -p "${BASE_PATH}/workflow/logs/align_reads"
+mkdir -p "${BASE_PATH}/workflow/logs/make_sorted_bams"
+mkdir -p "${BASE_PATH}/workflow/logs/get_stats"
+mkdir -p "${BASE_PATH}/workflow/logs/count_pgRNAs"
+mkdir -p "${BASE_PATH}/workflow/logs/combine_counts"
+mkdir -p "${BASE_PATH}/workflow/logs/sbatch"
 mkdir -p "${REPORT_DIR}"
 
 ## run the pipeline
