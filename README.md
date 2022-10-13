@@ -41,7 +41,8 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 * run dev on PC9 data and check that counts match up (Phoebe can help with this)
 
-* add idemp to conda? or find some other way to ensure that users can easily install idemp and add it to their bashrc
+* add idemp to conda? or find some other way to ensure that users can easily install idemp and add it to their bashrc 
+note from daniel: I don't think there is another way around this - unless using another package that does the 
 
 * get Python env package versions from conda environment => add to envt.yaml
 
