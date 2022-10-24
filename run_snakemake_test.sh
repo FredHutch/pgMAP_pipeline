@@ -50,7 +50,7 @@ snakemake --snakefile $SNAKE_FILE --configfile $CONFIG_FILE \
   --use-conda --conda-prefix "~/tmp/" --conda-frontend mamba \
   -k -p --reason --jobs 50 --latency-wait 180 \
   -R trim_reads \
-  -n -r
+  -r
   ## -n = dry run, -r prints reasons
   ## -R forces snakemake to rerun from a specific rule
   # --cluster "sbatch &> ${SBATCH_OUT}%j.out" \
