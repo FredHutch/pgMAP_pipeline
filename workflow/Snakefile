@@ -144,7 +144,7 @@ rule build_bowtie_index:
     conda:
         "envs/bowtie.yaml"
     log:
-        "workflow/logs/align_reads/{dmx_read}_{bt_idx}"
+        "workflow/logs/build_bowtie_index/{dmx_read}_{bt_idx}"
     shell:
         "bowtie-build -f {input} {params.out_dir} 2>{log}"
 
