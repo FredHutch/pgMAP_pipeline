@@ -85,7 +85,7 @@ rule trim_reads:
         start = lambda wildcards: fastq_trim_coords[wildcards.read][0],
         end = lambda wildcards: fastq_trim_coords[wildcards.read][1]
     log:
-        "workflow/logs/trim_fastqs/{read}.log"
+        "workflow/logs/trim_reads/{read}.log"
     shell:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 

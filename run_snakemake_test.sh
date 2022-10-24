@@ -20,14 +20,26 @@ REPORT_DIR="${BASE_PATH}/workflow/report"
 source activate snakemake
 echo "snakemake env activated"
 
-# ## make log and report directories
-# mkdir -p "${BASE_PATH}/workflow/logs/trim_fastqs"
-# mkdir -p "${BASE_PATH}/workflow/logs/demux_fastqs"
-# mkdir -p "${BASE_PATH}/workflow/logs/align_reads"
-# mkdir -p "${BASE_PATH}/workflow/logs/make_sorted_bams"
-# mkdir -p "${BASE_PATH}/workflow/logs/get_stats"
-# mkdir -p "${BASE_PATH}/workflow/logs/count_pgRNAs"
-# mkdir -p "${BASE_PATH}/workflow/logs/combine_counts"
+# ## make log directories
+mkdir -p "${BASE_PATH}/workflow/logs/trim_reads"
+mkdir -p "${BASE_PATH}/workflow/logs/demux_fastqs"
+mkdir -p "${BASE_PATH}/workflow/logs/build_bowtie_index"
+mkdir -p "${BASE_PATH}/workflow/logs/align_reads"
+mkdir -p "${BASE_PATH}/workflow/logs/make_sorted_bams"
+mkdir -p "${BASE_PATH}/workflow/logs/get_stats"
+mkdir -p "${BASE_PATH}/workflow/logs/count_pgRNAs"
+mkdir -p "${BASE_PATH}/workflow/logs/combine_counts"
+
+## make output dirs
+mkdir -p "${BASE_PATH}/results/fastq"
+mkdir -p "${BASE_PATH}/results/fastq_trimmed"
+mkdir -p "${BASE_PATH}/results/fastq_demuxed"
+mkdir -p "${BASE_PATH}/results/sam"
+mkdir -p "${BASE_PATH}/results/bam"
+mkdir -p "${BASE_PATH}/results/bam_sorted"
+mkdir -p "${BASE_PATH}/results/pgRNA_counts"
+
+# ## make report dirs
 # mkdir -p "${BASE_PATH}/workflow/logs/sbatch"
 # mkdir -p "${REPORT_DIR}"
 #

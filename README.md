@@ -35,34 +35,40 @@ Use ctrl + shift + M to see rendered markdown in Atom
 # To Do
 
 ## Daniel
-* figure out how to make the fastq.fofn within the pipeline
+1. figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference)
 
-* add fastQC step (once you do this you will have to add the output to rule all)
+2. config.yaml: save root dir as yaml variable then concat within python
+  * future note: make the whole pipeline more self-contained - tell users to run the pipeline from within the root dir and only use relative file paths from there?
 
-* run dev on PC9 data and check that counts match up (Phoebe can help with this)
 
-* add idemp to conda? or find some other way to ensure that users can easily install idemp and add it to their bashrc
+3. figure out how to install idemp (and add it to a user's bashrc) as part of the pipeline if it doesn't already exist, or find another demultiplexer that users can download through conda
+  * confirm that you get the exact same output from new demultipexer as you do from idemp
 
-* get Python env package versions from conda environment => add to envt.yaml
+4. get the pipeline to run on the test data using the cluster rather than an interactive node
 
-* check that log files are actually being made correctly
+5. check that log files are actually being made correctly
   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
-config.yaml:
-* save root dir as yaml variable then concat within python
+6. counter.R updates:
+  * replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
+  * make interpretable error messages for n_chunks, etc.
 
-counter.R: 
-* replace "." with "_" in variable names for counter_efficient.R
+7. run dev on PC9 data and check that counts match up (Phoebe can help with this)
 
-* make interpretable error messages for n_chunks, etc.
+### Optional
+* add fastQC step (once you do this you will have to add the output to rule all)
 
 * add a rule to gzip all files at the end of the pgPEN pipeline
+
+
 
 ### Completed
 
 
 
 ## Phoebe
+* get Python env package versions from conda environment => add to envt.yaml
+
 * figure out how to run Snakemake correctly on the cluster
   * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
   * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
