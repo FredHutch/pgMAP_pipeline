@@ -4,7 +4,8 @@
 ## make BASE_PATH a variable entered by the user so run_snakemake can be used for any
 ## test_snakemake path: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/test_snakemake
 ## PC9 screen path: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen
-BASE_PATH="$1" ## gets user input path
+# BASE_PATH="$1" ## gets user input path
+BASE_PATH=$(pwd)
 echo "base_path=${BASE_PATH}"
 CONFIG_FILE="${BASE_PATH}/config/config.yaml"
 SNAKE_FILE="${BASE_PATH}/workflow/Snakefile"
