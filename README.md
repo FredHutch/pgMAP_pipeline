@@ -43,6 +43,10 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 3. figure out how to install idemp (and add it to a user's bashrc) as part of the pipeline if it doesn't already exist, or find another demultiplexer that users can download through conda
    * confirm that you get the exact same output from new demultipexer as you do from idemp
+<<<<<<< HEAD
+=======
+   * Currently: testing / adding in rule for sabre
+>>>>>>> 52d500de87b0c55664efabc7c3e9d3500080d954
 
 
 4. get the pipeline to run on the test data using the cluster rather than an interactive node
@@ -50,6 +54,7 @@ Use ctrl + shift + M to see rendered markdown in Atom
 5. check that log files are actually being made correctly
    * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
+<<<<<<< HEAD
 
 6. counter.R updates:
    * replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
@@ -58,6 +63,15 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 7. run dev on PC9 data and check that counts match up (Phoebe can help with this)
 
+=======
+
+6. counter.R updates:
+   * make interpretable error messages for n_chunks, etc.
+
+
+7. run dev on PC9 data and check that counts match up (Phoebe can help with this)
+
+>>>>>>> 52d500de87b0c55664efabc7c3e9d3500080d954
 ### Optional
 * add fastQC step (once you do this you will have to add the output to rule all)
 
@@ -66,7 +80,11 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 
 ### Completed
+<<<<<<< HEAD
 
+=======
+   * replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
+>>>>>>> 52d500de87b0c55664efabc7c3e9d3500080d954
 
 
 ## Phoebe
