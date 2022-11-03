@@ -43,6 +43,7 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 3. figure out how to install idemp (and add it to a user's bashrc) as part of the pipeline if it doesn't already exist, or find another demultiplexer that users can download through conda
    * confirm that you get the exact same output from new demultipexer as you do from idemp
+   * Currently: testing / adding in rule for sabre
 
 
 4. get the pipeline to run on the test data using the cluster rather than an interactive node
@@ -52,7 +53,6 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 
 6. counter.R updates:
-   * replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
    * make interpretable error messages for n_chunks, etc.
 
 
@@ -66,7 +66,7 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 
 ### Completed
-
+   * replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
 
 
 ## Phoebe
