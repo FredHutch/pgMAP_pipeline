@@ -13,7 +13,7 @@
 3. **First time only:** make a Snakemake conda environment (defined by `workflow/envs/snakemake.yaml`) using the following steps:
     1. Install the Mamba package manger as described in the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) by either:
         * If you do not already have Conda installed, [install Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
-        * If you already have Conda installed, run the following command: `conda install -n base -c conda-forge mamba`
+        * If you already have Conda installed, run the following command: `$ conda install -n base -c conda-forge mamba`
     2. Then create your Snakemake environment using Mamba by either:
         * Running the command `mamba env create -f workflow/envs/snakemake.yaml`
         * Un-commenting line 16 in the script `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
@@ -35,32 +35,43 @@ Use ctrl + shift + M to see rendered markdown in Atom
 # To Do
 
 ## Daniel
-* figure out how to make the fastq.fofn within the pipeline
+1. figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference)
 
+2. config.yaml: save root dir as yaml variable then concat within python
+   * future note: make the whole pipeline more self-contained - tell users to run the pipeline from within the root dir and only use relative file paths from there?
+
+
+3. figure out how to install idemp (and add it to a user's bashrc) as part of the pipeline if it doesn't already exist, or find another demultiplexer that users can download through conda
+   * confirm that you get the exact same output from new demultipexer as you do from idemp
+
+
+4. get the pipeline to run on the test data using the cluster rather than an interactive node
+
+5. check that log files are actually being made correctly
+   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
+
+
+6. counter.R updates:
+   * replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
+   * make interpretable error messages for n_chunks, etc.
+
+
+7. run dev on PC9 data and check that counts match up (Phoebe can help with this)
+
+### Optional
 * add fastQC step (once you do this you will have to add the output to rule all)
-
-* run dev on PC9 data and check that counts match up (Phoebe can help with this)
-
-* add idemp to conda? or find some other way to ensure that users can easily install idemp and add it to their bashrc 
-note from daniel: I don't think there is another way around this - unless using another package that does the 
-
-* get Python env package versions from conda environment => add to envt.yaml
-
-* check that log files are actually being made correctly
-  * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
-
-config.yaml:
-* save root dir as yaml variable then concat within python
-
-* make interpretable error messages for n_chunks, etc.
 
 * add a rule to gzip all files at the end of the pgPEN pipeline
 
+
+
 ### Completed
-* counter.R: replace "." with "_" in variable names for counter_efficient.R 
-* (not on list, but edited and wanted to see if you preferred these edits): edited run_snakemake.sh - called current working directory in a way that prevents permissions issues
+
+
 
 ## Phoebe
+* get Python env package versions from conda environment => add to envt.yaml
+
 * figure out how to run Snakemake correctly on the cluster
   * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
   * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
