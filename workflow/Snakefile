@@ -9,6 +9,7 @@ import sys
 import re
 import pandas as pd
 
+
 ## set up paths for output files
 ## - do this automatically for any line containing "dir"?
 ## - read in directory names as a list/dict => add os.path.abspath as value
@@ -85,7 +86,7 @@ rule trim_reads:
         start = lambda wildcards: fastq_trim_coords[wildcards.read][0],
         end = lambda wildcards: fastq_trim_coords[wildcards.read][1]
     log:
-        "workflow/logs/trim_fastqs/{read}.log"
+        "workflow/logs/trim_reads/{read}.log"
     shell:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 
@@ -144,7 +145,7 @@ rule build_bowtie_index:
     conda:
         "envs/bowtie.yaml"
     log:
-        "workflow/logs/align_reads/{dmx_read}_{bt_idx}"
+        "workflow/logs/build_bowtie_index/{dmx_read}_{bt_idx}"
     shell:
         "bowtie-build -f {input} {params.out_dir} 2>{log}"
 
@@ -214,7 +215,7 @@ rule count_pgRNAs:
         ref = config["pgRNA_counts_ref"], ## do I need to do os.path.abspath?
         n_chunks = config["n_chunks"], ## default 50 for HeLa
         out_dir = pgRNA_counts_dir,
-        script = "/home/pparrish/pgPEN_pipeline/workflow/scripts/counter_efficient.R"
+        script = "workflow/scripts/counter_efficient.R"
     resources:
         mem = 98,
         time = 24,
@@ -235,7 +236,7 @@ rule combine_counts:
     params:
         annot_file = config["pgRNA_counts_ref"], ## do I need os.path.abspath?
         in_dir = pgRNA_counts_dir,
-        script = "/home/pparrish/pgPEN_pipeline/workflow/scripts/combine_counts.py"
+        script = "workflow/scripts/combine_counts.py"
     log:
         "workflow/logs/combine_counts/combine_counts.log"
     shell:
