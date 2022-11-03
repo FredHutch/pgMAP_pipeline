@@ -50,13 +50,13 @@ if (!all (file_exists (files_2)))
 ## assign args[2] to n_chunks variable
 n_chunks <- as_numeric(args[2])
 
-## assign args[3] to ref_file variable, which will be used to build d_counts
+## assign args[3] to ref_file variable, which will be used to build d.counts
 ref_file <- args[3]
 stopifnot (file_exists (ref_file))
 
-## Parse annotation file and initialize d_counts, which holds raw counts of reads
+## Parse annotation file and initialize d.counts, which holds raw counts of reads
 ## supporting each pgRNA_
-d_counts <- read_tsv (ref_file, col_names=TRUE, col_types=cols())
+d.counts <- read_tsv (ref_file, col_names=TRUE, col_types=cols())
 
 ## assign args[4] to counts_dir variable
 counts_dir <- args[4]
@@ -73,7 +73,7 @@ if(str_sub(counts_dir, -1) == "/"){
 
 ## Goals:
 ## - Compute read counts supporting each pgRNA and store in columns named
-##   counts_sample in d_counts_
+##   counts_sample in d.counts
 
 
 ## parse sample information from BAM filename
