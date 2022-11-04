@@ -72,6 +72,8 @@ Use ctrl + shift + M to see rendered markdown in Atom
 ## Phoebe
 * get Python env package versions from conda environment => add to envt.yaml
 
+* get Python env package versions from conda environment => add to envt.yaml
+
 * figure out how to run Snakemake correctly on the cluster
   * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
   * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
