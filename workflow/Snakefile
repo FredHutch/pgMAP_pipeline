@@ -9,6 +9,8 @@ import sys
 import re
 import pandas as pd
 
+## define config file
+configfile: "config/config.yaml"
 
 ## set up paths for output files
 ## - do this automatically for any line containing "dir"?
@@ -135,6 +137,7 @@ rule demux_fastqs:
         done
         """
 
+## this is where you could start if using other people's demuxed and trimmed files
 rule build_bowtie_index:
     input:
         bowtie_idx_ref_dir + "pgPEN_{dmx_read}.fa"

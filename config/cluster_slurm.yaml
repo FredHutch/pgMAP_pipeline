@@ -1,0 +1,12 @@
+## cluster_slurm.yaml for pgPEN_pipeline
+## Fred Hutch cluster (slurm)
+## Phoebe Parrish
+## 2022-11-14
+
+__default__:
+  partition: campus-new
+  time: "8:0:0"
+  mem: 8G
+  ncpus: 1
+  ntasks: 1
+  output: logs/cluster/{rule}.%A.out

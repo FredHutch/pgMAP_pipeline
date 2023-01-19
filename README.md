@@ -70,6 +70,10 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 
 ## Phoebe
+* running conditional rules: https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
+
+* figure out how to make folders in a way that makes sense
+
 * get Python env package versions from conda environment => add to envt.yaml
 
 * figure out how to run Snakemake correctly on the cluster
