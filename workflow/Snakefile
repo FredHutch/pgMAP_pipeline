@@ -12,18 +12,23 @@ import pandas as pd
 ## set up paths for output files
 ## - do this automatically for any line containing "dir"?
 ## - read in directory names as a list/dict => add os.path.abspath as value
-fastq_dir = os.path.abspath(config["fastq_dir"]) + "/"
-fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
-fastq_demuxed_dir = os.path.abspath(config["fastq_demuxed_dir"]) + "/"
+base_dir = os.path.abspath(config["base_dir"])
+
+fastq_dir = os.path.join(base_dir, config["fastq_dir"], "")
+fastqc_dir = os.path.join(base_dir, config["fastqc_dir"], "")
+fastq_trimmed_dir = os.path.join(base_dir, config["fastq_trimmed_dir"], "")
+fastq_demuxed_dir = os.path.join(base_dir, config["fastq_demuxed_dir"], "")
 base_filename = config["base_filename"]
+sam_dir = os.path.join(base_dir, config["sam_dir"], "")
+bam_dir = os.path.join(base_dir, config["bam_dir"], "")
+bam_sorted_dir = os.path.join(base_dir, config["bam_sorted_dir"], "")
+pgRNA_counts_dir = os.path.join(base_dir, config["pgRNA_counts_dir"], "")
+
+## ref file paths
+barcode_ref_file = os.path.join(base_dir, config["barcode_ref_file"], "")
 bowtie_idx_dir = os.path.abspath(config["bowtie_idx_dir"]) + "/"
 bowtie_idx_ref_dir = os.path.abspath(config["bowtie_idx_ref_dir"]) + "/"
-sam_dir = os.path.abspath(config["sam_dir"]) + "/"
-bam_dir = os.path.abspath(config["bam_dir"]) + "/"
-bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
-pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
-
 
 ## should the below steps be functions or not?
 read_to_fastq = {}
@@ -32,16 +37,17 @@ fastq_trim_coords = {}
 ## convert to a dictionary too (so position isn't key)
 trim_coords = [config["R1_coords"], config["R2_coords"], config["R3_coords"]]
 
-fastq_fofn = open(config["fastq_fofn"], "r")
-i = 0
-for fastq in fastq_fofn:
+fastq_list = os.listdir(fastq_dir)
+fastq_list.sort()
+count = 0
+for fastq in fastq_list:
     fastq = fastq.strip()
-    key = "R" + str(i+1)
+    key = "R" + str(count+1)
     read_to_fastq[key] = fastq
-    fastq_trim_coords[key] = trim_coords[i]
-
-    i += 1
-fastq_fofn.close()
+    fastq_trim_coords[key] = trim_coords[count]
+    count += 1
+print("fastq list: ", fastq_list)
+print("fastq_dir: ", fastq_dir)
 
 sample_list = []
 barcode_ref_file = open(config["barcode_ref_file"], "r")
@@ -69,8 +75,23 @@ rule all:
             dmx_read = ["R1", "R2"],
             sample = sample_list),
         ## rule: combine_counts
-        pgRNA_counts_dir + base_filename + "_pgRNA_counts.txt"
+        pgRNA_counts_dir + base_filename + "_pgRNA_counts.txt",
+	## rule: fastqc
+	expand(fastqc_dir + "{fastq}_fastqc.html", fastq = fastq_list),
+	expand(fastqc_dir + "{fastq}_fastqc.zip", fastq = fastq_list), 
+	expand(fastq_dir + "{fastq_list}", fastq_list = fastq_list)
 
+rule fastqc:
+    input:
+        fastq_dir + "{fastq_list}"
+    output:
+        html= fastqc_dir + "{fastq_list}_fastqc.html",
+        zip= fastqc_dir + "{fastq_list}_fastqc.zip"
+    log:
+        "workflow/logs/fastqc/{fastq_list}.log"
+    threads: 1
+    wrapper:
+        "v1.21.0/bio/fastqc"
 
 rule trim_reads:
     input:
@@ -85,10 +106,9 @@ rule trim_reads:
         start = lambda wildcards: fastq_trim_coords[wildcards.read][0],
         end = lambda wildcards: fastq_trim_coords[wildcards.read][1]
     log:
-        "workflow/logs/trim_fastqs/{read}.log"
+        "workflow/logs/trim_reads/{read}.log"
     shell:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
-
 
 ## is this the best way to install/run idemp? (reproducible?)
 rule demux_fastqs:
@@ -144,7 +164,7 @@ rule build_bowtie_index:
     conda:
         "envs/bowtie.yaml"
     log:
-        "workflow/logs/align_reads/{dmx_read}_{bt_idx}"
+        "workflow/logs/build_bowtie_index/{dmx_read}_{bt_idx}"
     shell:
         "bowtie-build -f {input} {params.out_dir} 2>{log}"
 
@@ -214,7 +234,7 @@ rule count_pgRNAs:
         ref = config["pgRNA_counts_ref"], ## do I need to do os.path.abspath?
         n_chunks = config["n_chunks"], ## default 50 for HeLa
         out_dir = pgRNA_counts_dir,
-        script = "/home/pparrish/pgPEN_pipeline/workflow/scripts/counter_efficient.R"
+        script = "workflow/scripts/counter_efficient.R"
     resources:
         mem = 98,
         time = 24,
@@ -235,7 +255,7 @@ rule combine_counts:
     params:
         annot_file = config["pgRNA_counts_ref"], ## do I need os.path.abspath?
         in_dir = pgRNA_counts_dir,
-        script = "/home/pparrish/pgPEN_pipeline/workflow/scripts/combine_counts.py"
+        script = "workflow/scripts/combine_counts.py"
     log:
         "workflow/logs/combine_counts/combine_counts.log"
     shell:
