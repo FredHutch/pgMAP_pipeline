@@ -70,11 +70,19 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 
 ## Phoebe
+
+* for now, just copy the bowtie index to the results folder. Pull Daniel's changes. LATER: figure out what's actually going on and get the code to work.
+  * write some kind of lambda statement that will make the bowtie index rule work!
+
+* add new config files to git and commit
+
 * running conditional rules: https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
 
 * figure out how to make folders in a way that makes sense
 
 * get Python env package versions from conda environment => add to envt.yaml
+
+* make a git tracked results/fastq/ dir with a TXT file saying "put your FASTQs here"?
 
 * figure out how to run Snakemake correctly on the cluster
   * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
