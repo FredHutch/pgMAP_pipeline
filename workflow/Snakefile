@@ -1,7 +1,7 @@
 ## Phoebe C. R. Parrish
 ## Berger Lab, FHCRC
 ## 2022-03-01
-## updated 2022-04-21
+## updated 2023-01-24
 ## snakemake v7.1.0
 
 import os
@@ -11,6 +11,10 @@ import pandas as pd
 
 ## define config file
 configfile: "config/config.yaml"
+
+wildcard_constraints:
+    ## note: regexp ^[^.]*$ means that dmx_read cannot contain a period in this rule
+    dmx_read = "^[^.]*$"
 
 ## set up paths for output files
 ## - do this automatically for any line containing "dir"?
@@ -168,9 +172,6 @@ rule build_bowtie_index:
         bowtie_idx_ref_dir + "pgPEN_{dmx_read}.fa"
     output:
         results_dir_dict["bowtie_idx_dir"] + "pgPEN_{dmx_read}.{bt_idx}.ebwt"
-    wildcard_constraints:
-        ## note: regexp ^[^.]*$ means that dmx_read cannot contain a period in this rule
-        dmx_read = "^[^.]*$"
     conda:
         "envs/bowtie.yaml"
     params:
@@ -178,7 +179,7 @@ rule build_bowtie_index:
     # log:
         # "workflow/logs/build_bowtie_index/{dmx_read}"
     shell:
-        "bowtie-build -f {input} {params.outfile_prefix} #2>{log}"
+        "bowtie-build -f {input} {params.outfile_prefix} #&> {log}"
 
 rule align_reads:
     input:
