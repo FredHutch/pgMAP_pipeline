@@ -171,15 +171,16 @@ rule build_bowtie_index:
     input:
         bowtie_idx_ref_dir + "pgPEN_{dmx_read}.fa"
     output:
-        results_dir_dict["bowtie_idx_dir"] + "pgPEN_{dmx_read}.{bt_idx}.ebwt"
+        expand(results_dir_dict["bowtie_idx_dir"] + "pgPEN_{{dmx_read}}.{bt_idx}.ebwt",
+            bt_idx = ["1", "2", "3", "4", "rev.1", "rev.2"])
     conda:
         "envs/bowtie.yaml"
     params:
         outfile_prefix = results_dir_dict["bowtie_idx_dir"] + "pgPEN_{dmx_read}"
-    # log:
-        # "workflow/logs/build_bowtie_index/{dmx_read}"
+    log:
+        "workflow/logs/build_bowtie_index/{dmx_read}"
     shell:
-        "bowtie-build -f {input} {params.outfile_prefix} #&> {log}"
+        "bowtie-build -f {input} {params.outfile_prefix} &> {log}"
 
 rule align_reads:
     input:
