@@ -40,10 +40,6 @@ Use ctrl + shift + M to see rendered markdown in Atom
 2. config.yaml: save root dir as yaml variable then concat within python
    * future note: make the whole pipeline more self-contained - tell users to run the pipeline from within the root dir and only use relative file paths from there?
 
-<<<<<<< HEAD
-* get package versions from conda environment => add to envt.yamls - done for all except Python env
-=======
->>>>>>> dev
 
 3. figure out how to install idemp (and add it to a user's bashrc) as part of the pipeline if it doesn't already exist, or find another demultiplexer that users can download through conda
    * confirm that you get the exact same output from new demultipexer as you do from idemp
