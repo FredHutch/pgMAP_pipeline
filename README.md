@@ -1,4 +1,4 @@
-# pgPEN_pipeline
+# pgMAP_pipeline
 
 ## Running the pipeline
 
@@ -34,51 +34,54 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 # To Do
 
+* merge Daniel's changes to the Snakefile into Phoebe's dev branch
+
 ## Daniel
-1. figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference)
 
-2. config.yaml: save root dir as yaml variable then concat within python
-   * future note: make the whole pipeline more self-contained - tell users to run the pipeline from within the root dir and only use relative file paths from there?
+* figure out how to install and successfully idemp (does it have to be added to a user's bashrc?) as part of the pipeline/in a conda environment, or find another demultiplexer that users can download through conda
+  * confirm that you get the exact same output from new demultipexer as you do from idemp
 
+* check that log files are actually being made correctly
+  * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
-3. figure out how to install idemp (and add it to a user's bashrc) as part of the pipeline if it doesn't already exist, or find another demultiplexer that users can download through conda
-   * confirm that you get the exact same output from new demultipexer as you do from idemp
+* run dev on PC9 data on the cluster and check that counts match up with previous data (Phoebe can help with this)
 
+* check if updated conda/mamba install instructions make more sense - both Saksham & Emma had issues with this
 
-4. get the pipeline to run on the test data using the cluster rather than an interactive node
-
-5. check that log files are actually being made correctly
-   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
-
-
-6. counter.R updates:
-   * replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
-   * make interpretable error messages for n_chunks, etc.
-
-
-7. run dev on PC9 data and check that counts match up (Phoebe can help with this)
 
 ### Optional
+
+* add a rule to gzip all large files at the end of the pgPEN pipeline
+
+
+
+### Completed (I think)
+* figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference)
+
+* counter.R: replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
+
 * add fastQC step (once you do this you will have to add the output to rule all)
-
-* add a rule to gzip all files at the end of the pgPEN pipeline
-
-
-
-### Completed
 
 
 
 ## Phoebe
 
+### Necessary
+* figure out why Daniel's changes aren't showing up in the Snakefile
+
 * for now, just copy the bowtie index to the results folder. Pull Daniel's changes. LATER: figure out what's actually going on and get the code to work.
   * write some kind of lambda statement that will make the bowtie index rule work!
+
+* figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
+
+* get the pipeline to run on the test data using the cluster rather than an interactive node
+
+* counter.R: make interpretable error messages for n_chunks, etc.
 
 * add new config files to git and commit
 
 * running conditional rules: https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
 
-* figure out how to make folders in a way that makes sense
 
 * get Python env package versions from conda environment => add to envt.yaml
 
@@ -99,16 +102,22 @@ Use ctrl + shift + M to see rendered markdown in Atom
 
 * decide about improving config file setup/tracking based on: https://gist.github.com/canton7/1423106
 
-* link git and Atom
 
-* check if updated conda/mamba install instructions make more sense - both Saksham & Emma had issues with this
-
-* figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
 
 * figure out how to run atom remotely:
   * https://gist.github.com/NTag/9d9be611e03098c282241652894bda7f
   * https://www.quora.com/What-is-the-best-way-to-use-Atom-io-over-SSH
 
+### Optional
+
+* link git and Atom
+
+
 ### Completed
 
 * figure out what is going on with conda error about placeholder of length '80' - can I just use mamba to fix the problem? Or do I need to use the --conda-prefix option? (Test without --conda-prefix set as home to see)
+
+* config.yaml: save root dir as yaml variable then concat within python
+  * future note: make the whole pipeline more self-contained - tell users to run the pipeline from within the root dir and only use relative file paths from there?
+
+* figure out how to make folders in a way that makes sense
