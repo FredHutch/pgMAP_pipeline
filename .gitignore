@@ -1,3 +1,6 @@
+## gitignore documentation: https://www.atlassian.com/git/tutorials/saving-changes/gitignore
+
+## ignore the following:
 **/logs
 old_scripts/
 .snakemake/
@@ -6,7 +9,6 @@ images/
 *.pdf
 *.svg
 .*
-!.gitignore
 *version*
 *build*
 config/barcode_ref_file.txt
@@ -14,3 +16,7 @@ config/config.yaml
 config/fastqs.fofn
 results/
 workflow/report/
+
+## don't ignore the following
+!.gitignore
+!config/*.sample.*
