@@ -43,6 +43,8 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
   * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
   * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
 
+* **Phoebe:** run the pipeline on Arnab's pgPEN data
+
 * **Phoebe:** get bowtie index rule to work!
   * for now, just copy the bowtie index to the results folder. Pull Daniel's changes. 
   * LATER: figure out what's actually going on and get the code to work.
@@ -80,7 +82,6 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * check that log files are actually being made correctly (esp. when being run via sbatch)
   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
-* **Phoebe:** run the pipeline on Arnab's pgPEN data
 
 * **Daniel:** run the pipeline on the full PC9 dataset and confirm that we get the same output as what was published in the pgPEN paper
 
