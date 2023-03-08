@@ -29,14 +29,46 @@ Folder setup/running info as described here:
 https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 
-### Phoebe note to self:
-Use ctrl + shift + M to see rendered markdown in Atom
+### Phoebe notes to self:
+* Use ctrl + shift + M to see rendered markdown in Atom
+
+* running conditional rules: https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
+
 
 # To Do
 
-* merge Daniel's changes to the Snakefile into Phoebe's dev branch
+## Necessary before submission
 
-## Daniel
+* **Phoebe:** make sure the workflow can be run on the cluster with sbatch
+  * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
+  * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
+
+* **Phoebe:** get bowtie index rule to work!
+  * for now, just copy the bowtie index to the results folder. Pull Daniel's changes. 
+  * LATER: figure out what's actually going on and get the code to work.
+  * write some kind of lambda statement that will make the bowtie index rule work?
+  * figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
+
+* **Daniel:** make a new branch and make the existing it runs on the test_snakemake downsampled dataset 
+  * run on an interactive node first
+  * once Phoebe has gotten the scheduler part working, confirm that this works for the downsampled dataset too
+
+* confirm that updated conda/mamba/Snakemake install instructions make sense
+
+* update config files, etc. for full pgPEN library
+
+* get Python env package versions from conda environment => add to envt.yaml
+
+* add other stats output apart from counts?
+
+* make a git tracked results/fastq/ dir with a TXT file saying "put your FASTQs here"?
+
+* increase memory/cores for demux_fastqs rule
+
+* add step to make directories (for log files and output files) if they don't already exist - or just add those directories to git tracking but ignore their contents?
+
+* Decide on a consistent file naming strategy
+  * name based on pgRNA/full sample name or just numbers?
 
 * figure out how to install and successfully idemp (does it have to be added to a user's bashrc?) as part of the pipeline/in a conda environment, or find another demultiplexer that users can download through conda
   * confirm that you get the exact same output from new demultipexer as you do from idemp
@@ -44,79 +76,27 @@ Use ctrl + shift + M to see rendered markdown in Atom
 * check that log files are actually being made correctly
   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
-* run dev on PC9 data on the cluster and check that counts match up with previous data (Phoebe can help with this)
+* **Phoebe:** run the pipeline on Arnab's pgPEN data
 
-* check if updated conda/mamba install instructions make more sense - both Saksham & Emma had issues with this
+* **Daniel:** run the pipeline on the full PC9 dataset and confirm that we get the same output as what was published in the pgPEN paper
 
+* **Phoebe:** make sure the pipeline can (conceptually) be run on any dual gRNA sequencing dataset
 
-### Optional
+* run the pipeline on data from another dual gRNA sequencing approach 
 
-* make interpretable error messages for n_chunks, etc.
+### Completed - Daniel please confirm
+* **Daniel:** figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference)
 
-* add a rule to gzip all large files at the end of the pgPEN pipeline
+* **Daniel:** counter.R: replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
 
-
-
-
-### Completed (I think)
-* figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference)
-
-* counter.R: replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"!
-
-* add fastQC step (once you do this you will have to add the output to rule all)
-
-
-
-## Phoebe
-
-### Necessary
-* figure out why Daniel's changes aren't showing up in the Snakefile
-
-* for now, just copy the bowtie index to the results folder. Pull Daniel's changes. LATER: figure out what's actually going on and get the code to work.
-  * write some kind of lambda statement that will make the bowtie index rule work!
-
-* figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
-
-* get the pipeline to run on the test data using the cluster rather than an interactive node
-
-* counter.R: make interpretable error messages for n_chunks, etc.
-
-* add new config files to git and commit
-
-* running conditional rules: https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
-
-
-* get Python env package versions from conda environment => add to envt.yaml
-
-* make a git tracked results/fastq/ dir with a TXT file saying "put your FASTQs here"?
-
-* figure out how to run Snakemake correctly on the cluster
-  * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
-  * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
-
-* increase memory/cores for demux_fastqs rule
-
-* add step to make directories (for log files and output files) if they don't already exist - or just add those directories to git tracking but ignore their contents?
-
-* figure out how to access snakemake variables from inside python scripts
-
-* Decide on a consistent file naming strategy
-  * name based on pgRNA/full sample name or just numbers?
-
-* decide about improving config file setup/tracking based on: https://gist.github.com/canton7/1423106
-
-
-
-* figure out how to run atom remotely:
-  * https://gist.github.com/NTag/9d9be611e03098c282241652894bda7f
-  * https://www.quora.com/What-is-the-best-way-to-use-Atom-io-over-SSH
-
-### Optional
-
-* link git and Atom
+* **Daniel:** add fastQC step (once you do this you will have to add the output to rule all)
 
 
 ### Completed
+
+* merge Daniel's changes to the Snakefile into Phoebe's dev branch
+
+* figure out why Daniel's changes aren't showing up in the Snakefile
 
 * figure out what is going on with conda error about placeholder of length '80' - can I just use mamba to fix the problem? Or do I need to use the --conda-prefix option? (Test without --conda-prefix set as home to see)
 
@@ -124,3 +104,29 @@ Use ctrl + shift + M to see rendered markdown in Atom
   * future note: make the whole pipeline more self-contained - tell users to run the pipeline from within the root dir and only use relative file paths from there?
 
 * figure out how to make folders in a way that makes sense
+
+
+
+## Can probably be done after submission
+
+* **Phoebe:** make interpretable error messages for n_chunks, etc.
+
+* add a rule to gzip all large files at the end of the pgPEN pipeline
+
+* add in a "test case" option for people to try out the aligner on the downsampled PC9 dataset
+
+* decide about improving config file setup/tracking based on: https://gist.github.com/canton7/1423106
+
+* make a nicely-formatted report for counts output, alignment stats
+
+### Completed
+
+
+
+## Would be nice but probably unnecessary
+
+* figure out how to access snakemake variables from inside python scripts
+
+### Completed
+
+
