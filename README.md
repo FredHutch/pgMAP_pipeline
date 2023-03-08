@@ -49,11 +49,15 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
   * write some kind of lambda statement that will make the bowtie index rule work?
   * figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
 
-* **Daniel:** make a new branch and make the existing it runs on the test_snakemake downsampled dataset 
+* **Phoebe:** make sure the report.html is actually being ignored by .gitignore
+
+* **Phoebe:** delete current dev branch and make a new one for each update or each group of updates
+
+* **Daniel:** make a new branch and make sure the existing version of the pipeline runs on the test_snakemake downsampled dataset 
   * run on an interactive node first
   * once Phoebe has gotten the scheduler part working, confirm that this works for the downsampled dataset too
 
-* confirm that updated conda/mamba/Snakemake install instructions make sense
+* **Daniel/Emma:** confirm that updated conda/mamba/Snakemake install instructions make sense
 
 * update config files, etc. for full pgPEN library
 
@@ -73,7 +77,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * figure out how to install and successfully idemp (does it have to be added to a user's bashrc?) as part of the pipeline/in a conda environment, or find another demultiplexer that users can download through conda
   * confirm that you get the exact same output from new demultipexer as you do from idemp
 
-* check that log files are actually being made correctly
+* check that log files are actually being made correctly (esp. when being run via sbatch)
   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
 * **Phoebe:** run the pipeline on Arnab's pgPEN data
