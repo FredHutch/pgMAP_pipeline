@@ -15,7 +15,6 @@ bowtie_idx_ref_dir: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRN
 pgRNA_counts_ref: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/ref/paralog_pgRNA_annotations.txt
 
 ## config files
-fastq_fofn: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/config/fastqs.fofn
 barcode_ref_file: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen/config/barcode_ref_file.txt
 
 ## tools not available from conda
