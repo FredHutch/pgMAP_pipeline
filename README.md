@@ -90,11 +90,11 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * run the pipeline on data from another dual gRNA sequencing approach 
 
 ### Completed - Daniel please confirm
-* **Daniel:** figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference) (*CONFIRM*)
+* **Daniel:** figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference) (**CONFIRMED**)
 
-* **Daniel:** counter.R: replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"! (*CONFIRM*)
+* **Daniel:** counter.R: replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"! (**CONFIRMED**)
 
-* **Daniel:** add fastQC step (once you do this you will have to add the output to rule all) (*CONFIRM*)
+* **Daniel:** add fastQC step (once you do this you will have to add the output to rule all) (**CONFIRMED**)
 
 
 ### Completed
