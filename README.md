@@ -2,26 +2,24 @@
 
 ## Running the pipeline
 
-1. Clone (or fork) the git repo from https://github.com/bergerbio/pgPEN_pipeline. Use the main branch for now.
+1. Clone or fork the git repo from https://github.com/FredHutch/pgMAP_pipeline/ (if you are not sure of the difference between cloning and forking, check out the explainer [here](https://github.com/FredHutch/pgMAP_pipeline/)). Make sure you are on the main branch. 
 
-2. Copy the following config files and edit them to point to your analysis files:
+2. Copy the following config files and edit them so that all file paths point to your working directory and so that the barcodes and samples match those used in your sequencing run:
     * `barcode_ref_file.sample.txt` => `barcode_ref_file.txt`
     * `config.sample.yaml` => `config.yaml`
-    * `fastqs.sample.fofn` => `fastqs.fofn`
+
+3. **First time only:** Build a Conda environment for Snakemake (defined by `workflow/envs/snakemake.yaml`, for more detail see the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html)). Running your analysis within `snakemake_env` will enable you to use the same version of Snakemake and all other supporting packages as we used when we developed pgMAP. To build the `snakemake_env`, do one of the following: 
+   1. Install [Mamba](https://mamba.readthedocs.io/en/latest/), which is essentially a faster version of Conda that is required to run Snakemake, by doing one of the following:
+      * If you **do not** already have the Conda package manager installed, [install Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
+      * If you **do** already have Conda installed, run the following command: `$ conda install -n base -c conda-forge mamba`
+   2. Next, create your Snakemake environment using Mamba by either:
+      * Running the command `mamba env create -f workflow/envs/snakemake.yaml`
+      * Un-commenting line 16 in the script `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
 
 
-3. **First time only:** make a Snakemake conda environment (defined by `workflow/envs/snakemake.yaml`) using the following steps:
-    1. Install the Mamba package manger as described in the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) by either:
-        * If you do not already have Conda installed, [install Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
-        * If you already have Conda installed, run the following command: `$ conda install -n base -c conda-forge mamba`
-    2. Then create your Snakemake environment using Mamba by either:
-        * Running the command `mamba env create -f workflow/envs/snakemake.yaml`
-        * Un-commenting line 16 in the script `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
+4. Run the script `run_snakemake.sh` by entering the command: `bash run_snakemake.sh`
 
-
-4. Run the script `run_snakemake.sh` using the command: `bash run_snakemake.sh`
-
-### Snakemake installation documentation
+### More info on installing/running/troubleshooting Snakemake
 Install Snakemake v7.1.0 using mambaforge as described here:
 https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
 
@@ -30,8 +28,6 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 
 ### Phoebe notes to self:
-* Use ctrl + shift + M to see rendered markdown in Atom
-
 * running conditional rules: https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
 
 
