@@ -4,9 +4,11 @@
 
 1. Clone or fork the git repo from https://github.com/FredHutch/pgMAP_pipeline/ (if you are not sure of the difference between cloning and forking, check out the explainer [here](https://github.com/FredHutch/pgMAP_pipeline/)). Make sure you are on the main branch. 
 
-2. Copy the following config files and edit them so that all file paths point to your working directory and so that the barcodes and samples match those used in your sequencing run:
-    * `barcode_ref_file.sample.txt` => `barcode_ref_file.txt`
-    * `config.sample.yaml` => `config.yaml`
+
+2. Update the following config files as described below: Copy the following config files and edit them so that all file paths point to your working directory and so that the barcodes and samples match those used in your sequencing run:
+    * Make a copy of `barcode_ref_file.sample.txt` named `barcode_ref_file.txt`. Update the sample and barcode information to match your experimental design and sequencing setup. 
+    * Make a copy of `config.sample.yaml` named `config.yaml`. Update the `base_filename` variable, the read coordinates, and the number of chunks to split your BAM files into. 
+
 
 3. **First time only:** Build a Conda environment for Snakemake (defined by `workflow/envs/snakemake.yaml`, for more detail see the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html)). Running your analysis within `snakemake_env` will enable you to use the same version of Snakemake and all other supporting packages as we used when we developed pgMAP. To build the `snakemake_env`, do one of the following: 
    1. Install [Mamba](https://mamba.readthedocs.io/en/latest/), which is essentially a faster version of Conda that is required to run Snakemake, by doing one of the following:
@@ -18,6 +20,7 @@
 
 
 4. Run the script `run_snakemake.sh` by entering the command: `bash run_snakemake.sh`
+
 
 ### More info on installing/running/troubleshooting Snakemake
 Install Snakemake v7.1.0 using mambaforge as described here:
@@ -47,13 +50,15 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
   * write some kind of lambda statement that will make the bowtie index rule work?
   * figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
 
+* **Phoebe:** update step #2 of **Running the Pipeline** to make it clear what actually needs to be updated (after incorporating Daniel's changes/getting the pipeline to run on PC9 data and Arnab's data)
+
 * **Phoebe:** make sure the report.html is actually being ignored by .gitignore
 
 * **Phoebe:** delete current dev branch and make a new one for each update or each group of updates
 
-* **Daniel:** make a new branch and make sure the existing version of the pipeline runs on the test_snakemake downsampled dataset 
+* **Phoebe:** make a new branch and make sure the existing version of the pipeline runs on the test_snakemake downsampled dataset 
   * run on an interactive node first
-  * once Phoebe has gotten the scheduler part working, confirm that this works for the downsampled dataset too
+  * once the scheduler part is working, confirm that this works for the downsampled dataset too
 
 * **Daniel/Emma:** confirm that updated conda/mamba/Snakemake install instructions make sense
 
@@ -69,7 +74,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * add step to make directories (for log files and output files) if they don't already exist - or just add those directories to git tracking but ignore their contents?
 
-* Decide on a consistent file naming strategy
+* decide on a consistent file naming strategy
   * name based on pgRNA/full sample name or just numbers?
 
 * figure out how to install and successfully idemp (does it have to be added to a user's bashrc?) as part of the pipeline/in a conda environment, or find another demultiplexer that users can download through conda
@@ -79,7 +84,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
 
-* **Daniel:** run the pipeline on the full PC9 dataset and confirm that we get the same output as what was published in the pgPEN paper
+* run the pipeline on the full PC9 dataset and confirm that we get the same output as what was published in the pgPEN paper
 
 * **Phoebe:** make sure the pipeline can (conceptually) be run on any dual gRNA sequencing dataset
 
