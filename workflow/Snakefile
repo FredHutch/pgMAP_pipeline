@@ -1,7 +1,7 @@
 ## Phoebe C. R. Parrish
 ## Berger Lab, FHCRC
 ## 2022-03-01
-## updated 2023-02-10
+## updated 2023-03-16
 ## snakemake v7.1.0
 
 import os
@@ -19,17 +19,18 @@ wildcard_constraints:
 ## set up paths for output files
 ## - use os.path.relpath so it could be run on Windows? (seems unlikely to be necessary)
 results_dir_dict = {"fastq_dir": "results/fastq/",
-    "fastq_trimmed_dir": "results/fastq_trimmed/",
-    "fastq_demuxed_dir": "results/fastq_demuxed/",
-    "bowtie_idx_dir": "results/bowtie_index/",
-    "sam_dir": "results/sam/",
-    "bam_dir": "results/bam/",
-    "bam_sorted_dir": "results/bam_sorted/",
-    "pgRNA_counts_dir": "results/pgRNA_counts/"}
+                    "fastqc_dir": "results/fastqc/",
+                    "fastq_trimmed_dir": "results/fastq_trimmed/",
+                    "fastq_demuxed_dir": "results/fastq_demuxed/",
+                    "bowtie_idx_dir": "results/bowtie_index/",
+                    "sam_dir": "results/sam/",
+                    "bam_dir": "results/bam/",
+                    "bam_sorted_dir": "results/bam_sorted/",
+                    "pgRNA_counts_dir": "results/pgRNA_counts/"}
 
 ## update these later to align w/ Phoebe's changes
-base_dir = os.path.abspath(config["base_dir"])
-fastqc_dir = os.path.join(base_dir, config["fastqc_dir"], "")
+# base_dir = os.path.abspath(config["base_dir"])
+# fastqc_dir = os.path.join(base_dir, config["fastqc_dir"], "")
 # print(results_dir_dict)
 
 # fastq_dir = os.path.relpath("results/fastq") + "/"

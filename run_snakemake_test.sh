@@ -5,13 +5,13 @@
 ## test_snakemake path: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/test_snakemake
 ## PC9 screen path: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/pgPEN_library/200122_PC9_screen
 
-BASE_PATH=$(pwd)  ## gets user input path
-echo "base_path=${BASE_PATH}"
-CONFIG_FILE="${BASE_PATH}/config/config.yaml"
-SNAKE_FILE="${BASE_PATH}/workflow/Snakefile"
-SBATCH_OUT="${BASE_PATH}/workflow/logs/sbatch/slurm-"
-CONDA_ENV="${BASE_PATH}/workflow/envs/snakemake.yaml"
-REPORT_DIR="${BASE_PATH}/workflow/report"
+# BASE_PATH=$(pwd)  ## gets user input path
+# echo "base_path=${BASE_PATH}"
+# CONFIG_FILE="${BASE_PATH}/config/config.yaml"
+# SNAKE_FILE="${BASE_PATH}/workflow/Snakefile"
+# SBATCH_OUT="${BASE_PATH}/workflow/logs/sbatch/slurm-"
+# CONDA_ENV="${BASE_PATH}/workflow/envs/snakemake.yaml"
+# REPORT_DIR="${BASE_PATH}/workflow/report"
 
 
 ## run this if the Snakemake environment has not been set up yet
