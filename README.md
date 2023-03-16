@@ -38,9 +38,14 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## Necessary before submission
 
+### Phoebe
+* run pipeline on test dataset using an interactive node
+
 * **Phoebe:** run the pipeline on Arnab's pgPEN data on an interactive node
 
-* **Phoebe:** make sure the workflow can be run on the cluster with sbatch
+* run pipeline on test dataset using cluster submit
+
+* **Phoebe:** make sure the test workflow can be run on the cluster with sbatch
   * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
   * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
 
@@ -54,15 +59,9 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * **Phoebe:** make sure the report.html is actually being ignored by .gitignore
 
-* **Phoebe:** delete current dev branch and make a new one for each update or each group of updates
-
 * **Phoebe:** make a new branch and make sure the existing version of the pipeline runs on the test_snakemake downsampled dataset 
   * run on an interactive node first
   * once the scheduler part is working, confirm that this works for the downsampled dataset too
-
-* **Daniel/Emma:** confirm that updated conda/mamba/Snakemake install instructions make sense
-
-* **Daniel:** write a vignette for running pgMAP on the downsampled dataset on an interactive node (can just add to GitHub README)
 
 * update config files, etc. for full pgPEN library
 
@@ -85,23 +84,26 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * check that log files are actually being made correctly (esp. when being run via sbatch)
   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
 
-
 * run the pipeline on the full PC9 dataset and confirm that we get the same output as what was published in the pgPEN paper
 
 * **Phoebe:** make sure the pipeline can (conceptually) be run on any dual gRNA sequencing dataset
 
 * run the pipeline on data from another dual gRNA sequencing approach 
 
-### Completed - Daniel please confirm
-* **Daniel:** figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference) (**CONFIRMED**)
 
-* **Daniel:** counter.R: replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"! (**CONFIRMED**)
+### Emma
+* **Daniel/Emma:** confirm that updated conda/mamba/Snakemake install instructions make sense
 
-* **Daniel:** add fastQC step (once you do this you will have to add the output to rule all) (**CONFIRMED**)
+* run the pipeline on a Bradley lab dataset from the new sequencing strategy
+
+
+### Daniel
+* check and delete branches pr/5 and djg_02_23_2023
+
+* **Daniel:** write a vignette for running pgMAP on the downsampled dataset on an interactive node (can just add to GitHub README)
 
 
 ### Completed
-
 * merge Daniel's changes to the Snakefile into Phoebe's dev branch
 
 * figure out why Daniel's changes aren't showing up in the Snakefile
@@ -113,6 +115,13 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * figure out how to make folders in a way that makes sense
 
+* **Daniel:** figure out how to make the fastq.fofn within the pipeline (look at the CRISPR_pipeline dev Snakefile for reference) (**CONFIRMED**)
+
+* **Daniel:** counter.R: replace "." with "_" in variable names for counter_efficient.R - for dataframes, please make sure the variable names is still "d.[rest_of_var_name]"! (**CONFIRMED**)
+
+* **Daniel:** add fastQC step (once you do this you will have to add the output to rule all) (**CONFIRMED**)
+
+* **Phoebe:** delete current dev branch and make a new one for each update or each group of updates
 
 
 ## Can probably be done after submission
