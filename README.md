@@ -62,6 +62,8 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * **Daniel/Emma:** confirm that updated conda/mamba/Snakemake install instructions make sense
 
+* **Daniel:** write a vignette for running pgMAP on the downsampled dataset on an interactive node (can just add to GitHub README)
+
 * update config files, etc. for full pgPEN library
 
 * get Python env package versions from conda environment => add to envt.yaml
