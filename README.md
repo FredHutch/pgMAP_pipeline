@@ -38,11 +38,11 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## Necessary before submission
 
+* **Phoebe:** run the pipeline on Arnab's pgPEN data on an interactive node
+
 * **Phoebe:** make sure the workflow can be run on the cluster with sbatch
   * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
   * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
-
-* **Phoebe:** run the pipeline on Arnab's pgPEN data
 
 * **Phoebe:** get bowtie index rule to work!
   * for now, just copy the bowtie index to the results folder. Pull Daniel's changes. 
