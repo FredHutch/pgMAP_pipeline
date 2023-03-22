@@ -55,7 +55,7 @@ fastq_trim_coords = {}
 ## convert to a dictionary too (so position isn't key)
 trim_coords = [config["R1_coords"], config["R2_coords"], config["R3_coords"]]
 
-fastq_list = os.listdir(fastq_dir)
+fastq_list = os.listdir(results_dir_dict["fastq_dir"])
 fastq_list.sort()
 count = 0
 for fastq in fastq_list:
