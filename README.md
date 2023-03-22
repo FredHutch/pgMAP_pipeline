@@ -96,6 +96,8 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * run the pipeline on a Bradley lab dataset from the new sequencing strategy
   * Taylor has 2 pools that use the same barcodes - **Phoebe/Emma** figure out what to do about this
+  
+* copy example FASTQ files from Bradley lab folder => Berger lab folder
 
 
 ### Daniel
