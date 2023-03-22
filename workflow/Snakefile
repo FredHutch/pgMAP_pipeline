@@ -55,7 +55,7 @@ fastq_trim_coords = {}
 ## convert to a dictionary too (so position isn't key)
 trim_coords = [config["R1_coords"], config["R2_coords"], config["R3_coords"]]
 
-fastq_list = os.listdir(fastq_dir)
+fastq_list = os.listdir(results_dir_dict["fastq_dir"])
 fastq_list.sort()
 count = 0
 for fastq in fastq_list:
@@ -64,8 +64,8 @@ for fastq in fastq_list:
     read_to_fastq[key] = fastq
     fastq_trim_coords[key] = trim_coords[count]
     count += 1
-print("fastq list: ", fastq_list)
-print("fastq_dir: ", fastq_dir)
+# print("fastq list: ", fastq_list)
+# print("fastq_dir: ", results_dir_dict["fastq_dir"])
 
 sample_list = []
 barcode_ref_file = open(config["barcode_ref_file"], "r")
@@ -106,20 +106,19 @@ rule all:
         expand(results_dir_dict["bam_sorted_dir"] + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
-        ## rule: combine_counts
-        pgRNA_counts_dir + base_filename + "_pgRNA_counts.txt",
 	    ## rule: fastqc
-	    expand(fastqc_dir + "{fastq}_fastqc.html", fastq = fastq_list),
-	    expand(fastqc_dir + "{fastq}_fastqc.zip", fastq = fastq_list), 
-	    expand(fastq_dir + "{fastq_list}", fastq_list = fastq_list),
+	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_fastqc.html", fastq = fastq_list),
+	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_fastqc.zip", fastq = fastq_list), 
+	    # expand(results_dir_dict["fastqc_dir"] + "{fastq_list}", fastq_list = fastq_list),
+        ## rule: combine_counts
         results_dir_dict["pgRNA_counts_dir"] + base_filename + "_pgRNA_counts.txt"
 
 rule fastqc:
     input:
-        fastq_dir + "{fastq_list}"
+        results_dir_dict["fastq_dir"] + "{fastq_list}"
     output:
-        html= fastqc_dir + "{fastq_list}_fastqc.html",
-        zip= fastqc_dir + "{fastq_list}_fastqc.zip"
+        html= results_dir_dict["fastqc_dir"] + "{fastq_list}_fastqc.html",
+        zip= results_dir_dict["fastqc_dir"] + "{fastq_list}_fastqc.zip"
     log:
         "workflow/logs/fastqc/{fastq_list}.log"
     threads: 1
@@ -220,6 +219,7 @@ rule align_reads:
         "workflow/logs/align_reads/{dmx_read}_{sample}.log"
     shell:
         "bowtie -q -v 1 --best --strata --all --sam -p 4 {params.idx} {input.fastq} {output} &> {log}"
+
 rule make_sorted_bams:
     input:
         results_dir_dict["sam_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
