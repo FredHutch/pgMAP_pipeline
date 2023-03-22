@@ -5,7 +5,7 @@
 1. Clone or fork the git repo from https://github.com/FredHutch/pgMAP_pipeline/ (if you are not sure of the difference between cloning and forking, check out the explainer [here](https://github.com/FredHutch/pgMAP_pipeline/)). Make sure you are on the main branch. 
 
 
-2. Update the following config files as described below: Copy the following config files and edit them so that all file paths point to your working directory and so that the barcodes and samples match those used in your sequencing run:
+2. Update the config files as described below: Duplicate the following files and edit them so that the barcodes and samples match those used in your sequencing run and all file paths point to your working directory:
     * Make a copy of `barcode_ref_file.sample.txt` named `barcode_ref_file.txt`. Update the sample and barcode information to match your experimental design and sequencing setup. 
     * Make a copy of `config.sample.yaml` named `config.yaml`. Update the `base_filename` variable, the read coordinates, and the number of chunks to split your BAM files into. 
 
@@ -95,6 +95,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * **Daniel/Emma:** confirm that updated conda/mamba/Snakemake install instructions make sense
 
 * run the pipeline on a Bradley lab dataset from the new sequencing strategy
+  * Taylor has 2 pools that use the same barcodes - **Phoebe/Emma** figure out what to do about this
 
 
 ### Daniel
