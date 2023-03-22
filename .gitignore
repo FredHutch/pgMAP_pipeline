@@ -20,3 +20,4 @@ workflow/report/
 ## don't ignore the following
 !.gitignore
 !config/*.sample.*
+test.py
