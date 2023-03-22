@@ -33,13 +33,16 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 ### Phoebe notes to self:
 * running conditional rules: https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
 
+* see Mitchell's slideshow on creating smk workflows: https://mrvollger.github.io/SmkTemplate/slides/#2
 
 # To Do
 
 ## Necessary before submission
 
 ### Phoebe
-* run pipeline on test dataset using an interactive node
+* figure out why the pipeline is only running 3 rules??? look at old code to compare what might be missing
+
+* run full pipeline on test dataset using an interactive node
 
 * **Phoebe:** run the pipeline on Arnab's pgPEN data on an interactive node
 
@@ -50,7 +53,6 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
   * https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#threads
 
 * **Phoebe:** get bowtie index rule to work!
-  * for now, just copy the bowtie index to the results folder. Pull Daniel's changes. 
   * LATER: figure out what's actually going on and get the code to work.
   * write some kind of lambda statement that will make the bowtie index rule work?
   * figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
@@ -108,6 +110,9 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ### Completed
 * merge Daniel's changes to the Snakefile into Phoebe's dev branch
+
+* **Phoebe:** get bowtie index rule to work!
+  * for now, just copy the bowtie index to the results folder. Pull Daniel's changes. 
 
 * figure out why Daniel's changes aren't showing up in the Snakefile
 
