@@ -42,6 +42,9 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 ### Phoebe
 * figure out why the pipeline is only running 3 rules??? look at old code to compare what might be missing
 
+* ask Daniel about fastqc wrapper - why do all the output files say ".fastq.gz_fastqc.zip"?
+  * find out what the wrapper is - I think this is messing w/ the other rules running
+
 * run full pipeline on test dataset using an interactive node
 
 * **Phoebe:** run the pipeline on Arnab's pgPEN data on an interactive node
@@ -60,6 +63,12 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * **Phoebe:** update step #2 of **Running the Pipeline** to make it clear what actually needs to be updated (after incorporating Daniel's changes/getting the pipeline to run on PC9 data and Arnab's data)
 
 * **Phoebe:** make sure the report.html is actually being ignored by .gitignore
+
+* **Phoebe:** get VScode Snakemake extension?
+
+* **Phoebe/Daniel:** make all results folders (except results/fastq/ which will be tracked as an empty directory by git) using Python after the results_dir_dict is defined in the Snakefile
+
+* get rid of "dir" in results_dir_dict key names
 
 * **Phoebe:** make a new branch and make sure the existing version of the pipeline runs on the test_snakemake downsampled dataset 
   * run on an interactive node first
@@ -82,6 +91,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * figure out how to install and successfully idemp (does it have to be added to a user's bashrc?) as part of the pipeline/in a conda environment, or find another demultiplexer that users can download through conda
   * confirm that you get the exact same output from new demultipexer as you do from idemp
+  * remove idemp from config.sample.yaml and other config.yaml files
 
 * check that log files are actually being made correctly (esp. when being run via sbatch)
   * see: https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#log-files
@@ -106,6 +116,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * check and delete branches pr/5 and djg_02_23_2023
 
 * **Daniel:** write a vignette for running pgMAP on the downsampled dataset on an interactive node (can just add to GitHub README)
+  * example: https://github.com/Atkinson-Lab/Tractor-tutorial
 
 
 ### Completed

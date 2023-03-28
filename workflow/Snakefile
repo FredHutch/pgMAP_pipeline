@@ -17,6 +17,8 @@ wildcard_constraints:
     dmx_read = "^[^.]*$"
 
 ## set up paths for output files
+## - use a dictionary to store the file paths so it can be easily modified
+## - remove "dir" from dictionary keys - it is redundant
 ## - use os.path.relpath so it could be run on Windows? (seems unlikely to be necessary)
 results_dir_dict = {"fastq_dir": "results/fastq/",
                     "fastqc_dir": "results/fastqc/",
@@ -33,20 +35,12 @@ results_dir_dict = {"fastq_dir": "results/fastq/",
 # fastqc_dir = os.path.join(base_dir, config["fastqc_dir"], "")
 # print(results_dir_dict)
 
+## use this command to make results dirs?
 # fastq_dir = os.path.relpath("results/fastq") + "/"
-# fastq_trimmed_dir = os.path.relpath("results/fastq_trimmed") + "/"
-# fastq_demuxed_dir = os.path.relpath() + "/"
+
 base_filename = config["base_filename"]
 bowtie_idx_ref_dir = config["bowtie_idx_ref_dir"]
-# bowtie_idx_dir = os.path.abspath(config["bowtie_idx_dir"]) + "/"
-# bowtie_idx_ref_dir = os.path.abspath(config["bowtie_idx_ref_dir"]) + "/"
-# sam_dir = os.path.abspath(config["sam_dir"]) + "/"
-# bam_dir = os.path.abspath(config["bam_dir"]) + "/"
-# bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
-# pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
-# print(bowtie_idx_ref_dir)
-# print(pgRNA_counts_ref)
 
 ## should the below steps be functions or not?
 read_to_fastq = {}
@@ -64,8 +58,8 @@ for fastq in fastq_list:
     read_to_fastq[key] = fastq
     fastq_trim_coords[key] = trim_coords[count]
     count += 1
-# print("fastq list: ", fastq_list)
-# print("fastq_dir: ", results_dir_dict["fastq_dir"])
+print("fastq list: ", fastq_list)
+print("fastq_dir: ", results_dir_dict["fastq_dir"])
 
 sample_list = []
 barcode_ref_file = open(config["barcode_ref_file"], "r")
@@ -91,6 +85,21 @@ bt_idx_list = ["1", "2", "3", "4", "rev.1", "rev.2"]
 #
 # print("build_index_input:", expand(bowtie_idx_ref_dir + "pgPEN_{dmx_read}.fa",
 #     dmx_read = ["R1", "R2"]))
+
+print("rule_all_output: \n\n",         "rule: build_bowtie_index\n",
+        expand(results_dir_dict["bowtie_idx_dir"] + "pgPEN_{dmx_read}.{bt_idx}.ebwt",
+            dmx_read = ["R1", "R2"],
+            bt_idx = ["1", "2", "3", "4", "rev.1", "rev.2"]),
+        "\n\nrule: get_stats\n",
+        expand(results_dir_dict["bam_sorted_dir"] + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt",
+            dmx_read = ["R1", "R2"],
+            sample = sample_list),
+	    "\n\nrule: fastqc\n",
+	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_fastqc.html", fastq = fastq_list),
+	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_fastqc.zip", fastq = fastq_list), 
+	    # expand(results_dir_dict["fastqc_dir"] + "{fastq_list}", fastq_list = fastq_list),
+        "\n\nrule: combine_counts\n",
+        results_dir_dict["pgRNA_counts_dir"] + base_filename + "_pgRNA_counts.txt")
 
 
 ## rule all is used to define output file names for the final rule & for other
