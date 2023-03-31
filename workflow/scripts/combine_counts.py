@@ -9,12 +9,13 @@ def main(annot_file, in_dir, out_file):
 
     ## loop through files in pgRNA_counts_dir
     dfs = [annot_df]
-
-    ## sorted/lambda stuff is to order files alphabetically
-    for file in sorted(os.scandir(in_dir), key=lambda e: e.name):
-        df = pd.read_csv(file, sep = "\t")
-        counts = df.loc[:, df.columns.str.contains("counts")] ## extract counts col
-        dfs.append(counts)
+    with os.scandir(in_dir) as iterator:
+        ## sorted/lambda stuff is to order files alphabetically
+        for entry in sorted(iterator, key = lambda e: e.name):
+            if not entry.name.startswith('.') and entry.is_file():
+                df = pd.read_csv(entry, sep = "\t")
+                counts = df.loc[:, df.columns.str.contains("counts")] ## extract counts col
+                dfs.append(counts)
 
     out_df = pd.concat(dfs, axis = 1)
 
