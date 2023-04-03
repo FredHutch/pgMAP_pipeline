@@ -18,6 +18,17 @@ REPORT_DIR="${BASE_PATH}/workflow/report"
 ## activate conda envt
 source activate snakemake
 
+## install git via conda
+conda install git 
+
+## install idemp 
+git clone https://github.com/yhwu/idemp.git
+
+## compile idemp
+cd idemp
+
+make
+
 ## make log directories
 mkdir -p "${BASE_PATH}/workflow/logs/trim_fastqs"
 mkdir -p "${BASE_PATH}/workflow/logs/demux_fastqs"
