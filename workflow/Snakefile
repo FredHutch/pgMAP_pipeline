@@ -95,8 +95,8 @@ print("rule_all_output: \n\n",         "rule: build_bowtie_index\n",
             dmx_read = ["R1", "R2"],
             sample = sample_list),
 	    "\n\nrule: fastqc\n",
-	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_fastqc.html", fastq = fastq_list),
-	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_fastqc.zip", fastq = fastq_list), 
+	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_html-out", fastq = fastq_list),
+	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_zip-out", fastq = fastq_list), 
 	    # expand(results_dir_dict["fastqc_dir"] + "{fastq_list}", fastq_list = fastq_list),
         "\n\nrule: combine_counts\n",
         results_dir_dict["pgRNA_counts_dir"] + base_filename + "_pgRNA_counts.txt")
@@ -116,8 +116,8 @@ rule all:
             dmx_read = ["R1", "R2"],
             sample = sample_list),
 	    ## rule: fastqc
-	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_fastqc.html", fastq = fastq_list),
-	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_fastqc.zip", fastq = fastq_list), 
+	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_html-out", fastq = fastq_list),
+	    expand(results_dir_dict["fastqc_dir"] + "{fastq}_zip-out", fastq = fastq_list), 
 	    # expand(results_dir_dict["fastqc_dir"] + "{fastq_list}", fastq_list = fastq_list),
         ## rule: combine_counts
         results_dir_dict["pgRNA_counts_dir"] + base_filename + "_pgRNA_counts.txt"
@@ -126,8 +126,8 @@ rule fastqc:
     input:
         results_dir_dict["fastq_dir"] + "{fastq_list}"
     output:
-        html= results_dir_dict["fastqc_dir"] + "{fastq_list}_fastqc.html",
-        zip= results_dir_dict["fastqc_dir"] + "{fastq_list}_fastqc.zip"
+        html= results_dir_dict["fastqc_dir"] + "{fastq_list}_html-out",
+        zip= results_dir_dict["fastqc_dir"] + "{fastq_list}_zip-out"
     log:
         "workflow/logs/fastqc/{fastq_list}.log"
     threads: 1
