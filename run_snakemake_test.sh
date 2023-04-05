@@ -21,6 +21,21 @@
 source activate snakemake
 echo "snakemake env activated"
 
+## install idemp in config dir
+git -C config clone https://github.com/yhwu/idemp.git
+
+## compile idemp
+
+make -C config/idemp
+
+## check if idemp successfully installed
+IDEMP=config/idemp/idemp
+if test -f "$IDEMP"; then
+    echo "idemp has been successfully installed and compiled in config folder."
+else 
+    echo "$IDEMP does not exist."
+fi
+
 # ## make log directories
 mkdir -p "workflow/logs/trim_reads"
 mkdir -p "workflow/logs/demux_fastqs"
