@@ -20,7 +20,7 @@ barcode_ref_file: config/barcode_ref_file.txt
 
 ## tools not available from conda
 ## - remove once installing idemp is part of the pipeline
-idemp: /fh/fast/berger_a/grp/bergerlab_shared/Projects/paralog_pgRNA/installs/idemp
+idemp: config/idemp/idemp
 
 ## directory paths
 ## - remove once I confirm it can run without this
