@@ -18,16 +18,19 @@ REPORT_DIR="${BASE_PATH}/workflow/report"
 ## activate conda envt
 source activate snakemake
 
-## install git via conda
-conda install git 
-
-## install idemp 
-git clone https://github.com/yhwu/idemp.git
+## install idemp in config dir
+git -C config clone https://github.com/yhwu/idemp.git
 
 ## compile idemp
-cd idemp
+make -C config/idemp
 
-make
+## check if idemp successfully installed
+IDEMP=config/idemp/idemp
+if test -f "$IDEMP"; then
+    echo "idemp has been successfully installed and compiled in config folder."
+else 
+    echo "$IDEMP does not exist."
+fi
 
 ## make log directories
 mkdir -p "${BASE_PATH}/workflow/logs/trim_fastqs"
