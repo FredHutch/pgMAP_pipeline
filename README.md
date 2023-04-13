@@ -39,17 +39,23 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## Necessary before submission
 
-### Phoebe
-* figure out why the pipeline is only running 3 rules??? look at old code to compare what might be missing
+* **Phoebe:** figure out why the pipeline is only running 3 rules??? look at old code to compare what might be missing
 
-* ask Daniel about fastqc wrapper - why do all the output files say ".fastq.gz_fastqc.zip"?
-  * find out what the wrapper is - I think this is messing w/ the other rules running
+* **Daniel:** please confirm the FASTQC rule is running/producing the correct output
+
+* **Daniel:** make sure all of your old/inactive branches have been merged and deleted
+
+* **Daniel:** make a git tracked results/fastq/ dir with a README file saying "put your FASTQs here"
+
+* **Daniel:** make a git 
+
+* **Phoebe:** make sure all of your old/inactive branches have been merged and deleted 
 
 * run full pipeline on test dataset using an interactive node
 
-* **Phoebe:** run the pipeline on Arnab's pgPEN data on an interactive node
-
 * run pipeline on test dataset using cluster submit
+
+* **Phoebe:** run the pipeline on Arnab's pgPEN data
 
 * **Phoebe:** make sure the test workflow can be run on the cluster with sbatch
   * https://snakemake.readthedocs.io/en/stable/executing/cluster.html
@@ -60,27 +66,21 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
   * write some kind of lambda statement that will make the bowtie index rule work?
   * figure out what's going on with build_bowtie_index - why is it running so many times? maybe change the Snakemake output so it doesn't exactly match the rule output?
 
-* **Phoebe:** update step #2 of **Running the Pipeline** to make it clear what actually needs to be updated (after incorporating Daniel's changes/getting the pipeline to run on PC9 data and Arnab's data)
+* update step #2 of **Running the Pipeline** to make it clear what actually needs to be updated (after incorporating Daniel's changes/getting the pipeline to run on PC9 data and Arnab's data)
 
-* **Phoebe:** make sure the report.html is actually being ignored by .gitignore
+* make sure the report.html is actually being ignored by .gitignore
 
 * **Phoebe:** get VScode Snakemake extension?
 
-* **Phoebe/Daniel:** make all results folders (except results/fastq/ which will be tracked as an empty directory by git) using Python after the results_dir_dict is defined in the Snakefile
-
 * get rid of "dir" in results_dir_dict key names
 
-* **Phoebe:** make a new branch and make sure the existing version of the pipeline runs on the test_snakemake downsampled dataset 
+* make a new branch and make sure the existing version of the pipeline runs on the test_snakemake downsampled dataset 
   * run on an interactive node first
   * once the scheduler part is working, confirm that this works for the downsampled dataset too
 
 * update config files, etc. for full pgPEN library
 
-* get Python env package versions from conda environment => add to envt.yaml
-
 * add other stats output apart from counts?
-
-* make a git tracked results/fastq/ dir with a TXT file saying "put your FASTQs here"?
 
 * increase memory/cores for demux_fastqs rule
 
@@ -102,19 +102,11 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * run the pipeline on data from another dual gRNA sequencing approach 
 
-
-### Emma
-* **Daniel/Emma:** confirm that updated conda/mamba/Snakemake install instructions make sense
+* **Daniel/Alice:** confirm that updated conda/mamba/Snakemake install instructions make sense
 
 * run the pipeline on a Bradley lab dataset from the new sequencing strategy
   * Taylor has 2 pools that use the same barcodes - **Phoebe/Emma** figure out what to do about this
   
-* copy example FASTQ files from Bradley lab folder => Berger lab folder
-
-
-### Daniel
-* check and delete branches pr/5 and djg_02_23_2023
-
 * **Daniel:** write a vignette for running pgMAP on the downsampled dataset on an interactive node (can just add to GitHub README)
   * example: https://github.com/Atkinson-Lab/Tractor-tutorial
 
@@ -142,6 +134,13 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * **Phoebe:** delete current dev branch and make a new one for each update or each group of updates
 
+* get Python env package versions from conda environment => add to envt.yaml
+
+* ask Daniel about fastqc wrapper - why do all the output files say ".fastq.gz_fastqc.zip"?
+  * find out what the wrapper is - I think this is messing w/ the other rules running
+  
+* copy example FASTQ files from Bradley lab folder => Berger lab folder
+  
 
 ## Can probably be done after submission
 
@@ -154,6 +153,9 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * decide about improving config file setup/tracking based on: https://gist.github.com/canton7/1423106
 
 * make a nicely-formatted report for counts output, alignment stats
+
+* move the results/fastq + README to an input directory
+
 
 ### Completed
 
