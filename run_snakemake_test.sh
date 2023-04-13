@@ -25,7 +25,6 @@ echo "snakemake env activated"
 git -C config clone https://github.com/yhwu/idemp.git
 
 ## compile idemp
-
 make -C config/idemp
 
 ## check if idemp successfully installed
@@ -37,6 +36,7 @@ else
 fi
 
 # ## make log directories
+# FROM DANIEL: can we make a dictionary of log file paths?
 mkdir -p "workflow/logs/trim_reads"
 mkdir -p "workflow/logs/demux_fastqs"
 mkdir -p "workflow/logs/build_bowtie_index"
