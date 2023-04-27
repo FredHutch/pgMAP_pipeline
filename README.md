@@ -47,9 +47,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 * **Daniel:** make a git tracked results/fastq/ dir with a README file saying "put your FASTQs here"
 
-* **Daniel:** make a git 
-
-* **Phoebe:** make sure all of your old/inactive branches have been merged and deleted 
+* **Phoebe:** make sure all of my old/inactive branches have been merged and deleted 
 
 * run full pipeline on test dataset using an interactive node
 
