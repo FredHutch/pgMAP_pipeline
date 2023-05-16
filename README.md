@@ -42,7 +42,7 @@ GGCTAC  sample3
 ACTTGA  sample1
 ```
 
-3. In `config/config.yaml`, ensure that variable `base_filename` corresponds takes on the string value `PP_pgPEN_HeLa`.
+3. In `config/config.yaml`, ensure that variable `base_filename` corresponds to the string `PP_pgPEN_HeLa`.
 
 4. pgMAP is now ready to run. Execute `run_snakemake_test.sh` on an interactive node or other served intended for computationally intensive tasks. Additionally, to execute a slurm job for pgMAP, run `run_snakemake_cluster.sh`.
 
