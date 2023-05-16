@@ -59,4 +59,11 @@ Additionally, Snakemake will generate an html-formatted report in `reports.html`
 ## Questions
 If you have any questions, please contact PCR Parrish at [email], (feel free to put Daniel's email if needed), or AH Berger at [email]
 
+## License
+pgMAP is available open-source under the MIT license. 
+
+## Citations
+Please cite [bioarchives link]
+
+
 
