@@ -49,12 +49,12 @@ ACTTGA  sample1
 4. pgMAP is now ready to run. Execute `run_snakemake_test.sh` on an interactive node or other served intended for computationally intensive tasks. Additionally, to execute a slurm job for pgMAP, run `run_snakemake_cluster.sh`.
 
 The resulting pgRNA counts will be found in `results/pgRNA_counts`:
-<png>
+![Table](images/counts_table.png)
 
 All log and intermediate files are also accessible to users.
 
 Additionally, Snakemake will generate an html-formatted report in `reports.html`, containing sample output and run statistics:
-<png>
+![Report](images/snakemake_report.png)
 
 ## Questions
 If you have any questions, please contact PCR Parrish at [email], (feel free to put Daniel's email if needed), or AH Berger at [email]
