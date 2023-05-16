@@ -62,7 +62,7 @@ If you have any questions, please contact PCR Parrish at [email], (feel free to 
 ## License
 pgMAP is available open-source under the MIT license. 
 
-## Citations
+## Cite pgMAP
 Please cite [bioarchives link]
 
 
