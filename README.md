@@ -52,9 +52,11 @@ The resulting pgRNA counts will be found in `results/pgRNA_counts`:
 
 All log and intermediate files are also accessible to users.
 
-Additionally, Snakemake will generate an html-formatted report in `reports.html`, containing sample output and run statistics:
+Additionally, Snakemake will generate an html-formatted report in `reports.html`:
 
 ![Report](images/snakemake_report.png)
+
+![Report](images/rule_runtimes.png)
 
 ## Questions
 If you have any questions, please contact PCR Parrish at [email], (feel free to put Daniel's email if needed), or AH Berger at [email]
