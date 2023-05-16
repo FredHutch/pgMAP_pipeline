@@ -43,7 +43,6 @@ CTTGTA  sample2
 GGCTAC  sample3
 ACTTGA  sample1
 ```
-These are based on the pgPEN construct, where R1 corresponds to gRNA1, R2 corresponds to gRNA2, and R3 corresponds to the Illumina barcode. 
 
 3. In `config/config.yaml`, ensure that variable `base_filename` corresponds takes on the string value `PP_pgPEN_HeLa`.
 
