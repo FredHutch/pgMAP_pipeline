@@ -31,9 +31,11 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## pgMAP Tutorial
 1. In your pgMAP working directory, download the pgPEN screen downsampled fastq files [link to dropbox/other source] into `input/fastqs`:
-  * PP_pgRNA_HeLa_S1_R1_001.fastq.gz
-  * PP_pgRNA_HeLa_S1_R2_001.fastq.gz
-  * PP_pgRNA_HeLa_S1_R3_001.fastq.gz
+```
+PP_pgRNA_HeLa_S1_R1_001.fastq.gz
+PP_pgRNA_HeLa_S1_R2_001.fastq.gz
+PP_pgRNA_HeLa_S1_R3_001.fastq.gz
+```
 
 2. In `config/barcode_ref_file.txt`, paste the following:
 ```
