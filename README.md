@@ -56,7 +56,11 @@ run_snakemake_test_cluster.sh
 ```
 pgMAP will automatically install all required packages with dependencies. A successful run will include the DAG of jobs:
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_pgMAP.png)
 
+Snakemake will detail each step that is being run, including any errors that arise: 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_example.png)
 The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 
 | id  | seq_1 | seq_2 | counts_sample |
@@ -72,10 +76,6 @@ The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 All log and intermediate files are also accessible to users.
 
 Additionally, Snakemake will generate an html-formatted report in `reports.html`:
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_pgMAP.png)
-
-Snakemake will detail each step that is being run at each step, including any errors that arise: 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_example.png)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/snakemake_report.png)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/rule_runtimes.png)
 
@@ -87,6 +87,3 @@ pgMAP is available open-source under the MIT license.
 
 ## Cite pgMAP
 Please cite [bioarchives link]
-
-
-
