@@ -55,11 +55,9 @@ Additionally, to schedule a slurm job for pgMAP, execute `run_snakemake_cluster.
 run_snakemake_test_cluster.sh
 ```
 pgMAP will automatically install all required packages with dependencies. A successful run will include the DAG of jobs:
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_pgMAP.png)
 
 Snakemake will detail each step that is being run, including any errors that arise: 
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_example.png)
 
 
