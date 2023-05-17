@@ -51,7 +51,11 @@ ACTTGA  sample1
 The resulting pgRNA counts will be found in `results/pgRNA_counts`:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Table](images/counts_table.png)
-(to-do: format as table https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables)
+
+| ID  | seq_1 | seq_2 | counts_sample |
+| ------------- | ------------- | ------------- | ------------- |
+| AADAC_AADACL2_pg1  | AAGTCTGAAGCACTAAGAAG | AAAGAAAGTCAGAAACCCGA  | 0  |
+
 All log and intermediate files are also accessible to users.
 
 Additionally, Snakemake will generate an html-formatted report in `reports.html`:
