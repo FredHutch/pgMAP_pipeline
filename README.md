@@ -50,11 +50,15 @@ ACTTGA  sample1
 
 The resulting pgRNA counts will be found in `results/pgRNA_counts`:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Table](images/counts_table.png)
-
 | id  | seq_1 | seq_2 | counts_sample |
 | ------------- | ------------- | ------------- | ------------- |
 | AADAC_AADACL2_pg1  | AAGTCTGAAGCACTAAGAAG | AAAGAAAGTCAGAAACCCGA  | 0  |
+|AADAC_AADACL2_pg10	|ATTTCTATCCAAATCACTCA	|GAAAAAATTTGACTGCAGCA	0
+|AADAC_AADACL2_pg11	|ATTTCTATCCAAATCACTCA	|GTGATGTATTCATCTGAAAG	0
+|AADAC_AADACL2_pg12	|ATTTCTATCCAAATCACTCA	|TGGGGGCAATTTAGCAACAG	0
+|AADAC_AADACL2_pg13	|GGTATTTCTGGAGATAGTGC	|AAAGAAAGTCAGAAACCCGA	0
+|AADAC_AADACL2_pg14	|GGTATTTCTGGAGATAGTGC	|GAAAAAATTTGACTGCAGCA	0
+
 
 All log and intermediate files are also accessible to users.
 
