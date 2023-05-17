@@ -30,7 +30,7 @@ Folder setup/running info as described here:
 https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## pgMAP Tutorial
-1. For this example, download the pgPEN screen downsampled fastq files [link to dropbox/other source] into `input/fastqs`:
+1. For this example, download the pgPEN screen downsampled fastq files [link to dropbox/GEO/other source] into `input/fastqs`:
 ```
 PP_pgRNA_HeLa_S1_R1_001.fastq.gz
 PP_pgRNA_HeLa_S1_R2_001.fastq.gz
