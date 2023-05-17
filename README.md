@@ -1,4 +1,4 @@
-# **pgMAP** (**p**aired **g**uide RNA **MAP**per) Pipeline
+# pgMAP (paired guide RNA MAPper) Pipeline
 
 ## Running the pipeline
 
