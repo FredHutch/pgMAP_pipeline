@@ -42,7 +42,7 @@ CTTGTA   sample2
 GGCTAC   sample3
 ACTTGA   sample1
 ```
-These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly (note that the barcode and sample ID * * must be separated by a single tab * *).
+These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly (note that the barcode and sample ID *must be separated by a single tab*).
 
 3. In `config/config.yaml`, ensure that variable `base_filename` corresponds to `PP_pgPEN_HeLa`. If using pgMAP for your own applications, please be sure to update `base_filename` accordingly.
 
