@@ -61,6 +61,8 @@ pgMAP will automatically install all required packages with dependencies. A succ
 Snakemake will detail each step that is being run, including any errors that arise: 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_example.png)
+
+
 The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 
 | id  | seq_1 | seq_2 | counts_sample |
@@ -74,6 +76,7 @@ The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 
 
 All log and intermediate files are also accessible to users.
+
 
 Additionally, Snakemake will generate an html-formatted report in `reports.html`:
 
