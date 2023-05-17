@@ -52,7 +52,7 @@ The resulting pgRNA counts will be found in `results/pgRNA_counts`:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Table](images/counts_table.png)
 
-| ID  | seq_1 | seq_2 | counts_sample |
+| id  | seq_1 | seq_2 | counts_sample |
 | ------------- | ------------- | ------------- | ------------- |
 | AADAC_AADACL2_pg1  | AAGTCTGAAGCACTAAGAAG | AAAGAAAGTCAGAAACCCGA  | 0  |
 
