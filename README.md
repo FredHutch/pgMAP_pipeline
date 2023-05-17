@@ -36,13 +36,13 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * PP_pgRNA_HeLa_S1_R2_001.fastq.gz
 * PP_pgRNA_HeLa_S1_R3_001.fastq.gz
 
-2. In `config/barcode_ref_file.txt`, paste the following:
+2. In `config/barcode_ref_file.txt`, paste the following as tab-separated values::
 ```
-CTTGTA &#9; sample2
-GGCTAC &#9; sample3
-ACTTGA &#9; sample1
+CTTGTA   sample2
+GGCTAC   sample3
+ACTTGA   sample1
 ```
-These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly (note that the barcode and sample ID *must be separated by a single tab*).
+These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly. Note that the barcode and sample ID *must be separated by a single tab*).
 
 3. In `config/config.yaml`, ensure that variable `base_filename` corresponds to `PP_pgPEN_HeLa`. If using pgMAP for your own applications, please be sure to update `base_filename` accordingly.
 
