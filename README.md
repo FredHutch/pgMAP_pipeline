@@ -54,10 +54,10 @@ Additionally, to schedule a slurm job for pgMAP, execute `run_snakemake_cluster.
 ```
 run_snakemake_test_cluster.sh
 ```
-pgMAP will automatically install all required packages with dependencies. A successful run will include the DAG of jobs:
+pgMAP will automatically install all required packages with dependencies. Snakemake will print output as the processes run:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_pgMAP.png)
 
-Snakemake will detail each step that is being run, including any errors that arise: 
+Additionally, Snakemake will detail each step that is being run, including any errors that arise: 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_example.png)
 
 
@@ -72,7 +72,7 @@ The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 |AADAC_AADACL2_pg13	|GGTATTTCTGGAGATAGTGC	|AAAGAAAGTCAGAAACCCGA|	0
 |AADAC_AADACL2_pg14	|GGTATTTCTGGAGATAGTGC	|GAAAAAATTTGACTGCAGCA|	0
 
-Additionally, Snakemake will generate an html-formatted report in `reports.html`:
+Snakemake will also generate an html-formatted report in `reports.html`:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/snakemake_report.png)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/rule_runtimes.png)
 
