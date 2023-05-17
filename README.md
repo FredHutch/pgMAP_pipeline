@@ -36,7 +36,7 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 * PP_pgRNA_HeLa_S1_R2_001.fastq.gz
 * PP_pgRNA_HeLa_S1_R3_001.fastq.gz
 
-2. In `config/barcode_ref_file.txt`, paste the following as tab-separated values::
+2. In `config/barcode_ref_file.txt`, paste the following as tab-separated values (note that copy-pasting from this markdown will not preserve tabs):
 ```
 CTTGTA   sample2
 GGCTAC   sample3
