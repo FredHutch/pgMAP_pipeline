@@ -30,7 +30,7 @@ Folder setup/running info as described here:
 https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## pgMAP Tutorial
-1. In your pgMAP working directory, download the pgPEN screen downsampled fastq files [link to dropbox/other source] into `input/fastqs`:
+1. For this example, download the pgPEN screen downsampled fastq files [link to dropbox/other source] into `input/fastqs`:
 ```
 PP_pgRNA_HeLa_S1_R1_001.fastq.gz
 PP_pgRNA_HeLa_S1_R2_001.fastq.gz
@@ -43,16 +43,17 @@ CTTGTA  sample2
 GGCTAC  sample3
 ACTTGA  sample1
 ```
+These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly.  
 
-3. In `config/config.yaml`, ensure that variable `base_filename` corresponds to the string `PP_pgPEN_HeLa`.
+3. In `config/config.yaml`, ensure that variable `base_filename` corresponds to `PP_pgPEN_HeLa`. If using pgMAP for your own applications, please be sure to update `base_filename` accordingly.
 
 4. pgMAP is now ready to run. Execute `run_snakemake_test.sh` on an interactive node or other server intended for computationally intensive tasks [note: could provide guidance on number of cores here] : 
 ```
-run_snakemake_test.sh
+. run_snakemake_test.sh
 ```
 Additionally, to schedule a slurm job for pgMAP, execute `run_snakemake_cluster.sh`:
 ```
-run_snakemake_test_cluster.sh
+. run_snakemake_test_cluster.sh
 ```
 pgMAP will automatically install all required packages with dependencies. Snakemake will print output as the processes run:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_pgMAP.png)
