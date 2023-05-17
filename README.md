@@ -46,9 +46,18 @@ ACTTGA  sample1
 
 3. In `config/config.yaml`, ensure that variable `base_filename` corresponds to the string `PP_pgPEN_HeLa`.
 
-4. pgMAP is now ready to run. Execute `run_snakemake_test.sh` on an interactive node or other server intended for computationally intensive tasks. Additionally, to execute a slurm job for pgMAP, run `run_snakemake_cluster.sh`.
+4. pgMAP is now ready to run. Execute `run_snakemake_test.sh` on an interactive node or other server intended for computationally intensive tasks [note: could provide guidance on number of cores here] : 
+```
+run_snakemake_test.sh
+```
+Additionally, to schedule a slurm job for pgMAP, execute `run_snakemake_cluster.sh`:
+```
+run_snakemake_cluster.sh
+```
+pgMAP will automatically install all required packages with dependencies. A successful run will include the DAG of jobs:
 
-The resulting pgRNA counts will be found in `results/pgRNA_counts`:
+
+The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 
 | id  | seq_1 | seq_2 | counts_sample |
 | ------------- | ------------- | ------------- | ------------- |
