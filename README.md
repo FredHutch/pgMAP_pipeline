@@ -73,7 +73,7 @@ The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 |AADAC_AADACL2_pg14	|GGTATTTCTGGAGATAGTGC	|GAAAAAATTTGACTGCAGCA|	0
 
 
-All log and intermediate files are also accessible to users.
+All log (`workflow/logs`) and intermediate files (`results`) are also accessible to users.
 
 
 Additionally, Snakemake will generate an html-formatted report in `reports.html`:
