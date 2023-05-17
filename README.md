@@ -38,9 +38,9 @@ https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 2. In `config/barcode_ref_file.txt`, paste the following:
 ```
-CTTGTA;&nbsp;&nbsp;&nbsp;&nbsp;sample2
-GGCTAC;&nbsp;&nbsp;&nbsp;&nbsp;sample3
-ACTTGA;&nbsp;&nbsp;&nbsp;&nbsp;sample1
+CTTGTA    sample2
+GGCTAC    sample3
+ACTTGA    sample1
 ```
 These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly (note that the barcode and sample ID *must be separated by a single tab*).
 
