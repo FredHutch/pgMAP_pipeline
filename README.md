@@ -79,10 +79,9 @@ Snakemake will also generate an html-formatted report in `reports.html`:
 All log (`workflow/logs`) and intermediate files (`results`) are also accessible to users.
 
 ## Questions
-If you have any questions, please contact PCR Parrish at [email], (feel free to put Daniel's email if needed), or AH Berger at [email]
+Please contact Phoebe Parrish at [email], Daniel Groso at dgroso@fredhutch.org, or Alice Berger at ahberger@fredhutch.org with any questions about pgMAP.
 
 ## License
 pgMAP is available open-source under the MIT license. 
 
 ## Cite pgMAP
-Please cite [bioarchives link]
