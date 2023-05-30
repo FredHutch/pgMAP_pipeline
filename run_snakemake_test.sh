@@ -12,12 +12,8 @@ mkdir -p "${REPORT_DIR}"
 source activate snakemake
 echo "snakemake env activated"
 
-## activate conda envt
-source activate snakemake
-echo "snakemake env activated"
-
 ## install idemp in config dir
-git -C config clone https://github.com/yhwu/idemp.git
+git -C config clone --quiet https://github.com/yhwu/idemp.git
 
 ## compile idemp
 make -C config/idemp
@@ -74,7 +70,7 @@ rm "${REPORT_DIR}/rulegraph.dot"
 ## export PDF and svg visualizations of DAG structure of pipeline steps
 ## NOTE: this will not work if there are print statements in the pipeline
 echo -e "Exporting pipeline DAG to svg and pdf..."
-snakemake --report --snakefile $SNAKE_FILE \
+snakemake --snakefile $SNAKE_FILE \
   --configfile $CONFIG_FILE \
   --dag > "${REPORT_DIR}/dag.dot"
 dot -Tpdf "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.pdf"
