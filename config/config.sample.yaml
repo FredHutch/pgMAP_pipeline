@@ -14,6 +14,7 @@ n_chunks: 50
 ## reference files
 bowtie_idx_ref_dir: config/pgPEN_fasta/
 pgRNA_counts_ref: config/pgPEN_annotations.txt
+bowtie_idx_dir: config/pgPEN_index/
 
 ## config files
 barcode_ref_file: config/barcode_ref_file.txt
