@@ -219,7 +219,8 @@ rule get_stats:
 
 rule count_pgRNAs:
     input:
-        results_dir_dict['bam_sorted_dir'] + base_filename + "_R1_trimmed_{sample}_aligned_sorted.bam"
+        bam1 = results_dir_dict['bam_sorted_dir'] + base_filename + "_R1_trimmed_{sample}_aligned_sorted.bam",
+        bam2 = results_dir_dict['bam_sorted_dir'] + base_filename + "_R2_trimmed_{sample}_aligned_sorted.bam"
     output:
         results_dir_dict['pgRNA_counts_dir'] + "counts_{sample}.txt"
     conda:
@@ -236,7 +237,7 @@ rule count_pgRNAs:
     log:
         "workflow/logs/count_pgRNAs/{sample}.log"
     shell:
-        "Rscript {params.script} {input} {params.n_chunks} {params.ref} {params.out_dir} &> {log}"
+        "Rscript {params.script} {input.bam1} {input.bam2} {params.n_chunks} {params.ref} {params.out_dir} &> {log}"
 
 rule combine_counts:
     input:
