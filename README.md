@@ -64,7 +64,7 @@ Snakemake will detail each step that is being run, including any errors that ari
 The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 
 | id  | seq_1 | seq_2 | counts_sample1 | counts_sample2 | counts_sample3 | 
-| ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |
+| ------------- | ------------- | ------------- | ------------- |------------- |------------- |
 |AADAC_AADACL2_pg1   |AAGTCTGAAGCACTAAGAAG   |AAAGAAAGTCAGAAACCCGA|  5 |  6 |  4|
 |AADAC_AADACL2_pg10	|ATTTCTATCCAAATCACTCA	|GAAAAAATTTGACTGCAGCA|  4 |  2 |  6|
 |AADAC_AADACL2_pg11	|ATTTCTATCCAAATCACTCA	|GTGATGTATTCATCTGAAAG|	0 |  2 |  3|
