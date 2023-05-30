@@ -19,14 +19,15 @@ import_library("tidyverse") # new version = 1.2.1 # now 1.3.0
 ############################################################
 
 ## read in command line argument(s); we expect:
-##   args[1] to be the BAM file path and name
-##   args[2] to be the number of chunks you want to split the BAM files into
-##   args[3] to be the reference file path and name
-##   args[4] to be the output file path
+##   args[1] to be the R1 BAM file path and name
+##   args[2] to be the R2 BAM file path and name
+##   args[3] to be the number of chunks you want to split the BAM files into
+##   args[4] to be the reference file path and name
+##   args[5] to be the output file path
 args <- commandArgs(trailingOnly=TRUE)
 
 ## make sure that a file name has been supplied as an argument
-if(length(args) < 4){
+if(length(args) < 5){
   stop("Please supply all required arguments!",
        call.=FALSE)
 }
@@ -35,25 +36,28 @@ if(length(args) < 4){
 files.1 <- args[1]
 message(paste0("gRNA1 BAM file read in as:", files.1))
 
-## replace gRNA_1 with gRNA_2 in files.2 variable
-files.2 <- gsub ("R1", "R2", files.1)
+files.2 <- args[2]
+message(paste0("gRNA2 BAM file read in as:", files.2))
+
+# ## replace gRNA_1 with gRNA_2 in files.2 variable
+# files.2 <- gsub ("R1", "R2", files.1)
 
 if (!all (file.exists (files.2)))
   stop ("Failed to find properly matched BAM files for reads 1 and 2.")
 
-## assign args[2] to n.chunks variable
-n.chunks <- as.numeric(args[2])
+## assign args[3] to n.chunks variable
+n.chunks <- as.numeric(args[3])
 
-## assign args[3] to ref.file variable, which will be used to build d.counts
-ref.file <- args[3]
+## assign args[4] to ref.file variable, which will be used to build d.counts
+ref.file <- args[4]
 stopifnot (file.exists (ref.file))
 
 ## Parse annotation file and initialize d.counts, which holds raw counts of reads
 ## supporting each pgRNA.
 d.counts <- read_tsv (ref.file, col_names=TRUE, col_types=cols())
 
-## assign args[4] to counts.dir variable
-counts.dir <- args[4]
+## assign args[5] to counts.dir variable
+counts.dir <- args[5]
 
 ## if this ends in a "/", remove it...not sure if this is necessary though
 # message(paste0("counts.dir = ", counts.dir))
