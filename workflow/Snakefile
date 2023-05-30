@@ -13,6 +13,12 @@ import pandas as pd
 configfile: "config/config.yaml"
 
 ## define config dirs
+fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
+fastq_demuxed_dir = os.path.abspath(config["fastq_demuxed_dir"]) + "/"
+sam_dir = os.path.abspath(config["sam_dir"]) + "/"
+bam_dir = os.path.abspath(config["bam_dir"]) + "/"
+bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
+pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 base_filename = config["base_filename"]
 bowtie_idx_ref_dir = config["bowtie_idx_ref_dir"]
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
@@ -47,23 +53,15 @@ for count, i in enumerate(fastq_list):
     read_to_fastq[key] = i
     fastq_trim_coords[key] = trim_coords[count]
 
-print("fastq list: ", fastq_list)
-print("fastq_dir: ", results_dir_dict["fastq_dir"])
-
 sample_list = []
 barcode_ref_file = open(config["barcode_ref_file"], "r")
-# print("barcode_ref_file=", barcode_ref_file)
+
 for line in barcode_ref_file:
-    # print("line=", line)
     ## get sample names from idemp ref file
     sample = line.strip().split("\t")[1]
-    # print("sample=", sample)
     sample_list.append(sample)
 sample_list.sort()
 barcode_ref_file.close()
-
-print('sample list: ', sample_list)
-
 
 rule all:
     input:
@@ -119,7 +117,6 @@ rule trim_reads:
         "workflow/logs/trim_fastqs/{read}.log"
     shell:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
-
 
 ## is this the best way to install/run idemp? (reproducible?)
 rule demux_fastqs:
@@ -257,4 +254,3 @@ rule combine_counts:
         "workflow/logs/combine_counts/combine_counts.log"
     shell:
         "python {params.script} {params.annot_file} {params.in_dir} {output} &>{log}"
-
