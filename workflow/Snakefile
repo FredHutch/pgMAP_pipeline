@@ -1,3 +1,9 @@
+## Phoebe C. R. Parrish
+## Berger Lab, FHCRC
+## 2022-03-01
+## updated 2023-05-29 by DJ Groso
+## snakemake v7.1.0
+
 import os
 import sys
 import re
@@ -10,6 +16,7 @@ configfile: "config/config.yaml"
 base_filename = config["base_filename"]
 bowtie_idx_ref_dir = config["bowtie_idx_ref_dir"]
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
+bowtie_idx_dir = config["bowtie_idx_dir"]
 
 #wildcard_constraints:
     ## note: regexp ^[^.]*$ means that dmx_read cannot contain a period in this rule
@@ -18,7 +25,6 @@ pgRNA_counts_ref = config["pgRNA_counts_ref"]
 ## set up paths for output files
 results_dir_dict = {"fastq_dir": "input/fastqs/",
                     "fastqc_dir": "results/fastqc/",
-                    "bowtie_idx_dir": "results/bowtie_index/",
                     "fastq_trimmed_dir": "results/fastq_trimmed/",
                     "fastq_demuxed_dir": "results/fastq_demuxed/",
                     "sam_dir": "results/sam/",
@@ -61,11 +67,6 @@ print('sample list: ', sample_list)
 
 rule all:
     input:
-        ## rule fastqc
-        # O
-        expand(results_dir_dict["fastqc_dir"] + "{fastq}_html-out.html", fastq=fastq_list),
-        expand(results_dir_dict["fastqc_dir"] + "{fastq}_zip-out.zip", fastq=fastq_list),
-        
         ## rule trim_reads
         # I
         expand(results_dir_dict['fastq_dir'] +  "{fastq}", fastq=fastq_list),
@@ -79,11 +80,6 @@ rule all:
         expand(results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R2_trimmed.fastq"),
         # O
         expand(results_dir_dict["fastq_demuxed_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz", dmx_read = ["R1", "R2"], sample = sample_list),
-       
-        ## rule: build_bowtie_index
-        expand(results_dir_dict["bowtie_idx_dir"] + "pgPEN_{dmx_read}.{bt_idx}.ebwt",
-            dmx_read = ["R1", "R2"],
-            bt_idx = ["1", "2", "3", "4", "rev.1", "rev.2"]),
         
         ## rule: align_reads
         expand(results_dir_dict["sam_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam",
@@ -107,21 +103,11 @@ rule all:
         ## rule: combine_counts
         results_dir_dict["pgRNA_counts_dir"] + base_filename + "_pgRNA_counts.txt"
 
-rule fastqc:
-    input:
-       fastq = results_dir_dict["fastq_dir"] + "{fastq}"
-    output:
-        html = results_dir_dict["fastqc_dir"] + "{fastq}_html-out.html",
-        zip = results_dir_dict["fastqc_dir"] + "{fastq}_zip-out.zip"
-    log:
-        "workflow/logs/fastqc/{fastq}.log"
-    threads: 1
-    wrapper:
-        "v1.21.0/bio/fastqc"
-
 rule trim_reads:
     input:
-        expand(results_dir_dict['fastq_dir'] +  "{fastq}", fastq=fastq_list)
+        ## try expand instead of lambda - see if it also works!
+        # fastq_dir + "PP_pgRNA_HeLa_S1_{read}_001.fastq.gz"
+        lambda wildcards: results_dir_dict['fastq_dir'] + read_to_fastq[wildcards.read]
     output:
         results_dir_dict['fastq_trimmed_dir'] + base_filename + "_{read}_trimmed.fastq"
     conda:
@@ -134,22 +120,26 @@ rule trim_reads:
     shell:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 
+
+## is this the best way to install/run idemp? (reproducible?)
 rule demux_fastqs:
     input:
-        idx = results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R3_trimmed.fastq",
-        R1 = results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R1_trimmed.fastq",
-        R2 = results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R2_trimmed.fastq"
+        idx = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R3_trimmed.fastq",
+        R1 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R1_trimmed.fastq",
+        R2 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R2_trimmed.fastq"
     output:
         ## put the expand statement here so this is only run once
         ##   (instead of once per output file) - can't run w/o expand statement
         ##   because then the input & output don't have matching wildcards
-        expand(results_dir_dict["fastq_demuxed_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz", dmx_read = ["R1", "R2"], sample = sample_list)
+        expand(results_dir_dict['fastq_demuxed_dir'] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
+            dmx_read = ["R1", "R2"],
+            sample = sample_list)
     params:
         idemp = config["idemp"],
         n_mismatch = 1,
         ref = config["barcode_ref_file"],
-        out_dir = results_dir_dict["fastq_demuxed_dir"], ## can't have folder as output => make param
-        bad_names = expand(results_dir_dict["fastq_demuxed_dir"] + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
+        out_dir = results_dir_dict['fastq_demuxed_dir'], ## can't have folder as output => make param
+        bad_names = expand(results_dir_dict['fastq_demuxed_dir'] + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list) ## to get rid of dumb default idemp output names
     log:
@@ -173,32 +163,17 @@ rule demux_fastqs:
             # echo "${{arr1[$i]}}"
             mv ${{arr1[$i]}} ${{arr2[$i]}}
         done
-        """      
-
-rule build_bowtie_index:
-    input:
-        bowtie_idx_ref_dir + "pgPEN_{dmx_read}.fa"
-    output:
-        expand(results_dir_dict["bowtie_idx_dir"] + "pgPEN_{{dmx_read}}.{bt_idx}.ebwt",
-            bt_idx = ["1", "2", "3", "4", "rev.1", "rev.2"])
-    conda:
-        "envs/bowtie.yaml"
-    params:
-        outfile_prefix = results_dir_dict["bowtie_idx_dir"] + "pgPEN_{dmx_read}"
-    log:
-        "workflow/logs/build_bowtie_index/{dmx_read}"
-    shell:
-        "bowtie-build -f {input} {params.outfile_prefix} &> {log}"
+        """
 
 rule align_reads:
     input:
-        fastq = results_dir_dict["fastq_demuxed_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz"
+        fastq = results_dir_dict['fastq_demuxed_dir'] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz"
     output:
-        results_dir_dict["sam_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
+        results_dir_dict['sam_dir'] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
     conda:
         "envs/bowtie.yaml"
     params:
-        idx = results_dir_dict["bowtie_idx_dir"] + "pgPEN_{dmx_read}"
+        idx = bowtie_idx_dir + "pgPEN_{dmx_read}"
     resources:
         mem = 98,
         time = 24,
@@ -210,15 +185,15 @@ rule align_reads:
 
 rule make_sorted_bams:
     input:
-        results_dir_dict["sam_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
+        results_dir_dict['sam_dir'] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam"
     output:
-        results_dir_dict["bam_sorted_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
+        results_dir_dict['bam_sorted_dir'] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
     conda:
         "envs/samtools.yaml"
     params:
-        unsorted_bam_dir = results_dir_dict["bam_dir"],
+        unsorted_bam_dir = results_dir_dict['bam_dir'],
         unsorted_bam = base_filename + "_{dmx_read}_trimmed_{sample}_aligned.bam",
-        tmp = results_dir_dict["bam_sorted_dir"] + "tmp_{dmx_read}_{sample}"
+        tmp = results_dir_dict['bam_sorted_dir'] + "tmp_{dmx_read}_{sample}"
     resources:
         mem = 32,
         time = 24
@@ -227,33 +202,35 @@ rule make_sorted_bams:
     shell:
         """
         mkdir -p {params.unsorted_bam_dir} ## TO DO: write a fxn to make this dir if it doesn't exist
+
         samtools view -bS -o {params.unsorted_bam_dir}/{params.unsorted_bam} {input}
+
         samtools sort -O bam -n {params.unsorted_bam_dir}/{params.unsorted_bam} -T {params.tmp} -o {output} &>{log}
         """
 
 rule get_stats:
     input:
-        results_dir_dict["bam_sorted_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
+        results_dir_dict['bam_sorted_dir'] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam"
     output:
-        results_dir_dict["bam_sorted_dir"] + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt"
+        results_dir_dict['bam_sorted_dir'] + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt"
     conda:
         "envs/samtools.yaml"
     log:
         "workflow/logs/get_stats/{dmx_read}_{sample}.log"
     shell:
-        "samtools flagstat {input} 2>{log} 1>{output}" 
+        "samtools flagstat {input} 2>{log} 1>{output}" ## fix error issue
 
 rule count_pgRNAs:
     input:
-        results_dir_dict["bam_sorted_dir"] + base_filename + "_R1_trimmed_{sample}_aligned_sorted.bam"
+        results_dir_dict['bam_sorted_dir'] + base_filename + "_R1_trimmed_{sample}_aligned_sorted.bam"
     output:
-        results_dir_dict["pgRNA_counts_dir"] + "counts_{sample}.txt"
+        results_dir_dict['pgRNA_counts_dir'] + "counts_{sample}.txt"
     conda:
         "envs/counter_efficient.yaml"
     params:
         ref = config["pgRNA_counts_ref"], ## do I need to do os.path.abspath?
         n_chunks = config["n_chunks"], ## default 50 for HeLa
-        out_dir = results_dir_dict["pgRNA_counts_dir"],
+        out_dir = results_dir_dict['pgRNA_counts_dir'],
         script = "workflow/scripts/counter_efficient.R"
     resources:
         mem = 98,
@@ -266,32 +243,18 @@ rule count_pgRNAs:
 
 rule combine_counts:
     input:
-        expand(results_dir_dict["pgRNA_counts_dir"] + "counts_{sample}.txt",
+        expand(results_dir_dict['pgRNA_counts_dir'] + "counts_{sample}.txt",
             sample = sample_list)
     output:
-        results_dir_dict["pgRNA_counts_dir"] + base_filename + "_pgRNA_counts.txt"
+        results_dir_dict['pgRNA_counts_dir'] + base_filename + "_pgRNA_counts.txt"
     conda:
         "envs/python.yaml"
     params:
         annot_file = config["pgRNA_counts_ref"], ## do I need os.path.abspath?
-        in_dir = results_dir_dict["pgRNA_counts_dir"],
+        in_dir = results_dir_dict['pgRNA_counts_dir'],
         script = "workflow/scripts/combine_counts.py"
     log:
         "workflow/logs/combine_counts/combine_counts.log"
     shell:
         "python {params.script} {params.annot_file} {params.in_dir} {output} &>{log}"
-        # ## read in pgRNA annotations to get IDs
-        # annot_df = pd.read_csv(params.annot_file, sep = "\t") ## will this work??
-        #
-        # ## loop through files in pgRNA_counts_dir
-        # dfs = [annot_df]
-        # ## sorted/lambda stuff is to order files alphabetically
-        # for file in sorted(os.scandir(params.in_dir), key=lambda e: e.name):
-        #     df = pd.read_csv(file, sep = "\t")
-        #     counts = df.loc[:, df.columns.str.contains("counts")] ## extract counts col
-        #     dfs.append(counts)
-        #
-        # out_df = pd.concat(dfs, axis = 1)
-        #
-        # ## write to output file
-        # out_df.to_csv(output[0], sep = "\t", index = False, header = True)
+
