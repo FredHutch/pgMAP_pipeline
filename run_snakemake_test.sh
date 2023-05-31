@@ -12,19 +12,18 @@ mkdir -p "${REPORT_DIR}"
 source activate snakemake
 echo "snakemake env activated"
 
+## install idemp in config dir
+git -C config clone --quiet https://github.com/yhwu/idemp.git
 
+## compile idemp
+make -C config/idemp
 
 ## check if idemp successfully installed
 IDEMP=config/idemp/idemp
 if test -f "$IDEMP"; then
     echo "idemp has been successfully installed and compiled in config folder."
 else 
-    echo "$IDEMP does not exist. Installing idemp."
-    ## install idemp in config dir
-    git -C config clone --quiet https://github.com/yhwu/idemp.git
-    echo "Compiling idemp."
-    ## compile idemp
-    make -C config/idemp  
+    echo "$IDEMP does not exist."
 fi
 
 ## make output dirs
@@ -76,6 +75,6 @@ snakemake --snakefile $SNAKE_FILE \
   --dag > "${REPORT_DIR}/dag.dot"
 dot -Tpdf "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.pdf"
 dot -Tsvg "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.svg"
-rm "${REPORT_DIR}/dag.dot"
+# rm "${REPORT_DIR}/dag.dot"
 
 echo -e "\nDONE!\n"
