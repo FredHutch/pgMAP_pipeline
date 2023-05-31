@@ -42,7 +42,7 @@ ACTTGA   sample1
 CTTGTA   sample2
 GGCTAC   sample3
 ```
-These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly. Note that the barcode and sample ID *must be separated by a single tab*).
+These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly. Note that the barcode and sample ID *must be separated by a single tab*.
 
 3. In `config/config.yaml`, ensure that variable `base_filename` corresponds to `PP_pgPEN_HeLa`. If using pgMAP for your own applications, please be sure to update `base_filename` accordingly.
 
@@ -70,12 +70,12 @@ The resulting pgRNA counts files can be found in `results/pgRNA_counts`:
 
 Snakemake will also generate reports in `reports.html` and `workflow/report`:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/snakemake_report.png)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/rule_runtimes.png)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/workflow.png)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/runtimes.png)
 
 All log (`workflow/logs`) and intermediate files (`results`) are also accessible to users.
 
 ## Questions
-Please contact Phoebe Parrish (developer) at [email], Daniel Groso (co-developer) at dgroso@fredhutch.org, or Alice Berger (Principal Investigator) at ahberger@fredhutch.org with any questions about pgMAP.
+Please contact Phoebe Parrish (developer) at pparrish@fredhutch.org, Daniel Groso (co-developer) at dgroso@fredhutch.org, or Alice Berger (Principal Investigator) at ahberger@fredhutch.org with any questions about pgMAP.
 
 ## License
 pgMAP is available open-source under the MIT license. 
