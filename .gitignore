@@ -16,7 +16,7 @@ config/config.yaml
 config/fastqs.fofn
 results/
 workflow/report/
-config/idemp/*
+input/fastqs/README.txt
 
 ## don't ignore the following
 !.gitignore
