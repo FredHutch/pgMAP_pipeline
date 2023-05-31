@@ -30,29 +30,27 @@ Folder setup/running info as described here:
 https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
 
 ## pgMAP Tutorial
-1. Downsampled pgPEN screen fastq files will be used in the example, and can be found in `input/fastqs`:
+1. Downsampled pgPEN screen fastq files will be used in the example, and can be found in `input/tutorial-fastqs`:
 
 * PP_pgRNA_HeLa_S1_R1_001.fastq.gz
 * PP_pgRNA_HeLa_S1_R2_001.fastq.gz
 * PP_pgRNA_HeLa_S1_R3_001.fastq.gz
 
-2. In `config/barcode_ref_file.txt`, paste the following as tab-separated values (please note that copy-pasting from this markdown will not preserve tabs):
+If using pgMAP for your own applications, please be sure to rename your fastq files so that they follow the naming convention shown above.
+
+2. Make a copy of or rename `config/barcode_ref_file.sample.txt` as `barcode_ref_file.txt`, which is a file of sequencing barcodes:
 ```
-ACTTGA   sample1
 CTTGTA   sample2
+ACTTGA   sample1
 GGCTAC   sample3
 ```
 These barcodes are used in the demultiplexing step of the pipeline and are unique to each sample and condition. If using pgMAP for your own applications, please be sure to update `barcode_ref_file.txt` accordingly. Note that the barcode and sample ID *must be separated by a single tab*.
 
-3. In `config/config.yaml`, ensure that variable `base_filename` corresponds to `PP_pgPEN_HeLa`. If using pgMAP for your own applications, please be sure to update `base_filename` accordingly.
+3. Make a copy of or rename `config/config.sample.yaml` as `config.yaml`. If using pgMAP for your own applications, please be sure to update `base_filename` accordingly.
 
 4. pgMAP is now ready to run. Execute `run_snakemake_test.sh` on an interactive node or other server intended for computationally intensive tasks [note: could provide guidance on number of cores here] : 
 ```
-. run_snakemake_test.sh
-```
-Additionally, to schedule a slurm job for pgMAP, execute `run_snakemake_cluster.sh`:
-```
-. run_snakemake_test_cluster.sh
+. run_snakemake.sh
 ```
 pgMAP will automatically install all required packages with dependencies. Snakemake will print output as the processes run and detail each step, including any errors that arise:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](images/run_pgMAP.png)
