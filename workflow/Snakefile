@@ -29,7 +29,7 @@ bowtie_idx_dir = config["bowtie_idx_dir"]
 #    dmx_read = "^[^.]*$"
 
 ## set up paths for output files
-results_dir_dict = {"fastq_dir": "input/fastqs/",
+results_dir_dict = {"fastq_dir": config["input_dir"],
                     "fastqc_dir": "results/fastqc/",
                     "fastq_trimmed_dir": "results/fastq_trimmed/",
                     "fastq_demuxed_dir": "results/fastq_demuxed/",
