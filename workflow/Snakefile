@@ -20,7 +20,7 @@ bam_dir = os.path.abspath(config["bam_dir"]) + "/"
 bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
 pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 base_filename = config["base_filename"]
-bowtie_idx_ref_dir = config["bowtie_idx_ref_dir"]
+# bowtie_idx_ref_dir = config["bowtie_idx_ref_dir"]
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
 bowtie_idx_dir = config["bowtie_idx_dir"]
 
