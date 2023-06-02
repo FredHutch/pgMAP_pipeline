@@ -1,5 +1,7 @@
 # pgMAP (paired guide RNA MAPper) Pipeline
 
+From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRISPR screens](https://arxiv.org/abs/2306.00944)
+
 ## Running the pipeline
 
 1. Clone or fork the git repo from https://github.com/FredHutch/pgMAP_pipeline/ (if you are not sure of the difference between cloning and forking, check out the explainer [here](https://github.com/FredHutch/pgMAP_pipeline/)). Make sure you are on the main branch. 
@@ -79,3 +81,4 @@ Please contact Phoebe Parrish (developer) at pparrish@fredhutch.org, Daniel Gros
 pgMAP is available open-source under the MIT license. 
 
 ## Cite pgMAP
+Please cite pgMAP as arXiv:2306.00944
