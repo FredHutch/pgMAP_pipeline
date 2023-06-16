@@ -5,7 +5,7 @@ import pandas as pd
 
 def main(annot_file, in_dir, out_file):
     ## read in pgRNA annotations to get IDs
-    annot_df = pd.read_csv(annot_file, sep = "\t") ## will this work??
+    annot_df = pd.read_csv(annot_file, sep = "\t")
 
     ## loop through files in pgRNA_counts_dir
     dfs = [annot_df]
