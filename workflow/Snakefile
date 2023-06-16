@@ -215,7 +215,7 @@ rule get_stats:
     log:
         "workflow/logs/get_stats/{dmx_read}_{sample}.log"
     shell:
-        "samtools flagstat {input} 2>{log} 1>{output}" ## fix error issue
+        "samtools flagstat {input} 2>{log} 1>{output}"
 
 rule count_pgRNAs:
     input:
@@ -226,7 +226,7 @@ rule count_pgRNAs:
     conda:
         "envs/counter_efficient.yaml"
     params:
-        ref = config["pgRNA_counts_ref"], ## do I need to do os.path.abspath?
+        ref = config["pgRNA_counts_ref"],
         n_chunks = config["n_chunks"], ## default 50 for HeLa
         out_dir = results_dir_dict['pgRNA_counts_dir'],
         script = "workflow/scripts/counter_efficient.R"
@@ -248,7 +248,7 @@ rule combine_counts:
     conda:
         "envs/python.yaml"
     params:
-        annot_file = config["pgRNA_counts_ref"], ## do I need os.path.abspath?
+        annot_file = config["pgRNA_counts_ref"],
         in_dir = results_dir_dict['pgRNA_counts_dir'],
         script = "workflow/scripts/combine_counts.py"
     log:
