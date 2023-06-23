@@ -10,7 +10,7 @@ REPORT_DIR="${BASE_PATH}/workflow/report"
 mkdir -p "${REPORT_DIR}"
 
 ## run this if the Snakemake environment has not been set up yet
-# mamba create -f $CONDA_ENV
+# mamba env create -f $CONDA_ENV
 
 ## activate conda envt
 source activate snakemake && echo "snakemake env activated"
