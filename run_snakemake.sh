@@ -3,6 +3,7 @@
 BASE_PATH=$(pwd)
 SNAKE_FILE="${BASE_PATH}/workflow/Snakefile"
 CONFIG_FILE="${BASE_PATH}/config/config.yaml"
+CONDA_ENV="${BASE_PATH}/workflow/envs/snakemake.yaml"
 
 # ## make report dirs
 REPORT_DIR="${BASE_PATH}/workflow/report"
@@ -12,7 +13,8 @@ mkdir -p "${REPORT_DIR}"
 source activate snakemake
 echo "snakemake env activated"
 
-
+## run this if the Snakemake environment has not been set up yet
+# mamba create -f $CONDA_ENV
 
 ## check if idemp successfully installed
 IDEMP=config/idemp/idemp
