@@ -18,7 +18,7 @@ From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRI
       * If you **do** already have Conda installed, run the following command: `$ conda install -n base -c conda-forge mamba`
    2. Next, create your Snakemake environment using Mamba by either:
       * Running the command `mamba env create -f workflow/envs/snakemake.yaml`
-      * Un-commenting line 17 in the script `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
+      * Un-commenting line 13 in the script `run_snakemake.sh` (command: `# mamba create -f $CONDA_ENV`)
 
 
 4. Run the script `run_snakemake.sh` by entering the command: `bash run_snakemake.sh`
