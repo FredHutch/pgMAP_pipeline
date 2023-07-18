@@ -21,9 +21,9 @@ input_dir: input/tutorial-fastqs/
 #####################################
 ## read coordinates: format = [start, end]
 ## defines the coordinates for trimming the 3 reads
-R1_coords: [1, 20]
+R1_coords: [2, 20]
 R2_coords: [2, 21]
-R3_coords: [1, 6]
+R3_coords: [161, 166]
 
 ## config files
 ## - for the tutorial, copy barcode_ref_file.sample.txt to barcode_ref_file.txt
