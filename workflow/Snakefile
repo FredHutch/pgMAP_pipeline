@@ -1,7 +1,7 @@
 ## Phoebe C. R. Parrish
 ## Berger Lab, FHCRC
 ## 2022-03-01
-## updated 2023-05-29 by DJ Groso
+## updated 2023-07-18 by DJ Groso
 ## snakemake v7.1.0
 
 import os
@@ -20,17 +20,14 @@ bam_dir = os.path.abspath(config["bam_dir"]) + "/"
 bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
 pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 base_filename = config["base_filename"]
-# bowtie_idx_ref_dir = config["bowtie_idx_ref_dir"]
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
-bowtie_idx_dir = config["bowtie_idx_dir"]
-
-#wildcard_constraints:
-    ## note: regexp ^[^.]*$ means that dmx_read cannot contain a period in this rule
-#    dmx_read = "^[^.]*$"
+#bowtie_idx_dir = config["bowtie_idx_dir"]
+bradley_idx_dir = config["bradley_idx_dir"]
+R1_dir = config["R1_dir"]
+I1_dir = config["I1_dir"]
 
 ## set up paths for output files
-results_dir_dict = {"fastq_dir": config["input_dir"],
-                    "fastqc_dir": "results/fastqc/",
+results_dir_dict = {"fastqc_dir": "results/fastqc/",
                     "fastq_trimmed_dir": "results/fastq_trimmed/",
                     "fastq_demuxed_dir": "results/fastq_demuxed/",
                     "sam_dir": "results/sam/",
@@ -40,42 +37,60 @@ results_dir_dict = {"fastq_dir": config["input_dir"],
 
 read_to_fastq = {}
 fastq_trim_coords = {}
+trim_coords = [config["gRNA1"], config["gRNA2"], config["barcode"]]
 
-## convert to a dictionary too (so position isn't key)
-trim_coords = [config["R1_coords"], config["R2_coords"], config["R3_coords"]]
+## get fastq filenames
+## gRNA1
+gRNA1_list = os.listdir(R1_dir)
+gRNA1_str = str(gRNA1_list[0])
 
-fastq_list = [file for file in os.listdir(results_dir_dict["fastq_dir"]) if file != "README.txt"]
-fastq_list.sort()
+## gRNA2_barcode
+gRNA2_barcode_list = os.listdir(I1_dir)
+gRNA2_barcode_str = str(gRNA2_barcode_list[0])
 
-count = 0
-for count, i in enumerate(fastq_list):
-    key = "R" + str(count+1)
-    read_to_fastq[key] = i
-    fastq_trim_coords[key] = trim_coords[count]
+# count = 0
+# for count, i in enumerate(fastq_list):
+#     key = "R" + str(count+1)
+#     read_to_fastq[key] = i
+#     fastq_trim_coords[key] = trim_coords[count]
 
 sample_list = []
 barcode_ref_file = open(config["barcode_ref_file"], "r")
 
 for line in barcode_ref_file:
     ## get sample names from idemp ref file
+    ## THIS needs to change before next submission; either have it as a tsv so it knows or comma, one space.
     sample = line.strip().split("\t")[1]
     sample_list.append(sample)
 sample_list.sort()
 barcode_ref_file.close()
 
+## only alternative I can think of is making a new rule for fastx to extract barcodes, but users may still have to have separate folders for inputs
 rule all:
     input:
-        ## rule trim_reads
+        ## rule trim_reads_gRNA1
         # I
-        expand(results_dir_dict['fastq_dir'] +  "{fastq}", fastq=fastq_list),
+        expand(R1_dir + gRNA1_str),
         # O
-        expand(results_dir_dict['fastq_trimmed_dir'] + base_filename +  "_{read}_trimmed.fastq", read=read_to_fastq),
+        expand(results_dir_dict['fastq_trimmed_dir'] + base_filename +  "_R1_trimmed.fastq"),
+
+        ## rule trim_reads_I1_gRNA2
+        # I
+        expand(I1_dir + gRNA2_barcode_str),
+        # O
+        expand(results_dir_dict['fastq_trimmed_dir'] + base_filename +  "_R2_trimmed.fastq"),
+
+        ## rule trim_reads_I1_barcode
+        # I
+        expand(I1_dir + gRNA2_barcode_str),
+        # O
+        expand(results_dir_dict['fastq_trimmed_dir'] + base_filename +  "_R3_trimmed.fastq"),
         
         ## rule demux_fastqs
         # I
-        expand(results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R3_trimmed.fastq"),
         expand(results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R1_trimmed.fastq"),
         expand(results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R2_trimmed.fastq"),
+        expand(results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R3_trimmed.fastq"),
         # O
         expand(results_dir_dict["fastq_demuxed_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz", dmx_read = ["R1", "R2"], sample = sample_list),
         
@@ -101,33 +116,57 @@ rule all:
         ## rule: combine_counts
         results_dir_dict["pgRNA_counts_dir"] + base_filename + "_pgRNA_counts.txt"
 
-rule trim_reads:
+rule trim_reads_gRNA1:
     input:
-        ## try expand instead of lambda - see if it also works!
-        # fastq_dir + "PP_pgRNA_HeLa_S1_{read}_001.fastq.gz"
-        lambda wildcards: results_dir_dict['fastq_dir'] + read_to_fastq[wildcards.read]
+        R1_dir + gRNA1_str
     output:
-        results_dir_dict['fastq_trimmed_dir'] + base_filename + "_{read}_trimmed.fastq"
+        results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R1_trimmed.fastq"
     conda:
         "envs/fastx_toolkit.yaml"
-    params: ## is this the best way to do this?
-        start = lambda wildcards: fastq_trim_coords[wildcards.read][0],
-        end = lambda wildcards: fastq_trim_coords[wildcards.read][1]
+    params: 
+        start = config["gRNA1"][0],
+        end = config["gRNA1"][1]
     log:
-        "workflow/logs/trim_fastqs/{read}.log"
+        "workflow/logs/trim_fastqs/gRNA1.log"
     shell:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 
-## is this the best way to install/run idemp? (reproducible?)
+rule trim_reads_I1_gRNA2:
+    input:
+        I1_dir + gRNA2_barcode_str
+    output:
+        results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R2_trimmed.fastq"
+    conda:
+        "envs/fastx_toolkit.yaml"
+    params:
+        start = config["gRNA2"][0],
+        end = config["gRNA2"][1]
+    log:
+        "workflow/logs/trim_fastqs/gRNA2.log"
+    shell:
+        "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
+
+rule trim_barcodes:
+    input:
+        I1_dir + gRNA2_barcode_str
+    output:
+        results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R3_trimmed.fastq"
+    conda:
+        "envs/fastx_toolkit.yaml"
+    params: 
+        start = config["barcode"][0],
+        end = config["barcode"][1]
+    log:
+        "workflow/logs/trim_fastqs/barcode.log"
+    shell:
+        "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
+
 rule demux_fastqs:
     input:
-        idx = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R3_trimmed.fastq",
         R1 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R1_trimmed.fastq",
-        R2 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R2_trimmed.fastq"
+        R2 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R2_trimmed.fastq",
+        idx = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R3_trimmed.fastq",
     output:
-        ## put the expand statement here so this is only run once
-        ##   (instead of once per output file) - can't run w/o expand statement
-        ##   because then the input & output don't have matching wildcards
         expand(results_dir_dict['fastq_demuxed_dir'] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
             dmx_read = ["R1", "R2"],
             sample = sample_list)
@@ -170,7 +209,7 @@ rule align_reads:
     conda:
         "envs/bowtie.yaml"
     params:
-        idx = bowtie_idx_dir + "pgPEN_{dmx_read}"
+        idx = bradley_idx_dir + "pgPEN_{dmx_read}"
     resources:
         mem = 98,
         time = 24,
@@ -215,7 +254,7 @@ rule get_stats:
     log:
         "workflow/logs/get_stats/{dmx_read}_{sample}.log"
     shell:
-        "samtools flagstat {input} 2>{log} 1>{output}"
+        "samtools flagstat {input} 2>{log} 1>{output}" ## fix error issue
 
 rule count_pgRNAs:
     input:
@@ -226,7 +265,7 @@ rule count_pgRNAs:
     conda:
         "envs/counter_efficient.yaml"
     params:
-        ref = config["pgRNA_counts_ref"],
+        ref = config["pgRNA_counts_ref"], ## do I need to do os.path.abspath?
         n_chunks = config["n_chunks"], ## default 50 for HeLa
         out_dir = results_dir_dict['pgRNA_counts_dir'],
         script = "workflow/scripts/counter_efficient.R"
@@ -248,7 +287,7 @@ rule combine_counts:
     conda:
         "envs/python.yaml"
     params:
-        annot_file = config["pgRNA_counts_ref"],
+        annot_file = config["pgRNA_counts_ref"], ## do I need os.path.abspath?
         in_dir = results_dir_dict['pgRNA_counts_dir'],
         script = "workflow/scripts/combine_counts.py"
     log:
