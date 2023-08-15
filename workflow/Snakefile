@@ -21,8 +21,7 @@ bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
 pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 base_filename = config["base_filename"]
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
-#bowtie_idx_dir = config["bowtie_idx_dir"]
-bradley_idx_dir = config["bradley_idx_dir"]
+bowtie_idx_dir = config["bowtie_idx_dir"]
 R1_dir = config["R1_dir"]
 I1_dir = config["I1_dir"]
 
@@ -209,7 +208,7 @@ rule align_reads:
     conda:
         "envs/bowtie.yaml"
     params:
-        idx = bradley_idx_dir + "pgPEN_{dmx_read}"
+        idx = bowtie_idx_dir + "pgPEN_{dmx_read}"
     resources:
         mem = 98,
         time = 24,
