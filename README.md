@@ -2,6 +2,9 @@
 
 From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRISPR screens](https://arxiv.org/abs/2306.00944)
 
+## Bug fixes:
+Need to filter files for R1/I1 str variables: (see https://docs.python.org/3/library/fnmatch.html#module-fnmatch)
+
 ## Running the pipeline
 
 1. Clone or fork the git repo from https://github.com/FredHutch/pgMAP_pipeline/ (if you are not sure of the difference between cloning and forking, check out the explainer [here](https://github.com/FredHutch/pgMAP_pipeline/)). Make sure you are on the main branch. 
