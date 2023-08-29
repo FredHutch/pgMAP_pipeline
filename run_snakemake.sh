@@ -1,6 +1,9 @@
 #!/bin/bash
 
 BASE_PATH=$(pwd)
+
+# bash make_dirs.sh "${BASE_PATH}"
+
 SNAKE_FILE="${BASE_PATH}/workflow/Snakefile"
 CONFIG_FILE="${BASE_PATH}/config/config.yaml"
 CONDA_ENV="${BASE_PATH}/workflow/envs/snakemake.yaml"
@@ -39,7 +42,6 @@ mkdir -p "${BASE_PATH}/results/pgRNA_counts"
 ## make log dirs
 mkdir -p "workflow/logs/trim_reads"
 mkdir -p "workflow/logs/demux_fastqs"
-mkdir -p "workflow/logs/build_bowtie_index"
 mkdir -p "workflow/logs/align_reads"
 mkdir -p "workflow/logs/make_sorted_bams"
 mkdir -p "workflow/logs/get_stats"
@@ -49,7 +51,7 @@ mkdir -p "workflow/logs/combine_counts"
 # ## run the pipeline
 snakemake --snakefile "workflow/Snakefile"  \
   --use-conda --conda-prefix "~/tmp/" --conda-frontend mamba \
-  -k -p --reason --jobs 50 --latency-wait 80 \
+  -k -p --reason --jobs 50 --latency-wait 80 
 
   ## -n = dry run, -r prints reasons
   ## -R forces snakemake to rerun from a specific rule
@@ -61,22 +63,22 @@ snakemake --snakefile "workflow/Snakefile"  \
 
 echo -e "\nDONE!\n"
 
-echo -e "Exporting pipeline rulegraph to svg and pdf..."
-snakemake --snakefile $SNAKE_FILE \
-  --configfile $CONFIG_FILE \
-  --rulegraph > "${REPORT_DIR}/rulegraph.dot"
-dot -Tpdf "${REPORT_DIR}/rulegraph.dot" > "${REPORT_DIR}/pipeline_rulegraph.pdf"
-dot -Tsvg "${REPORT_DIR}/rulegraph.dot" > "${REPORT_DIR}/pipeline_rulegraph.svg"
-rm "${REPORT_DIR}/rulegraph.dot"
+# echo -e "Exporting pipeline rulegraph to svg and pdf..."
+# snakemake --snakefile $SNAKE_FILE \
+#   --configfile $CONFIG_FILE \
+#   --rulegraph > "${REPORT_DIR}/rulegraph.dot"
+# dot -Tpdf "${REPORT_DIR}/rulegraph.dot" > "${REPORT_DIR}/pipeline_rulegraph.pdf"
+# dot -Tsvg "${REPORT_DIR}/rulegraph.dot" > "${REPORT_DIR}/pipeline_rulegraph.svg"
+# rm "${REPORT_DIR}/rulegraph.dot"
 
-## export PDF and svg visualizations of DAG structure of pipeline steps
-## NOTE: this will not work if there are print statements in the pipeline
-echo -e "Exporting pipeline DAG to svg and pdf..."
-snakemake --snakefile $SNAKE_FILE \
-  --configfile $CONFIG_FILE \
-  --dag > "${REPORT_DIR}/dag.dot"
-dot -Tpdf "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.pdf"
-dot -Tsvg "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.svg"
-rm "${REPORT_DIR}/dag.dot"
+# ## export PDF and svg visualizations of DAG structure of pipeline steps
+# ## NOTE: this will not work if there are print statements in the pipeline
+# echo -e "Exporting pipeline DAG to svg and pdf..."
+# snakemake --snakefile $SNAKE_FILE \
+#   --configfile $CONFIG_FILE \
+#   --dag > "${REPORT_DIR}/dag.dot"
+# dot -Tpdf "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.pdf"
+# dot -Tsvg "${REPORT_DIR}/dag.dot" > "${REPORT_DIR}/pipeline_dag.svg"
+# rm "${REPORT_DIR}/dag.dot"
 
-echo -e "\nDONE!\n"
+# echo -e "\nDONE!\n"

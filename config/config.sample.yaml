@@ -13,8 +13,7 @@ n_chunks: 50
 ## - for the tutorial, input_dir = input/tutorial_fastqs/
 ## - for sequencing dtaa from a pgPEN CRISPR screen, put your FASTQs into input/fastqs/
 ##   and set the input_dir variable to input/fastqs/
-R1_dir: input/fastqs/R1-fastq
-I1_dir: input/fastqs/I1-fastq
+input_dir: input/fastqs/
 
 #####################################
 ### DO NOT UPDATE VARIABLES BELOW ###

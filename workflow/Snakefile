@@ -13,17 +13,18 @@ import pandas as pd
 configfile: "config/config.yaml"
 
 ## define config dirs
-fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
-fastq_demuxed_dir = os.path.abspath(config["fastq_demuxed_dir"]) + "/"
-sam_dir = os.path.abspath(config["sam_dir"]) + "/"
-bam_dir = os.path.abspath(config["bam_dir"]) + "/"
-bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
-pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
+# fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
+# fastq_demuxed_dir = os.path.abspath(config["fastq_demuxed_dir"]) + "/"
+# sam_dir = os.path.abspath(config["sam_dir"]) + "/"
+# bam_dir = os.path.abspath(config["bam_dir"]) + "/"
+# bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
+# pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
 base_filename = config["base_filename"]
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
 bowtie_idx_dir = config["bowtie_idx_dir"]
-R1_dir = config["R1_dir"]
-I1_dir = config["I1_dir"]
+input_dir = config["input_dir"]
+# R1_dir = config["R1_dir"]
+# I1_dir = config["I1_dir"]
 
 ## set up paths for output files
 results_dir_dict = {"fastqc_dir": "results/fastqc/",
@@ -34,18 +35,53 @@ results_dir_dict = {"fastqc_dir": "results/fastqc/",
                     "bam_sorted_dir": "results/bam_sorted/",
                     "pgRNA_counts_dir": "results/pgRNA_counts/"}
 
+# read_to_fastq = {}
+# fastq_trim_coords = {}
+
+## get FASTQ file names in input folder
+fastq_list = []
+for fname in os.listdir(input_dir):
+    if "fastq" in fname:
+        fastq_list.append(fname)
+print("fastq_list = ", fastq_list)
+fastq_list.sort()
+print("sorted fastq_list = ", fastq_list)
+
+## make lists  of fastq names and trim coordinates for
+## each sequencing strategy
+if len(fastq_list) == 3:
+    ## leave fastq_list as is
+    trim_coords_list = [[1, 20], [2, 21], [1, 6]]
+elif len(fastq_list) == 2:
+    ## add a duplicate fastq2 to the end of the list
+    fastq_list = fastq_list.append(fastq_list[1])
+    trim_coords_list = [[2, 20], [2, 21], [161, 166]]
+else: 
+    sys.exit("There must be either 2 or 3 FASTQ files in the input folder.")
+print("fastq_list = ", fastq_list)
+print("trim_coords = ", trim_coords_list)
+
+## set up a dictionary with keynames for each trimmed output fastq
 read_to_fastq = {}
 fastq_trim_coords = {}
-trim_coords = [config["gRNA1"], config["gRNA2"], config["barcode"]]
+fastq_trim_keys = ["gRNA1", "gRNA2", "barcode"]
+for i in range(0, 3):
+        key_name = fastq_trim_keys[i]
+        ## assign fastq_name, trim_coords to each key
+        read_to_fastq[key_name] = fastq_list[i]
+        fastq_trim_coords[key_name] = trim_coords_list[i]
+print("fastq_trim_coords =", fastq_trim_coords)
+print("read_to_fastq =", read_to_fastq)
+# trim_coords = [config["gRNA1"], config["gRNA2"], config["barcode"]]
 
 ## get fastq filenames
 ## gRNA1
-gRNA1_list = os.listdir(R1_dir)
-gRNA1_str = str(gRNA1_list[0])
+# gRNA1_list = os.listdir(R1_dir)
+# gRNA1_str = str(gRNA1_list[0])
 
 ## gRNA2_barcode
-gRNA2_barcode_list = os.listdir(I1_dir)
-gRNA2_barcode_str = str(gRNA2_barcode_list[0])
+# gRNA2_barcode_list = os.listdir(I1_dir)
+# gRNA2_barcode_str = str(gRNA2_barcode_list[0])
 
 # count = 0
 # for count, i in enumerate(fastq_list):
@@ -67,45 +103,31 @@ barcode_ref_file.close()
 ## only alternative I can think of is making a new rule for fastx to extract barcodes, but users may still have to have separate folders for inputs
 rule all:
     input:
-        ## rule trim_reads_gRNA1
+        ## rule trim_reads
         # I
-        expand(R1_dir + gRNA1_str),
+        # expand(input_dir + "{fastq}", fastq = fastq_list),
         # O
-        expand(results_dir_dict['fastq_trimmed_dir'] + base_filename +  "_R1_trimmed.fastq"),
-
-        ## rule trim_reads_I1_gRNA2
-        # I
-        expand(I1_dir + gRNA2_barcode_str),
-        # O
-        expand(results_dir_dict['fastq_trimmed_dir'] + base_filename +  "_R2_trimmed.fastq"),
-
-        ## rule trim_reads_I1_barcode
-        # I
-        expand(I1_dir + gRNA2_barcode_str),
-        # O
-        expand(results_dir_dict['fastq_trimmed_dir'] + base_filename +  "_R3_trimmed.fastq"),
+        expand(results_dir_dict['fastq_trimmed_dir'] + base_filename + "_{read}_trimmed.fastq", read=fastq_trim_keys),
         
         ## rule demux_fastqs
         # I
-        expand(results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R1_trimmed.fastq"),
-        expand(results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R2_trimmed.fastq"),
-        expand(results_dir_dict["fastq_trimmed_dir"] + base_filename + "_R3_trimmed.fastq"),
+        # expand(results_dir_dict['fastq_trimmed_dir'] + base_filename + "_{read}_trimmed.fastq", read=fastq_trim_keys),
         # O
-        expand(results_dir_dict["fastq_demuxed_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz", dmx_read = ["R1", "R2"], sample = sample_list),
+        expand(results_dir_dict["fastq_demuxed_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz", dmx_read = ["gRNA1", "gRNA2"], sample = sample_list),
         
         ## rule: align_reads
         expand(results_dir_dict["sam_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned.sam",
-            dmx_read = ["R1", "R2"],
+            dmx_read = ["gRNA1", "gRNA2"],
             sample = sample_list),
         
         ## rule: make_sorted_bams
         expand(results_dir_dict["bam_sorted_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted.bam",
-            dmx_read = ["R1", "R2"],
+            dmx_read = ["gRNA1", "gRNA2"],
             sample = sample_list),
         
         ## rule: get_stats
         expand(results_dir_dict["bam_sorted_dir"] + "flagstat/" + base_filename + "_{dmx_read}_trimmed_{sample}_aligned_sorted_flagstat.txt",
-            dmx_read = ["R1", "R2"],
+            dmx_read = ["gRNA1", "gRNA2"],
             sample = sample_list),
         
         ## rule: count_pgRNAs
@@ -115,59 +137,32 @@ rule all:
         ## rule: combine_counts
         results_dir_dict["pgRNA_counts_dir"] + base_filename + "_pgRNA_counts.txt"
 
-rule trim_reads_gRNA1:
+rule trim_reads:
     input:
-        R1_dir + gRNA1_str
+        ## try expand instead of lambda - see if it also works!
+        # fastq_dir + "PP_pgRNA_HeLa_S1_{read}_001.fastq.gz"
+        lambda wildcards: input_dir + read_to_fastq[wildcards.read]
     output:
-        results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R1_trimmed.fastq"
+        results_dir_dict['fastq_trimmed_dir'] + base_filename + "_{read}_trimmed.fastq"
     conda:
         "envs/fastx_toolkit.yaml"
-    params: 
-        start = config["gRNA1"][0],
-        end = config["gRNA1"][1]
+    params: ## is this the best way to do this?
+        start = lambda wildcards: fastq_trim_coords[wildcards.read][0],
+        end = lambda wildcards: fastq_trim_coords[wildcards.read][1]
     log:
-        "workflow/logs/trim_fastqs/gRNA1.log"
+        "workflow/logs/trim_fastqs/{read}.log"
     shell:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 
-rule trim_reads_I1_gRNA2:
-    input:
-        I1_dir + gRNA2_barcode_str
-    output:
-        results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R2_trimmed.fastq"
-    conda:
-        "envs/fastx_toolkit.yaml"
-    params:
-        start = config["gRNA2"][0],
-        end = config["gRNA2"][1]
-    log:
-        "workflow/logs/trim_fastqs/gRNA2.log"
-    shell:
-        "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
-
-rule trim_barcodes:
-    input:
-        I1_dir + gRNA2_barcode_str
-    output:
-        results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R3_trimmed.fastq"
-    conda:
-        "envs/fastx_toolkit.yaml"
-    params: 
-        start = config["barcode"][0],
-        end = config["barcode"][1]
-    log:
-        "workflow/logs/trim_fastqs/barcode.log"
-    shell:
-        "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 
 rule demux_fastqs:
     input:
-        R1 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R1_trimmed.fastq",
-        R2 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R2_trimmed.fastq",
-        idx = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_R3_trimmed.fastq",
+        gRNA1 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_gRNA1_trimmed.fastq",
+        gRNA2 = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_gRNA2_trimmed.fastq",
+        barcode = results_dir_dict['fastq_trimmed_dir'] + base_filename + "_barcode_trimmed.fastq",
     output:
         expand(results_dir_dict['fastq_demuxed_dir'] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz",
-            dmx_read = ["R1", "R2"],
+            dmx_read = ["gRNA1", "gRNA2"],
             sample = sample_list)
     params:
         idemp = config["idemp"],
@@ -175,7 +170,7 @@ rule demux_fastqs:
         ref = config["barcode_ref_file"],
         out_dir = results_dir_dict['fastq_demuxed_dir'], ## can't have folder as output => make param
         bad_names = expand(results_dir_dict['fastq_demuxed_dir'] + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
-            dmx_read = ["R1", "R2"],
+            dmx_read = ["gRNA1", "gRNA2"],
             sample = sample_list) ## to get rid of dumb default idemp output names
     log:
         "workflow/logs/demux_fastqs/idemp.log"
@@ -186,7 +181,7 @@ rule demux_fastqs:
     shell:
         """
         {params.idemp} -b {params.ref} -n {params.n_mismatch} \
-        -I1 {input.idx} -R1 {input.R1} -R2 {input.R2} -o {params.out_dir} &> {log}
+        -I1 {input.barcode} -R1 {input.gRNA1} -R2 {input.gRNA2} -o {params.out_dir} &> {log}
 
         ## convert wildcards to bash arrays
         declare -a arr1=({params.bad_names})
@@ -257,8 +252,8 @@ rule get_stats:
 
 rule count_pgRNAs:
     input:
-        bam1 = results_dir_dict['bam_sorted_dir'] + base_filename + "_R1_trimmed_{sample}_aligned_sorted.bam",
-        bam2 = results_dir_dict['bam_sorted_dir'] + base_filename + "_R2_trimmed_{sample}_aligned_sorted.bam"
+        bam1 = results_dir_dict['bam_sorted_dir'] + base_filename + "_gRNA1_trimmed_{sample}_aligned_sorted.bam",
+        bam2 = results_dir_dict['bam_sorted_dir'] + base_filename + "_gRNA2_trimmed_{sample}_aligned_sorted.bam"
     output:
         results_dir_dict['pgRNA_counts_dir'] + "counts_{sample}.txt"
     conda:

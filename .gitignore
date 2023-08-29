@@ -21,4 +21,5 @@ input/fastqs/README.txt
 ## don't ignore the following
 !.gitignore
 !config/*.sample.*
+!config/pgPEN_index/*
 test.py
