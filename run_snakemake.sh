@@ -51,7 +51,7 @@ mkdir -p "workflow/logs/combine_counts"
 # ## run the pipeline
 snakemake --snakefile "workflow/Snakefile"  \
   --use-conda --conda-prefix "~/tmp/" --conda-frontend mamba \
-  -k -p --reason --jobs 50 --latency-wait 80 
+  -k -p --reason --jobs 50 --latency-wait 80 -n
 
   ## -n = dry run, -r prints reasons
   ## -R forces snakemake to rerun from a specific rule

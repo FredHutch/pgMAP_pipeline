@@ -12,19 +12,11 @@ import pandas as pd
 ## define config file
 configfile: "config/config.yaml"
 
-## define config dirs
-# fastq_trimmed_dir = os.path.abspath(config["fastq_trimmed_dir"]) + "/"
-# fastq_demuxed_dir = os.path.abspath(config["fastq_demuxed_dir"]) + "/"
-# sam_dir = os.path.abspath(config["sam_dir"]) + "/"
-# bam_dir = os.path.abspath(config["bam_dir"]) + "/"
-# bam_sorted_dir = os.path.abspath(config["bam_sorted_dir"]) + "/"
-# pgRNA_counts_dir = os.path.abspath(config["pgRNA_counts_dir"]) + "/"
+## config variables
 base_filename = config["base_filename"]
 pgRNA_counts_ref = config["pgRNA_counts_ref"]
 bowtie_idx_dir = config["bowtie_idx_dir"]
 input_dir = config["input_dir"]
-# R1_dir = config["R1_dir"]
-# I1_dir = config["I1_dir"]
 
 ## set up paths for output files
 results_dir_dict = {"fastqc_dir": "results/fastqc/",
@@ -35,17 +27,14 @@ results_dir_dict = {"fastqc_dir": "results/fastqc/",
                     "bam_sorted_dir": "results/bam_sorted/",
                     "pgRNA_counts_dir": "results/pgRNA_counts/"}
 
-# read_to_fastq = {}
-# fastq_trim_coords = {}
-
 ## get FASTQ file names in input folder
 fastq_list = []
 for fname in os.listdir(input_dir):
     if "fastq" in fname:
         fastq_list.append(fname)
-print("fastq_list = ", fastq_list)
+# print("fastq_list = ", fastq_list)
 fastq_list.sort()
-print("sorted fastq_list = ", fastq_list)
+# print("sorted fastq_list = ", fastq_list)
 
 ## make lists  of fastq names and trim coordinates for
 ## each sequencing strategy
@@ -58,8 +47,8 @@ elif len(fastq_list) == 2:
     trim_coords_list = [[2, 20], [2, 21], [161, 166]]
 else: 
     sys.exit("There must be either 2 or 3 FASTQ files in the input folder.")
-print("fastq_list = ", fastq_list)
-print("trim_coords = ", trim_coords_list)
+# print("fastq_list = ", fastq_list)
+# print("trim_coords = ", trim_coords_list)
 
 ## set up a dictionary with keynames for each trimmed output fastq
 read_to_fastq = {}
@@ -70,24 +59,8 @@ for i in range(0, 3):
         ## assign fastq_name, trim_coords to each key
         read_to_fastq[key_name] = fastq_list[i]
         fastq_trim_coords[key_name] = trim_coords_list[i]
-print("fastq_trim_coords =", fastq_trim_coords)
-print("read_to_fastq =", read_to_fastq)
-# trim_coords = [config["gRNA1"], config["gRNA2"], config["barcode"]]
-
-## get fastq filenames
-## gRNA1
-# gRNA1_list = os.listdir(R1_dir)
-# gRNA1_str = str(gRNA1_list[0])
-
-## gRNA2_barcode
-# gRNA2_barcode_list = os.listdir(I1_dir)
-# gRNA2_barcode_str = str(gRNA2_barcode_list[0])
-
-# count = 0
-# for count, i in enumerate(fastq_list):
-#     key = "R" + str(count+1)
-#     read_to_fastq[key] = i
-#     fastq_trim_coords[key] = trim_coords[count]
+# print("fastq_trim_coords =", fastq_trim_coords)
+# print("read_to_fastq =", read_to_fastq)
 
 sample_list = []
 barcode_ref_file = open(config["barcode_ref_file"], "r")
