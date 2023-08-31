@@ -2,8 +2,12 @@
 
 From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRISPR screens](https://arxiv.org/abs/2306.00944)
 
-## Bug fixes:
-Need to filter files for R1/I1 str variables: (see https://docs.python.org/3/library/fnmatch.html#module-fnmatch)
+## Updates and bug fixes:
+* Update README to include instructions on input file naming (R1, R2, optional R3)
+* Move results and log folder, report generation to separate bash scripts
+* Confirm which rules need inputs and outputs specified in rule all for threading reasons
+* Update text of manuscript to indicate that this will only work for pgPEN data
+* Make sure gitignore matches new updates (i.e., including the bowtie index)
 
 ## Running the pipeline
 

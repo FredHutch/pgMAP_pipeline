@@ -43,7 +43,9 @@ if len(fastq_list) == 3:
     trim_coords_list = [[1, 20], [2, 21], [1, 6]]
 elif len(fastq_list) == 2:
     ## add a duplicate fastq2 to the end of the list
-    fastq_list = fastq_list.append(fastq_list[1])
+    barcode_fastq = fastq_list[1]
+    print("barcode_fastq =", barcode_fastq)
+    fastq_list.append(barcode_fastq)
     trim_coords_list = [[2, 20], [2, 21], [161, 166]]
 else: 
     sys.exit("There must be either 2 or 3 FASTQ files in the input folder.")
@@ -123,7 +125,7 @@ rule trim_reads:
         start = lambda wildcards: fastq_trim_coords[wildcards.read][0],
         end = lambda wildcards: fastq_trim_coords[wildcards.read][1]
     log:
-        "workflow/logs/trim_fastqs/{read}.log"
+        "workflow/logs/trim_reads/{read}.log"
     shell:
         "zcat {input} | fastx_trimmer -f {params.start} -l {params.end} -o {output} 2>{log}"
 
