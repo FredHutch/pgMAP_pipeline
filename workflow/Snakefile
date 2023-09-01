@@ -69,13 +69,11 @@ barcode_ref_file = open(config["barcode_ref_file"], "r")
 
 for line in barcode_ref_file:
     ## get sample names from idemp ref file
-    ## THIS needs to change before next submission; either have it as a tsv so it knows or comma, one space.
     sample = line.strip().split("\t")[1]
     sample_list.append(sample)
 sample_list.sort()
 barcode_ref_file.close()
 
-## only alternative I can think of is making a new rule for fastx to extract barcodes, but users may still have to have separate folders for inputs
 rule all:
     input:
         ## rule trim_reads
@@ -114,14 +112,12 @@ rule all:
 
 rule trim_reads:
     input:
-        ## try expand instead of lambda - see if it also works!
-        # fastq_dir + "PP_pgRNA_HeLa_S1_{read}_001.fastq.gz"
         lambda wildcards: input_dir + read_to_fastq[wildcards.read]
     output:
         results_dir_dict['fastq_trimmed_dir'] + base_filename + "_{read}_trimmed.fastq"
     conda:
         "envs/fastx_toolkit.yaml"
-    params: ## is this the best way to do this?
+    params: 
         start = lambda wildcards: fastq_trim_coords[wildcards.read][0],
         end = lambda wildcards: fastq_trim_coords[wildcards.read][1]
     log:
@@ -143,10 +139,10 @@ rule demux_fastqs:
         idemp = config["idemp"],
         n_mismatch = 1,
         ref = config["barcode_ref_file"],
-        out_dir = results_dir_dict['fastq_demuxed_dir'], ## can't have folder as output => make param
+        out_dir = results_dir_dict['fastq_demuxed_dir'], ## can't have folder as output => make it a param instead
         bad_names = expand(results_dir_dict['fastq_demuxed_dir'] + base_filename + "_{dmx_read}_trimmed.fastq_{sample}.fastq.gz",
             dmx_read = ["gRNA1", "gRNA2"],
-            sample = sample_list) ## to get rid of dumb default idemp output names
+            sample = sample_list) ## to get rid of duplicate ".fastq" in default idemp output
     log:
         "workflow/logs/demux_fastqs/idemp.log"
     resources:
@@ -223,7 +219,7 @@ rule get_stats:
     log:
         "workflow/logs/get_stats/{dmx_read}_{sample}.log"
     shell:
-        "samtools flagstat {input} 2>{log} 1>{output}" ## fix error issue
+        "samtools flagstat {input} 2>{log} 1>{output}" 
 
 rule count_pgRNAs:
     input:
@@ -234,8 +230,8 @@ rule count_pgRNAs:
     conda:
         "envs/counter_efficient.yaml"
     params:
-        ref = config["pgRNA_counts_ref"], ## do I need to do os.path.abspath?
-        n_chunks = config["n_chunks"], ## default 50 for HeLa
+        ref = config["pgRNA_counts_ref"], 
+        n_chunks = config["n_chunks"], 
         out_dir = results_dir_dict['pgRNA_counts_dir'],
         script = "workflow/scripts/counter_efficient.R"
     resources:
@@ -256,7 +252,7 @@ rule combine_counts:
     conda:
         "envs/python.yaml"
     params:
-        annot_file = config["pgRNA_counts_ref"], ## do I need os.path.abspath?
+        annot_file = config["pgRNA_counts_ref"], 
         in_dir = results_dir_dict['pgRNA_counts_dir'],
         script = "workflow/scripts/combine_counts.py"
     log:

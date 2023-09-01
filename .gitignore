@@ -11,12 +11,9 @@ images/
 .*
 *version*
 *build*
-config/barcode_ref_file.txt
-config/config.yaml
-config/fastqs.fofn
+config/
 results/
 workflow/report/
-input/fastqs/README.txt
 
 ## don't ignore the following
 !.gitignore
