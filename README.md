@@ -4,10 +4,8 @@ From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRI
 
 ## Updates and bug fixes:
 * Update README to include instructions on input file naming (R1, R2, optional R3)
-* Move results and log folder, report generation to separate bash scripts
 * Confirm which rules need inputs and outputs specified in rule all for threading reasons
 * Update text of manuscript to indicate that this will only work for pgPEN data
-* Make sure gitignore matches new updates (i.e., including the bowtie index)
 
 ## Running the pipeline
 
