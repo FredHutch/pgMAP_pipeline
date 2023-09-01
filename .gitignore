@@ -14,9 +14,10 @@ images/
 config/
 results/
 workflow/report/
+input/fastqs/*
 
 ## don't ignore the following
 !.gitignore
 !config/*.sample.*
 !config/pgPEN_index/*
-test.py
+!input/fastqs/README.txt

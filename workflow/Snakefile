@@ -32,9 +32,7 @@ fastq_list = []
 for fname in os.listdir(input_dir):
     if "fastq" in fname:
         fastq_list.append(fname)
-# print("fastq_list = ", fastq_list)
 fastq_list.sort()
-# print("sorted fastq_list = ", fastq_list)
 
 ## make lists  of fastq names and trim coordinates for
 ## each sequencing strategy
@@ -44,13 +42,10 @@ if len(fastq_list) == 3:
 elif len(fastq_list) == 2:
     ## add a duplicate fastq2 to the end of the list
     barcode_fastq = fastq_list[1]
-    print("barcode_fastq =", barcode_fastq)
     fastq_list.append(barcode_fastq)
     trim_coords_list = [[2, 20], [2, 21], [161, 166]]
 else: 
     sys.exit("There must be either 2 or 3 FASTQ files in the input folder.")
-# print("fastq_list = ", fastq_list)
-# print("trim_coords = ", trim_coords_list)
 
 ## set up a dictionary with keynames for each trimmed output fastq
 read_to_fastq = {}
@@ -61,8 +56,6 @@ for i in range(0, 3):
         ## assign fastq_name, trim_coords to each key
         read_to_fastq[key_name] = fastq_list[i]
         fastq_trim_coords[key_name] = trim_coords_list[i]
-# print("fastq_trim_coords =", fastq_trim_coords)
-# print("read_to_fastq =", read_to_fastq)
 
 sample_list = []
 barcode_ref_file = open(config["barcode_ref_file"], "r")
@@ -77,15 +70,9 @@ barcode_ref_file.close()
 rule all:
     input:
         ## rule trim_reads
-        # I
-        # expand(input_dir + "{fastq}", fastq = fastq_list),
-        # O
         expand(results_dir_dict['fastq_trimmed_dir'] + base_filename + "_{read}_trimmed.fastq", read=fastq_trim_keys),
         
         ## rule demux_fastqs
-        # I
-        # expand(results_dir_dict['fastq_trimmed_dir'] + base_filename + "_{read}_trimmed.fastq", read=fastq_trim_keys),
-        # O
         expand(results_dir_dict["fastq_demuxed_dir"] + base_filename + "_{dmx_read}_trimmed_{sample}.fastq.gz", dmx_read = ["gRNA1", "gRNA2"], sample = sample_list),
         
         ## rule: align_reads
