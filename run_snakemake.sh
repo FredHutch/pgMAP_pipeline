@@ -15,7 +15,7 @@ bash workflow/scripts/setup.sh
 snakemake --snakefile "workflow/Snakefile"  \
   --use-conda --conda-prefix "~/tmp/" --conda-frontend mamba \
   -k -p --reason --jobs 50 --latency-wait 80 --restart-times 3 \
-  -n -R trim_reads
+  -R trim_reads
 
   ## other useful flags
   ## -n = dry run, -r prints reasons

@@ -4,45 +4,13 @@
 ##   e.g. PP_pgPEN_HeLa
 base_filename: AB_pgPEN
 
-## number of chunks to split each BAM file into for pgRNA counting step
-## - for the tutorial, n_chunks can be 1
-## - for sequencing data from a pgPEN CRISPR screen, try n_chunks: 50
-n_chunks: 50
-
 ## input FASTQ file path
 ## - for the tutorial, input_dir = input/tutorial_fastqs/
 ## - for sequencing dtaa from a pgPEN CRISPR screen, put your FASTQs into input/fastqs/
 ##   and set the input_dir variable to input/fastqs/
 input_dir: input/fastqs/
 
-#####################################
-### DO NOT UPDATE VARIABLES BELOW ###
-#####################################
-## read coordinates: format = [start, end]
-## defines the coordinates for trimming the 3 reads
-gRNA1: [2, 20]
-gRNA2: [2, 21]
-barcode: [161, 166]
-
-## config files
-## - for the tutorial, copy barcode_ref_file.sample.txt to barcode_ref_file.txt
-## - for sequencing data from a pgPEN screen, copy to a file named barcode_ref_file.txt and 
-##   input the barcode and sample information
-barcode_ref_file: config/barcode_ref_file.txt
-
-## reference files
-## if using pgPEN, these do not need to be updated
-pgRNA_counts_ref: config/pgPEN_annotations.txt
-bowtie_idx_dir: config/pgPEN_index/
-
-
-## directory paths
-fastq_trimmed_dir: results/fastq_trimmed
-fastq_demuxed_dir: results/fastq_demuxed
-sam_dir: results/sam
-bam_dir: results/bam
-bam_sorted_dir: results/bam_sorted
-pgRNA_counts_dir: results/pgRNA_counts
-
-## package
-idemp: config/idemp/idemp
+## number of chunks to split each BAM file into for pgRNA counting step
+## - for the tutorial, n_chunks can be 1 (since the FASTQ file is small)
+## - for sequencing data from a pgPEN CRISPR screen, try n_chunks: 50
+n_chunks: 50
