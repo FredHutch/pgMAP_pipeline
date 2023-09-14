@@ -2,15 +2,15 @@
 ## - for the tutorial, the default is PP_pgPEN_tutorial
 ## - for data from a pgPEN CRISPR screen, the format is initials_library_cellLine
 ##   e.g. PP_pgPEN_HeLa
-base_filename: PP_pgPEN_HeLa
+base_filename: pgPEN_tutorial
 
 ## input FASTQ file path
 ## - for the tutorial, input_dir = input/tutorial_fastqs/
 ## - for sequencing dtaa from a pgPEN CRISPR screen, put your FASTQs into input/fastqs/
 ##   and set the input_dir variable to input/fastqs/
-input_dir: input/fastqs/
+input_dir: input/tutorial_fastqs/
 
 ## number of chunks to split each BAM file into for pgRNA counting step
 ## - for the tutorial, n_chunks can be 1 (since the FASTQ file is small)
 ## - for sequencing data from a pgPEN CRISPR screen, try n_chunks: 50
-n_chunks: 50
+n_chunks: 1
