@@ -18,4 +18,7 @@ dot -Tpdf "workflow/report/dag.dot" > "workflow/report/pipeline_dag.pdf"
 dot -Tsvg "workflow/report/dag.dot" > "workflow/report/pipeline_dag.svg"
 rm "workflow/report/dag.dot"
 
+snakemake --snakefile workflow/Snakefile \
+  --report "workflow/report/report.html"
+
 echo -e "\nReports created! See workflow/report/ folder for output.\n"
