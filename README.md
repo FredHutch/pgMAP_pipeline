@@ -19,7 +19,7 @@ From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRI
 3. We suggest running the pgPEN tutorial, described below, in a separate folder before analyzing your own files. 
 
 
-4. Once you've successfully run the tutorial, copy your input FASTQ files into the folder `input/fastqs/`. **Important note:** Your FASTQ filenames **must** include either `R1` and `R2` (for the two-read sequencing approach) or `R1`, `R2`, and `R3` (for the three-read sequencing approach). Additionally, all file extensions **must** include either `fastq` or `fq`. 
+4. Once you've successfully run the tutorial, copy your input FASTQ files into the folder `input/fastqs/`. **Important note:** Your FASTQ filenames **must** include either `R1` and `R2` (for the two-read sequencing approach) or `R1`, `R2`, and `R3` (for the three-read sequencing approach). Additionally, all file extensions **must** include either `.fastq` or `.fq`. 
 
 
 5. Duplicate and update the files in the `config/` folder as described below: 
