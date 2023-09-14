@@ -3,7 +3,7 @@
 ## check if idemp successfully installed
 IDEMP=config/idemp/idemp
 if test -f "$IDEMP"; then
-    echo "idemp has been successfully installed and compiled in config folder."
+    echo "idemp is already installed!"
 else 
     echo "$IDEMP does not exist. Installing idemp."
     ## install idemp in config dir
@@ -11,6 +11,7 @@ else
     echo "Compiling idemp."
     ## compile idemp
     make -C config/idemp  
+    echo "idemp has been successfully installed and compiled in config folder."
 fi
 
 ## make output dirs
@@ -29,3 +30,6 @@ mkdir -p "workflow/logs/make_sorted_bams"
 mkdir -p "workflow/logs/get_stats"
 mkdir -p "workflow/logs/count_pgRNAs"
 mkdir -p "workflow/logs/combine_counts"
+
+## make report dir
+mkdir -p "workflow/report"

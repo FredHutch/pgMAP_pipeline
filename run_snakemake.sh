@@ -14,14 +14,11 @@ bash workflow/scripts/setup.sh
 ## run the pipeline
 snakemake --snakefile "workflow/Snakefile"  \
   --use-conda --conda-prefix "~/tmp/" --conda-frontend mamba \
-  -k -p --reason --jobs 50 --latency-wait 80 --restart-times 3 \
-  -R trim_reads
+  -k -p --reason --jobs 50 --latency-wait 80 --restart-times 3
 
   ## other useful flags
   ## -n = dry run, -r prints reasons
   ## -R forces snakemake to rerun from a specific rule
-  # --cluster "sbatch &> ${SBATCH_OUT}%j.out" \
-  # --restart-times 3 --conda-prefix $CONDA_ENV
 
 echo -e "\npgMAP run completed! See results/pgRNA_counts/ folder for output.\n"
 
