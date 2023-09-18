@@ -28,7 +28,7 @@ From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRI
 
 
 6. Run the script `run_snakemake.sh` by entering the command: `$ bash run_snakemake.sh`. The following steps will run automatically for all samples specified in `config/barcode_ref_file.txt`: 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](resources/pgMAP_rulegraph.png)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![img src="resources/pgMAP_rulegraph.png" width="50%" height="50%">](resources/pgMAP_rulegraph.png)
 
 ### More information on installing/running/troubleshooting Snakemake
 Install Snakemake v7.1.0 using mambaforge as described here:
