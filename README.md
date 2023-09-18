@@ -27,10 +27,10 @@ From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRI
     * Make a copy of `config.sample.yaml` named `config.yaml`. Update the `base_filename` variable, the input file path (the default is `input/tutorial_fastqs`), and the number of chunks to split your BAM files into. We suggest trying `n_chunks: 50` for data from a full pgPEN CRISPR screen dataset. 
 
 
-6. Run the script `run_snakemake.sh` by entering the command: `$ bash run_snakemake.sh`
+6. Run the script `run_snakemake.sh` by entering the command: `$ bash run_snakemake.sh`. The following steps will run automatically for all samples specified in `config/barcode_ref_file.txt`: 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Report](resources/pgMAP_rulegraph.png)
 
-
-### More info on installing/running/troubleshooting Snakemake
+### More information on installing/running/troubleshooting Snakemake
 Install Snakemake v7.1.0 using mambaforge as described here:
 https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
 
@@ -71,6 +71,8 @@ The resulting pgRNA counts can be found in `results/pgRNA_counts/pgMAP_tutorial_
 |AADAC_AADACL2_pg12	|ATTTCTATCCAAATCACTCA	|TGGGGGCAATTTAGCAACAG|	1 |  2 |  1|
 |AADAC_AADACL2_pg13	|GGTATTTCTGGAGATAGTGC	|AAAGAAAGTCAGAAACCCGA|	1 |  2 |  2|
 |AADAC_AADACL2_pg14	|GGTATTTCTGGAGATAGTGC	|GAAAAAATTTGACTGCAGCA|	1 |  2 |  2|
+
+To confirm that the correct counts were generated, you can compare your output to the file `results/expected_tutorial_output/expected_pgMAP_tutorial_pgRNA_counts.txt`.
 
 Snakemake will also generate reports in `reports.html` and `workflow/report`:
 
