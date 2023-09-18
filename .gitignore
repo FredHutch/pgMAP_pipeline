@@ -21,3 +21,4 @@ input/fastqs/*
 !config/*.sample.*
 !config/pgPEN_index/*
 !input/fastqs/README.txt
+!results/expected_tutorial_output/*

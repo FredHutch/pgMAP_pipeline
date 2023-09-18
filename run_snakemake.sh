@@ -5,7 +5,7 @@
 # mamba env create -f workflow/envs/snakemake.yaml
 
 ## activate conda envt
-conda activate snakemake_env
+source activate snakemake_env
 echo "snakemake env activated"
 
 ## set up folders and install idemp if needed
