@@ -21,4 +21,4 @@ input/fastqs/*
 !config/*.sample.*
 !config/pgPEN_index/*
 !input/fastqs/README.txt
-!results/expected_tutorial_output/*
+!results/expected_tutorial_output/expected_pgMAP_tutorial_pgRNA_counts.txt
