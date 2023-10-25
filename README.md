@@ -16,7 +16,7 @@ From [pgMAP: a pipeline to enable guide RNA read mapping from dual-targeting CRI
       * Un-commenting line 5 in the script `run_snakemake.sh` (command: `$ mamba env create -f workflow/envs/snakemake.yaml`)
 
 
-3. We suggest running the pgPEN tutorial, described below, in a separate folder before analyzing your own files. 
+3. We suggest running the pgMAP tutorial, described below, in a separate folder before analyzing your own files. 
 
 
 4. Once you've successfully run the tutorial, copy your input FASTQ files into the folder `input/fastqs/`. **Important note:** Your FASTQ filenames **must** include either `R1` and `R2` (for the two-read sequencing approach) or `R1`, `R2`, and `R3` (for the three-read sequencing approach). Additionally, all file extensions **must** include either `.fastq` or `.fq`. 
