@@ -13,7 +13,7 @@ bash workflow/scripts/setup.sh
 
 ## run the pipeline
 snakemake --snakefile "workflow/Snakefile"  \
-  --use-conda --conda-prefix "~/tmp/" --conda-frontend mamba \
+  --use-conda --conda-prefix "~/tmp/" \
   -k -p --reason --jobs 50 --latency-wait 80 --restart-times 3
 
   ## other useful flags
